@@ -1,0 +1,214 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Interface Vision and Behaviour Driven Development (BDD)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Eric Hosick">
+
+    <meta property="og:title" content="Interface Vision" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="http://blog.interfacevision.com/assets/img/logoFinalStormyDaze122x260.png"/>
+    <meta property="og:description" content="Interface Vision is a group working on software development platforms that can be used without coding."/>
+    <meta property="fb:admins" content="erichosick" />
+
+    <link href='//netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap-combined.min.css' rel='stylesheet'>    
+    <link href="/assets/themes/twitter/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <link href="http://fonts.googleapis.com/css?family=Pontano+Sans" rel="stylesheet" type="text/css">
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
+
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="http://www.interfacevision.com"><img src="/assets/img/logoFinalStormyDaze122x260.png"></img></a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li><a href="/index.html">Home</a></li>
+              <li><a href="/categories.html">Categories</a></li>
+              <li><a href="/pages.html">Pages</a></li>
+              <li><a href="/tags.html">Tags</a></li>
+            </ul>
+            <p class="pull-right">
+              <a class="nav-a-social" href="https://plus.google.com/101227313031284036080/posts" target="_blank"><i class="icon-google-color icon-social"></i></a>
+              <a class="nav-a-social" href="http://www.twitter.com/interfacevision" target="_blank"><i class="icon-twitter-color icon-social"></i></a>
+              <a class="nav-a-social" href="mailto:erichosick@interfacevision.com"><i class="icon-mail-color icon-social"></i></a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>    
+
+    <div class="container-fluid container-main">
+      
+<div class="row-fluid">
+  <div class="span3">
+    <div class="well sidebar-nav">
+  <ul class="nav nav-list">
+    <li class="nav-header">About</li>
+    <li> <a href="http://www.interfacevision.com">Interface Vision</a><p class="nav-about">a group working on software development platforms that can be used without coding.</p></li>
+  </ul>
+</div>
+
+    
+    <div class="well sidebar-nav">
+      <ul class="nav nav-list">
+        <li class="nav-header">Tags</li>
+        
+        
+
+
+  
+     
+    	<li><a href="/tags.html#BDD-ref">BDD <span>2</span></a></li>
+     
+    	<li><a href="/tags.html#Interface Vision-ref">Interface Vision <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#Debugging-ref">Debugging <span>1</span></a></li>
+    
+  
+
+
+
+      </ul>
+    </div><!--/.well -->
+      
+    
+  </div>
+  <div class="span9">
+    <div class="hero-unit">
+      <div class="page-header">
+        <h1>Interface Vision and Behaviour Driven Development (BDD)</h1>
+        <div class="row-fluid">
+          <div class="span2">
+            <img src="/assets/img/eric_hosick.jpg" class="img-rounded">
+          </div>
+          <div class="span8">
+            <p>by <a href="http://twitter.com/erichosick" target="_blank">Eric Hosick</a> (erichosick at interfacevision.com)</p>
+            <h4>Published <small class="date">18 November 2010</small></h4>
+          </div>
+        </div>
+      </div>
+      <h1 id='where_interface_vision_was_before'>Where Interface Vision Was Before</h1>
+
+<p>We are a few years into the code base for Interface Vision. An executive decision was made to rewrite the entire system using BDD.</p>
+
+<p>This isn’t exactly an easy decision because there are many hundreds of thousands of lines of code. Over the years, the code has been re-written as we discovered mistakes in our original approach to engineering Interface Vision. However, the current version is architecturally strong.</p>
+
+<p>Of course, a lot of the tricky stuff has been solved and the re-write will not be as difficult as the original so I don’t see it taking two years.</p>
+
+<h1 id='it_is_well_worth_it'>It Is Well Worth It</h1>
+
+<p>I’ve just finished my first big step of re-writing Interface Vision using BDD and all I can say is that it is amazing! During this 6 hour session I did not even one time ask myself if I had introduced any bugs. Not one time did I have to debug the code.</p>
+
+<p>I had one mistake in the Gherkin due to an upper-case/lower-case mistake. Other than that, I am confident that my code base is 100% covered.</p>
+
+<p>And it is a really nice feeling.</p>
+
+<h1 id='feeling_of_oneness'>Feeling of Oneness</h1>
+
+<p>After programming for decades and even using TDD I never felt confident that I wasn’t breaking my behaviour: I wasn’t breaking how the system worked.</p>
+
+<p>For the first time ever, I don’t have a single worry in my head that I’ve made a mistake. I don’t have to worry that something isn’t right. I know that within all that code I’ve just added, there will be no horrible debug session waiting for me. I now have a feeling of Oneness with programming. I am not fighting programming anymore! It is really relaxing.</p>
+
+<h1 id='i_hate_debugging'>I Hate Debugging</h1>
+
+<p>I can not even start to describe how much I hate debugging. I’ve been doing it since I was 14 when I wrote my first program. I’ve been doing it up until recently. Now I know I will NEVER have to debug again.</p>
+
+<p>The worst part about debugging is that it really slows me down. Not because it is more difficult than programming or that I’m not good at it. It slows me down because I always procrastinate when I know I have to start debugging something. Sometimes I’ll stop working on something for days because of it.</p>
+
+<h1 id='bdd_is_here_to_stay'>BDD Is Here To Stay</h1>
+
+<p>As I’ve said before, and if I haven’t then I guess I’ll say it now, BDD is the biggest advancement in 20 years both in terms of the concept and tools that implement it. BDD, conceptually, may have been here for a while. However, it is now so easy to drive your development using it… Well there is no reason not to do it.</p>
+
+<h1 id='conclusion'>Conclusion</h1>
+
+<p>I will never have to debug again! I hope.</p>
+      <hr>
+      <div class="pagination pagination-centered">
+        <ul>
+        
+          <li class="prev"><a href="/Agile/agile-master" title="Running an Agile Company – Keep An Agile Master Around">&larr; Previous</a></li>
+        
+          <li><a href="/archive.html">Archive</a></li>
+        
+          <li class="next"><a href="/Agile/product-owner" title="Being a Product Owner – The Achilles’ heel of Agile">Next &rarr;</a></li>
+        
+        </ul>
+      </div>    
+      <hr>
+      <div>
+        
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_developer = 1;
+    var disqus_shortname = 'interfacevisionblog'; // required: replace example with your forum shortname
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+      </div>
+
+    </div>    
+  </div>
+</div>
+
+
+
+      <hr>
+      <footer>
+         <p>&copy; <a href="http://www.twitter.com/erichosick" target="_blank">Eric Hosick</a> 2012</p>
+       </footer>
+    </div>    
+    <!--
+
+    <script src="/assets/js/jquery.js"></script>
+    <script src="/assets/js/bootstrap-transition.js"></script>
+    <script src="/assets/js/bootstrap-alert.js"></script>
+    <script src="/assets/js/bootstrap-modal.js"></script>
+    <script src="/assets/js/bootstrap-dropdown.js"></script>
+    <script src="/assets/js/bootstrap-scrollspy.js"></script>
+    <script src="/assets/js/bootstrap-tab.js"></script>
+    <script src="/assets/js/bootstrap-tooltip.js"></script>
+    <script src="/assets/js/bootstrap-popover.js"></script>
+    <script src="/assets/js/bootstrap-button.js"></script>
+    <script src="/assets/js/bootstrap-collapse.js"></script>
+    <script src="/assets/js/bootstrap-carousel.js"></script>
+    <script src="/assets/js/bootstrap-typeahead.js"></script>
+    
+    -->
+
+    
+  </body>
+</html>
+

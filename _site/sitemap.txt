@@ -1,0 +1,22 @@
+
+http://bloginterfacevision.github.com/archive.html
+http://bloginterfacevision.github.com/atom.xml
+http://bloginterfacevision.github.com/categories.html
+http://bloginterfacevision.github.com/index.html
+http://bloginterfacevision.github.com/pages.html
+http://bloginterfacevision.github.com/sitemap.txt
+http://bloginterfacevision.github.com/tags.html
+
+http://bloginterfacevision.github.com/Interface Vision/presentation-matz
+http://bloginterfacevision.github.com/Interface Vision/vision-01
+http://bloginterfacevision.github.com/Agile/coding-game
+http://bloginterfacevision.github.com/Rant/dirty-hn
+http://bloginterfacevision.github.com/Software/developers
+http://bloginterfacevision.github.com/Agile/bdd-value
+http://bloginterfacevision.github.com/Language/custom-mono
+http://bloginterfacevision.github.com/Agile/product-owner
+http://bloginterfacevision.github.com/Agile/bdd
+http://bloginterfacevision.github.com/Agile/agile-master
+http://bloginterfacevision.github.com/Agile/agile-branding
+http://bloginterfacevision.github.com/Agile/bdd-tool
+http://bloginterfacevision.github.com/Agile/specifications-quality

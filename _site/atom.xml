@@ -1,0 +1,814 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+ 
+ <title>Interface Vision</title>
+ <link href="http://bloginterfacevision.github.com/atom.xml" rel="self"/>
+ <link href="http://bloginterfacevision.github.com"/>
+ <updated>2012-11-10T11:30:43+07:00</updated>
+ <id>http://bloginterfacevision.github.com</id>
+ <author>
+   <name>Eric Hosick</name>
+   <email>erichosick@interfacevision.com</email>
+ </author>
+
+ 
+ <entry>
+   <title>Interface Vision Presentation to Matz</title>
+   <link href="http://bloginterfacevision.github.com/Interface Vision/presentation-matz"/>
+   <updated>2012-09-03T00:00:00+07:00</updated>
+   <id>http://bloginterfacevision.github.com/Interface Vision/presentation-matz</id>
+   <content type="html">&lt;h2 id='introduction'&gt;Introduction&lt;/h2&gt;
+
+&lt;p&gt;Around late May, 2012, &lt;a href='http://en.wikipedia.org/wiki/Yukihiro_Matsumoto'&gt;Yukihiro “Matz” Matsumoto&lt;/a&gt; came to the Ruby Forum in Ho Chi Minh City. I found out he was interested in new languages, so I made a quick presentation and &amp;#8220;pitched&amp;#8221; to him while he was here.&lt;/p&gt;
+
+&lt;p&gt;His response was really positive. To paraphrase, using my bad memory, he found the technology to be impressive and hopes it doesn&amp;#8217;t become a &amp;#8220;toy language&amp;#8221;. That is my hope too.&lt;/p&gt;
+
+&lt;h2 id='the_presentation'&gt;The Presentation&lt;/h2&gt;
+
+&lt;p&gt;I used high resolution images so the presentation may take a while to load.&lt;/p&gt;
+&lt;iframe allowfullscreen='true' frameborder='0' height='749' mozallowfullscreen='true' src='https://docs.google.com/presentation/embed?id=17SzvgCarX46rrBMM83Vazo7coB254j_-NHhsNsPsFqA&amp;nbsp;start=false&amp;nbsp;loop=false&amp;nbsp;delayms=5000' webkitallowfullscreen='true' width='960'&gt; &lt;/iframe&gt;</content>
+ </entry>
+ 
+ <entry>
+   <title>Interface Vision Version 0.1</title>
+   <link href="http://bloginterfacevision.github.com/Interface Vision/vision-01"/>
+   <updated>2012-04-25T00:00:00+07:00</updated>
+   <id>http://bloginterfacevision.github.com/Interface Vision/vision-01</id>
+   <content type="html">&lt;h2 id='introduction'&gt;Introduction&lt;/h2&gt;
+
+&lt;p&gt;Today is a bit of a milestone. We’ve been able to create an iPad/iPhone app using the Interface Vision Framework. The cool thing… The framework requires no coding to use. Ok, that isn’t exactly true but read on…&lt;/p&gt;
+
+&lt;h2 id='about_the_video'&gt;About the Video&lt;/h2&gt;
+
+&lt;p&gt;The video shows a very simple OpenGl demo program running on an iPad. Nothing new there. The new thing is that everything about the program was created using configuration code: about 460 lines of it. Currently, this involves a lot of calls to constructors and the setting of properties. However, in the future, the configuration will be stored in json and serialization used to create instances (this is when the no coding part is realized).&lt;/p&gt;
+&lt;iframe allowfullscreen='allowfullscreen' frameborder='0' height='360' mozallowfullscreen='mozallowfullscreen' src='http://player.vimeo.com/video/41001941' webkitallowfullscreen='webkitallowfullscreen' width='640'&gt; &lt;/iframe&gt;
+&lt;h2 id='example_configuration'&gt;Example Configuration&lt;/h2&gt;
+
+&lt;p&gt;Here is an example configuration. In this case, it is the OpenGl shaders:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ISimpleClass shaderList = new AggregateArrayList {};
+shaderList.actionInsert = new ProgramShaderNative {
+  shadingScript = new Vision.Core.String {
+    withString = @&amp;quot;
+      attribute vec4 position;
+      attribute vec4 color;
+      varying vec4 colorVarying;
+      uniform float translate;
+      void main() {
+        gl_Position = position;
+        gl_Position.y += sin(translate) / 2.0;
+        colorVarying = color;
+      }&amp;quot;
+  },
+  shaderType = ShaderType.vertexShader
+};
+shaderList.actionInsert = new ProgramShaderNative {
+  shadingScript = new Vision.Core.String {
+    withString = @&amp;quot;
+      varying lowp vec4 colorVarying;
+
+      void main() {
+        gl_FragColor = colorVarying;
+      }&amp;quot;
+  } ,
+  shaderType = ShaderType.fragmentShader
+};&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Here is an example of the OpenGL “camera”:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ISimpleClass result = new Camera
+  sceneToRender = new ProgramGlslNative {
+    uniforms = uniformList,
+    attributes = attributeList,
+    shaders = shaderList
+  } ,
+  onCameraSetup = new GlClearColorNative {
+    color = new Vec4f {
+      r = 0.0f,
+      g = 0.0f,
+      b = 0.0f,
+      a = 1.0f
+    }
+  },
+  onSceneRenderBefore = new GlClearNative {
+    clearValue = ClearBufferMask.colorBufferBit
+  }
+};&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id='future'&gt;Future&lt;/h2&gt;
+
+&lt;p&gt;There is a chicken and egg problem with all of this. Eventually, we hope to be able to configure behaviour of Interface Vision within Interface Vision itself. However, for now, we have to resort to the Macintosh to finish out the framework and setup the configuration files.&lt;/p&gt;
+
+&lt;h2 id='conclusion'&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;For us, this is quite exciting. It is a good test of the framework. The fact it takes so few lines of configuration code to get a program up and running in OpenGL on an iPad with user interaction is a great test of the technology behind Interface Vision.&lt;/p&gt;</content>
+ </entry>
+ 
+ <entry>
+   <title>You see Coding as a Loosing Game if You Focus on Testing</title>
+   <link href="http://bloginterfacevision.github.com/Agile/coding-game"/>
+   <updated>2012-02-24T00:00:00+07:00</updated>
+   <id>http://bloginterfacevision.github.com/Agile/coding-game</id>
+   <content type="html">&lt;h2 id='introduction'&gt;Introduction&lt;/h2&gt;
+
+&lt;p&gt;Focusing on testing is like assuming we are going to lose the game and we only want to loose by a little bit: we assume there will be bugs – a negative approach.&lt;/p&gt;
+
+&lt;p&gt;The thing we should focus on is the User Experience (UX). Testing should be our second line of defence.&lt;/p&gt;
+
+&lt;h2 id='focus_on_the_features_and_ux'&gt;Focus on the Features and UX&lt;/h2&gt;
+
+&lt;p&gt;Focusing on the UX, the behaviour, the features is a positive approach. We focus on the wining game: delivering exactly what the stakeholders want (1).&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Behaviour Driven Development (BDD)&lt;/strong&gt; assures we are implementing only what the stakeholders want (1). We are “testing” the features before we even think about testing code. This is our first line of defence.&lt;/li&gt;
+
+&lt;li&gt;&lt;strong&gt;Test Driven Development (TDD)&lt;/strong&gt; provides the robustness and engineering – it is our second line of defence.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id='use_both_bdd_and_tdd'&gt;Use Both BDD and TDD&lt;/h2&gt;
+
+&lt;p&gt;behaviour Driven Development, using a DSL like gherkin, provides the glue between the stakeholders (aka the UX) and the code. This glue drives our development and, following red/yellow/green/refactor, assures that every line of code written is directly related to implementing the behaviour (aka the UX) (2).&lt;/p&gt;
+
+&lt;p&gt;BDD does not assure robustness and there may be overlooked edge cases that would require additional behaviour (aka UX).&lt;/p&gt;
+
+&lt;p&gt;Test Driven Development, as our second line of defence, is where the engineering comes in assuring the software system is robust. Additional behaviour may be discovered, such as what to do with errors, and TDD is a good way to discover such edge cases. TDD feeds back into BDD allowing for the discovery of additional behaviour perhaps missed when mocking out that initial UX.&lt;/p&gt;
+
+&lt;h2 id='conclusion'&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;Don’t focus on testing your code, focus on implementing only the behaviour asked for by the stakeholder.&lt;/p&gt;
+
+&lt;p&gt;Use BDD to assure that the minimum lines of code are written.&lt;/p&gt;
+
+&lt;p&gt;Use testing to assure robustness, good engineering and as a feedback loop to fill in missing behaviour.&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Business still needs to figure out what stakeholders want to assure minimal behaviour (Minimal Viable Product). This process should be as painful as possible. The more pain, the less behaviour. The less behaviour, the less code. Less code means less bugs.&lt;/li&gt;
+
+&lt;li&gt;The ability to regression test our behaviour is a huge benefit but pales in comparison to the benefits from assuring the minimum amount of code is being written.&lt;/li&gt;
+&lt;/ol&gt;</content>
+ </entry>
+ 
+ <entry>
+   <title>Feeling Dirty on Hacker News</title>
+   <link href="http://bloginterfacevision.github.com/Rant/dirty-hn"/>
+   <updated>2011-09-19T00:00:00+07:00</updated>
+   <id>http://bloginterfacevision.github.com/Rant/dirty-hn</id>
+   <content type="html">&lt;p&gt;I now feel dirty for trying to work with a startup on Hacker news. Or should I?&lt;/p&gt;
+
+&lt;h2 id='why'&gt;Why?&lt;/h2&gt;
+
+&lt;p&gt;I ran into a Show HN post about an interesting startup called Tinyproj. I posted a short project on Tinyproj because I like to work with like minded people: entrepreneurs.&lt;/p&gt;
+
+&lt;p&gt;Then comes a post from a pseudonymous named Edward Case (&lt;a href='http://news.ycombinator.com/item?id=3015677'&gt;http://news.ycombinator.com/item?id=3015677&lt;/a&gt;, &lt;a href='http://www.betabeat.com/2011/09/19/why-80-percent-of-web-projects-are-total-bullshit-a-freelancers-rant/'&gt;http://www.betabeat.com/2011/09/19/why-80-percent-of-web-projects-are-total-bullshit-a-freelancers-rant/&lt;/a&gt;).&lt;/p&gt;
+
+&lt;p&gt;(Edit: Note the short project description was supposed to be private and Edward Case did not have permission to make it public as was done in their blog)&lt;/p&gt;
+
+&lt;h2 id='im_not_anonymous'&gt;I’m Not Anonymous&lt;/h2&gt;
+
+&lt;p&gt;I have no reason to be anonymous. My name is Eric Hosick. I’ve been programming since I was 13. I’ve written hundreds of thousands of lines of code. I’ve lectured at a college for a few years in IT and BIS. I’ve started a few companies: even a few offshore. I’ve been successful and I’ve failed: both quite a few times now.&lt;/p&gt;
+
+&lt;p&gt;So, when someone, anonymously, says something like this:&lt;/p&gt;
+
+&lt;p&gt;“I’m sure I’m not the only programmer that can sniff out a fake nerd.” – Edward Case&lt;/p&gt;
+
+&lt;p&gt;And tries to oust me call me out as that fake nerd. Well. Ya. You’ve got a lot to learn about people on Hacker News. Generally, we know our shit.&lt;/p&gt;
+
+&lt;h2 id='the_1000_char_limit'&gt;The 1000 Char Limit&lt;/h2&gt;
+
+&lt;p&gt;I was limited to 1000 characters on Tinyproj. I did have more detailed requirements. The 1000 char limit was a pain, I have to say, and I was going to quickly give up on Tinyproj. But I am going to have to give cudos to Tinyproj for getting out that Minimal Viable Product. Good on you! It was the right move. So, I stuck in there.&lt;/p&gt;
+
+&lt;p&gt;I clipped off most of the requirements. I knew anyone really interested would just ask for more detail.&lt;/p&gt;
+
+&lt;p&gt;And it was worth it, because the entrepreneur has been really helpful.&lt;/p&gt;
+
+&lt;h2 id='conclusion'&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;Thanks for reading.&lt;/p&gt;
+
+&lt;p&gt;If you are interested in working with someone who is and respects programmers, please do drop a line.&lt;/p&gt;
+
+&lt;p&gt;I think I have some rather amazing stuff coming down the pipeline.&lt;/p&gt;</content>
+ </entry>
+ 
+ <entry>
+   <title>Developers: Give Each Other a Fighting Chance</title>
+   <link href="http://bloginterfacevision.github.com/Software/developers"/>
+   <updated>2011-09-14T00:00:00+07:00</updated>
+   <id>http://bloginterfacevision.github.com/Software/developers</id>
+   <content type="html">&lt;h2 id='introduction'&gt;Introduction&lt;/h2&gt;
+
+&lt;p&gt;Figuring out an API can be difficult. Using one that is fraught with bugs and bad error messages is almost impossible.&lt;/p&gt;
+
+&lt;h2 id='my_plead__give_each_other_a_fighting_chance'&gt;My Plead – Give Each Other a Fighting Chance&lt;/h2&gt;
+
+&lt;p&gt;Development is hard enough without having APIs fraught with bugs and no good error messages. It seems to me, that over the years, APIs and frameworks aren’t getting better. Instead, they are becoming more fragile than ever before. There are probably a lot of reasons for this but I think one of the main reasons is a misunderstanding of what software development really is.&lt;/p&gt;
+
+&lt;h2 id='quick_point__seeing_software_development_as_automation_of_a_system'&gt;Quick Point – Seeing Software Development as Automation of a System&lt;/h2&gt;
+
+&lt;p&gt;Software Development is no more than the automation/simulation of systems (that is a strong statement to make so take a second to think about it.). The development process takes a system that is/can be done manually and automates that system via software run on a computing device.&lt;/p&gt;
+
+&lt;p&gt;A real world system, like manufacturing a cell phone, has an optimal process: the process to follow when there are no problems in production. However, in every system, there are situations that occur which are not optimal: parts not shipped on time, power goes out, machines lose their calibration, cost of material goes up, etc.&lt;/p&gt;
+
+&lt;p&gt;As such, not only is the optimal process of a system written down, but also actions to take when events occur within a system that are non-optimal.&lt;/p&gt;
+
+&lt;h2 id='the_solution__software_developers_must_consider_nonoptimal_aspects_of_the_system'&gt;The Solution – Software Developers must Consider non-optimal Aspects of the System&lt;/h2&gt;
+
+&lt;p&gt;When automating a system, as engineers, we have to take into account all of the aspects of the system we are automating: not just the optimal outcomes. Further, we have to view the computing device itself, and the software running on it, as another part of the system being automated. That means, unexpected outcomes, such as out of memory errors, must now also be considered within that system (even at the business level #1).&lt;/p&gt;
+
+&lt;p&gt;So, when writing an API, make sure to put as much, if not more, thought into the non-optimal aspects of the system. Further, provide adequate “error handling” or “error messages” so that the users of the API are able to act accordingly.&lt;/p&gt;
+
+&lt;p&gt;A good API considers both the expected and unexpected events within the system being automated.&lt;/p&gt;
+
+&lt;p&gt;The reason why I put “error handling” and “error message” in quotes is that, in a system, there is no such thing as an “error” as such #2. There are unexpected outcomes that require an alternate process. The only reason why we call them errors in software development is because we, as software developers, have failed to understand the purpose of software development: to automate systems.&lt;/p&gt;
+
+&lt;p&gt;Really, if you are going to write an API, you have an obligation as an engineer to consider all aspects of a system you are automating and provide the right exception and/or information allowing users of your API to make the correct business decisions.&lt;/p&gt;
+
+&lt;h2 id='conclusion'&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;The APIs of today need to be more developer friendly. This can be achieved by software developers realising that the software they write must automate both the optimal and non-optimal processes within the system: including those non-optimal processes injected into the system because it is now using said computing device.&lt;/p&gt;
+
+&lt;p&gt;Developers really need to start providing APIs that are not fragile and provide adequate information when “errors” occur. This give the users of their APIs a fighting chance in using the API successfully.&lt;/p&gt;
+
+&lt;p&gt;Give your fellow/fellowet developers a chance to be successful in their development efforts.&lt;/p&gt;
+
+&lt;h2 id='the_story__why_this_post'&gt;The Story – Why This Post&lt;/h2&gt;
+
+&lt;p&gt;I was trying to use a console based API (I will not flame the API) and was getting an error message “File not found”. That would be a fine error message except for the part where the command line options required four different files. I did try to pass each one separately, and in each case the “File not found” error did not occur: replaced by the error “Missing option xyz”. There was also a debug option which was also of no help.&lt;/p&gt;
+
+&lt;p&gt;What good, in this case, is the error message “File not found”? What could I learn from it? Nothing… In fact, I spent more time trying to figure out what was wrong than I spent writing this post.&lt;/p&gt;
+
+&lt;p&gt;The bad part is that this API was created by developers for developers. So, the question becomes…&lt;/p&gt;
+
+&lt;p&gt;Do developers actually care about helping other developers become successful?&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;As an example, I may want to restart a process if it starts taking up too much memory or I might want to start a new server instance running in my cloud computing environment. This is a business decision made by the product owner.&lt;/li&gt;
+
+&lt;li&gt;I realise that there are edge cases that are difficult to find. I also know that no systems are closed, and as such it is not practical to cover all edge cases. However, knowing those edge cases and not accounting for them should not be called an error. It should be called an incomplete API and a failure to automate that system.&lt;/li&gt;
+&lt;/ol&gt;</content>
+ </entry>
+ 
+ <entry>
+   <title>How to use BDD to Discover Value-add for Your Startup</title>
+   <link href="http://bloginterfacevision.github.com/Agile/bdd-value"/>
+   <updated>2011-02-20T00:00:00+07:00</updated>
+   <id>http://bloginterfacevision.github.com/Agile/bdd-value</id>
+   <content type="html">&lt;h2 id='introduction'&gt;Introduction&lt;/h2&gt;
+
+&lt;p&gt;I’ve seen chatter on &lt;a href='http://news.ycombinator.com/'&gt;Hacker News&lt;/a&gt; about how BDD adds no value to a startup (&lt;a href='http://news.ycombinator.com/item?id=2240826'&gt;this post here&lt;/a&gt; in response to &lt;a href='http://news.ycombinator.com/item?id=2240730'&gt;this&lt;/a&gt;).&lt;/p&gt;
+
+&lt;p&gt;This blog post will:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;clear up misunderstandings of BDD&lt;/li&gt;
+
+&lt;li&gt;provide reasons why your startup should use BDD&lt;/li&gt;
+
+&lt;li&gt;show how BDD helps you focus on value-add&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id='what_bdd_is_not'&gt;What BDD is NOT!&lt;/h2&gt;
+
+&lt;p&gt;BDD is not only about testing or test coverage. In fact, BDD is such a mind boggling amazing improvement to software engineering that regression testing and testing are merely a measly nice to have side affect of BDD. It is not the reason why you do BDD.&lt;/p&gt;
+
+&lt;p&gt;BDD is not TDD. They can overlap but they are as conceptually as different as structured programming and object-oriented programming.&lt;/p&gt;
+
+&lt;h2 id='bdd_fdd_bvadd_atdd__its_all_the_same'&gt;BDD, FDD, BVADD, ATDD – It’s all the same&lt;/h2&gt;
+
+&lt;p&gt;Behavior Driven Development (BDD) could also be called:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Feature Driven Development (FDD)&lt;/li&gt;
+
+&lt;li&gt;Business Value Add Driven Development (BVADD)&lt;/li&gt;
+
+&lt;li&gt;Acceptance Test Driven Development (&lt;a href='http://code.google.com/p/robotframework/wiki/ATDDWithRobotFrameworkArticle'&gt;ATDD&lt;/a&gt;)&lt;/li&gt;
+
+&lt;li&gt;Story Test Driven Development&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id='what_is_bddfddbvadd'&gt;What is BDD/FDD/BVADD?&lt;/h2&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Behavior driven development &lt;strong&gt;drives&lt;/strong&gt; the &lt;strong&gt;development&lt;/strong&gt; of code from &lt;strong&gt;behavior&lt;/strong&gt; defined through scenarios.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;You don’t drive development by chatting about it (CDD), by having meetings on it, by thinking how to test your system (TDD). You simply take the behavior/features of your system and build software against that.&lt;/p&gt;
+
+&lt;h3 id='what_are_scenarios'&gt;What are scenarios?&lt;/h3&gt;
+
+&lt;p&gt;A scenario is a description of how your system will add value for both your business and your customer. BDD has a “standard” way of describing these scenarios known as &lt;a href='https://github.com/cucumber/cucumber/wiki/gherkin'&gt;Gherkin&lt;/a&gt;. By standard, I mean that once you’ve described that value add in Gherkin you can implement it in Rails, PHP, C#, Ruby, Java, etc using &lt;a href='http://cukes.info/'&gt;Cucumber&lt;/a&gt;, &lt;a href='http://behat.org/'&gt;Behat&lt;/a&gt; and &lt;a href='http://www.specflow.org/'&gt;SpecFlow&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id='how_do_i_find_these_value_add_scenarios'&gt;How do I find these “value add” scenarios?&lt;/h3&gt;
+
+&lt;p&gt;BDD doesn’t find that value-add. That is up to the visionaries of the startup. However, it does allow you to add value to your company immediately by allowing you to start describing your value-add in that standard way.&lt;/p&gt;
+
+&lt;p&gt;The best place to start is with mocking up your system. You can use paper and pencil or a tool like &lt;a href='http://balsamiq.com/'&gt;Balsamiq Mockups&lt;/a&gt;. Once you have that, you can find the behavior (features) of your vision within the mockups.&lt;/p&gt;
+
+&lt;p&gt;Finding that value-add is basically done by:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Mocking up the features&lt;/li&gt;
+
+&lt;li&gt;Write about and discuss them using in Gherkin&lt;/li&gt;
+
+&lt;li&gt;Chose which ones add the most value.&lt;/li&gt;
+
+&lt;li&gt;Implement the feature&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;That fact is:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;If you can’t clearly describe your value-add in a hand full of features and scenarios then you shouldn’t even begin coding.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;And if you do accomplish that amazing feat you are almost half-way done with your product. No work was lost because you can now take those scenarios and implement them!&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Now, and only now, should you start coding!&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id='so_bdd_can_help_me_focus_on_the_value_add_of_my_company'&gt;So BDD can help me focus on the value add of my company?&lt;/h3&gt;
+
+&lt;p&gt;Yes! Yes! Yes!&lt;/p&gt;
+
+&lt;p&gt;If you spend all that time chatting about your vision to a lot of people that time is lost.&lt;/p&gt;
+
+&lt;p&gt;If you spend all of your time chatting about your vision to other people and mocking it out and write scenarios describing that vision then it is a great start.&lt;/p&gt;
+
+&lt;p&gt;If you can do all that and find that sweet spot of value that you want to deliver your customer… Well then, you can hand that to a developer (or yourself) and know they are only developing EXACTLY what was asked for.&lt;/p&gt;
+
+&lt;p&gt;What this means is:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;It is not possible for someone to program or spend time programming any more or less than exactly what you need to get that value-add to the market as fast as possible.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id='wait_so_bdd_can_also_help_describe_my_vision_to_developers'&gt;Wait! So BDD can also help describe my vision to developers?&lt;/h3&gt;
+
+&lt;p&gt;Oh ya! I almost forgot to mention that aspect of BDD.&lt;/p&gt;
+
+&lt;p&gt;If you thought it was hard getting your vision understood by those who you want to invest/accept/embrace your vision then it is just that much harder to get developers to understand and stick to that vision.&lt;/p&gt;
+
+&lt;p&gt;Not that developers can’t grasp you vision. In fact, it is just the opposite and they might start trying to improve on it for you. That can also have it’s advantages and dis-advantages.&lt;/p&gt;
+
+&lt;p&gt;BDD help you get that vision across to developers and helps them stick to your vision.&lt;/p&gt;
+
+&lt;h3 id='advantages_are_numerous'&gt;Advantages are numerous&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;You can’t break behavior so your system can’t break&lt;/li&gt;
+
+&lt;li&gt;Easy to change engineering direction&lt;/li&gt;
+
+&lt;li&gt;East to move to a new technology or implement in multiple technologies&lt;/li&gt;
+
+&lt;li&gt;Can regression test code and verify requirements&lt;/li&gt;
+
+&lt;li&gt;Can be used as a bridge between the Product Owner and Team&lt;/li&gt;
+
+&lt;li&gt;Heavy usage of off the shelf DSLs (Domain Specific Languages) can lead to Scenarios that require ZERO lines of test code to be written (&lt;a href='https://github.com/brynary/webrat'&gt;Webrat&lt;/a&gt; and &lt;a href='https://github.com/ianwhite/pickle'&gt;Pickle&lt;/a&gt; to name a few)&lt;/li&gt;
+
+&lt;li&gt;Assures that only what you ask for is being coded&lt;/li&gt;
+
+&lt;li&gt;Can verify that requirements are being met. There is an actual connection between a requirement and code.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id='counter_arguments_for_using_bdd_at_a_startup'&gt;Counter Arguments for using BDD at a startup&lt;/h2&gt;
+
+&lt;p&gt;Here are some quotes from a few of the posts on Hacker News.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Argument: “BDD assumes you know the problem and are coding to create a solution. In startups, however, you do not know the problem.”&lt;/p&gt;
+&lt;/li&gt;
+
+&lt;li&gt;
+&lt;p&gt;Counter argument Question: If you don’t know the problem then why are you even coding?&lt;/p&gt;
+&lt;/li&gt;
+
+&lt;li&gt;
+&lt;p&gt;Argument: “Startups are all about providing value — not flexibility, not bug-free code”&lt;/p&gt;
+&lt;/li&gt;
+
+&lt;li&gt;
+&lt;p&gt;Counter argument: BDD is not only about “bug-free” code or flexibility. It is mostly about helping to provide that minimal viable product – that value.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</content>
+ </entry>
+ 
+ <entry>
+   <title>MonoDevelop With A Custom Version of Mono on the Macintosh</title>
+   <link href="http://bloginterfacevision.github.com/Language/custom-mono"/>
+   <updated>2010-12-05T00:00:00+07:00</updated>
+   <id>http://bloginterfacevision.github.com/Language/custom-mono</id>
+   <content type="html">&lt;h2 id='introduction'&gt;Introduction&lt;/h2&gt;
+
+&lt;p&gt;This blog post will tell you how to develop using MonoDevelop with your own custom version of C# Mono.&lt;/p&gt;
+
+&lt;h2 id='status_and_code_completion'&gt;Status and Code Completion&lt;/h2&gt;
+
+&lt;p&gt;Currently, everything seems to work and I am able to compile programs using my own version of Mono in MonoDevelop. Code completion using a custom compiled Mono seems to be intermittent. I’ve seen code completion include new properties for the object class but many times it doesn’t.&lt;/p&gt;
+
+&lt;h2 id='what_you_will_need_to_run_monodevelop'&gt;What you Will Need to run MonoDevelop&lt;/h2&gt;
+
+&lt;p&gt;You will need to install mono on your mac if you don’t already have it. Be sure to install the correct binary based on your mac. Intel, PowerPC or Universal. You can get mono here: &lt;a href='http://www.go-mono.com/mono-downloads/download.html'&gt;http://www.go-mono.com/mono-downloads/download.html&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Of course, you need to install MonoDeveop. You can get MonoDevelop here: &lt;a href='http://monodevelop.com/Download'&gt;http://monodevelop.com/Download&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id='compile_your_own_version_of_mono'&gt;Compile Your Own Version of Mono&lt;/h2&gt;
+
+&lt;p&gt;Follow the directions on getting mono to compile here &lt;a href='http://www.mono-project.com/SourceCodeRepository'&gt;http://www.mono-project.com/SourceCodeRepository&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id='setup_where_mono_will_compile_to'&gt;Setup Where Mono Will Compile To&lt;/h2&gt;
+
+&lt;p&gt;Note: When I wrote this, Mono was still supported by Novell. The above process to compile mono may be better than what I&amp;#8217;ve provided below.&lt;/p&gt;
+
+&lt;p&gt;You can read here on how to compile mono for the Macintosh – &lt;a href='http://www.mono-project.com/Compiling_Mono_on_OSX'&gt;http://www.mono-project.com/Compiling_Mono_on_OSX&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;We will place our version of mono where MonoDevelop also looks for the unmodified version of Mono.&lt;/p&gt;
+
+&lt;p&gt;Create a directory where your mono version will be installed:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ sudo mkdir /Library/Frameworks/Mono.framework/Versions/2.8.1-mine&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;You will need to change the owner to get make install to work.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ sudo chown monoUser /Library/Frameworks/Mono.framework/Versions/2.8.1-mine&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;We can now configure, make and install our own version of mono.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ cd ~/projects/mono/mono-2.8.1
+$ ./configure –prefix=/Library/Frameworks/Mono.framework/Versions/2.8.1-mine/ –with-blib=embedded –enable-nls=no
+$ make
+$ make install&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;To verify, change to your new install:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ cd /Library/Frameworks/Mono.framework/Versions/2.8.1-mine/bin
+$ ./mono -V&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;and you should see that your version of mono was compiled today:&lt;/p&gt;
+
+&lt;p&gt;Mono JIT compiler version 2.8.1 (tarball Sun Dec 5 13:04:58 ICT 2010) Copyright (C) 2002-2010 Novell, Inc and Contributors. www.mono-project.com&lt;/p&gt;
+
+&lt;p&gt;NOTE: The mono package comes with everything you need to make and install mono. Make sure you have the correct binary type (Intel, PowerPC or Universal). All libraries need to be compiled using the same binary type. The mono package has done this for you. If you use something like Macports you may end up with a library using the wrong binary type giving you the errors described on the bottom of &lt;a href='http://www.mono-project.com/Compiling_Mono_on_OSX'&gt;http://www.mono-project.com/Compiling_Mono_on_OSX&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id='using_your_version_of_mono'&gt;Using Your Version of Mono&lt;/h2&gt;
+
+&lt;p&gt;Run MonoDevelop and go to MonoDevelop -&amp;gt; Preferences. Select .NET Runtimes and your version will be there automatically! You just need to set it as the default library (this doesn’t seem to stick at the time of the writing of this document).&lt;/p&gt;
+
+&lt;p&gt;If you have a project open you can go to Project -&amp;gt; Active Runtime and see your version listed there. Select this version and you will be using your version of the .NET runtime.&lt;/p&gt;
+
+&lt;h2 id='what_next'&gt;What Next?&lt;/h2&gt;
+
+&lt;p&gt;Well, go to ~/projects/mono/mono-2.8.1/mcs/class/ or /YOUROOT/projects/mono/mono-2.8.1/mcs/class/corlib/System if you want to start with Object.cs and start hacking!&lt;/p&gt;
+
+&lt;h1 id='amazement_and_awe'&gt;Amazement and Awe&lt;/h1&gt;
+
+&lt;p&gt;I just want to say that after working with proprietary system for most of my life, I am totally inspired and awed by the ability to take something as big as Mono and simply hack at the root of the system (Object.cs). I really want to thank everyone who has spent their time adding to this amazing product! Thank you!&lt;/p&gt;
+
+&lt;p&gt;Also special thanks to Michael Hutchinson for helping me with this.&lt;/p&gt;</content>
+ </entry>
+ 
+ <entry>
+   <title>Being a Product Owner – The Achilles’ heel of Agile</title>
+   <link href="http://bloginterfacevision.github.com/Agile/product-owner"/>
+   <updated>2010-11-19T00:00:00+07:00</updated>
+   <id>http://bloginterfacevision.github.com/Agile/product-owner</id>
+   <content type="html">&lt;p&gt;I often consider the product owner to be the hardest hat to ware in Agile. You are the Achilles’ heel of Agile. A few of the things your job requires are:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Getting consensus from all stakeholders: that vision&lt;/li&gt;
+
+&lt;li&gt;Giving that Vision to your Team&lt;/li&gt;
+
+&lt;li&gt;Planning and prune the backlog (Project Management) for the next iteration.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;You are the voice of reason. You work with everyone involved to find that minimal viable product. You work with sales people, customers, engineers, designers, marketing and so on.&lt;/p&gt;
+
+&lt;p&gt;Along with that you have to do project management. Unlike a project manager, you don’t need to actually plan how work is done. You also don’t have to be responsible for estimates. In Agile, those tasks fall onto the team. However, you do need to keep the backlog full of work.&lt;/p&gt;
+
+&lt;p&gt;This is no easy task. It requires a lot of project planning. It requires keeping your eye on where development is going and constantly validating what you are providing with what the stakeholders want.&lt;/p&gt;
+
+&lt;p&gt;A good Agile shop can deliver product weekly or even daily. This means, as a product owner, you need to be able to approve work done almost every day. A single pair can complete one or more stories that may take anywhere from 4 to 20 minutes to accept. The means a full team of 4 pairs could eat up 80 minutes a day in simply reviewing what has been delivered.&lt;/p&gt;
+
+&lt;p&gt;You might think that Agile is creating a lot of work for you. Nope. In the long run, it isn’t any more work than any other process. Agile can simply deliver more product in a shorter amount of time. As the product owner, you still need to take the time approve that work and validate it with the stakeholders and customers.&lt;/p&gt;
+
+&lt;p&gt;And once you’ve done that for the day, you will need to get ready for the next iteration planning meeting: finding that sweet spot of work for the next iteration.&lt;/p&gt;
+
+&lt;p&gt;There is a huge reward for this however. You are able to provide something to your customers weekly if not daily. And you are assured that you receive exactly what you ask for. You write the specifications and a good Agile shop using BDD (see &lt;a href='/Agile/bdd-tool/'&gt;Behavior Driven Development – An Invaluable Tool&lt;/a&gt;) will deliver that exact specification.&lt;/p&gt;
+
+&lt;p&gt;Of course, if you mess up it can be devastating. Weeks or months worth of work can be lost. Which is why the Product Owner is the Achilles’ heel of Agile.&lt;/p&gt;
+
+&lt;p&gt;Are you ready?&lt;/p&gt;</content>
+ </entry>
+ 
+ <entry>
+   <title>Interface Vision and Behaviour Driven Development (BDD)</title>
+   <link href="http://bloginterfacevision.github.com/Agile/bdd"/>
+   <updated>2010-11-18T00:00:00+07:00</updated>
+   <id>http://bloginterfacevision.github.com/Agile/bdd</id>
+   <content type="html">&lt;h1 id='where_interface_vision_was_before'&gt;Where Interface Vision Was Before&lt;/h1&gt;
+
+&lt;p&gt;We are a few years into the code base for Interface Vision. An executive decision was made to rewrite the entire system using BDD.&lt;/p&gt;
+
+&lt;p&gt;This isn’t exactly an easy decision because there are many hundreds of thousands of lines of code. Over the years, the code has been re-written as we discovered mistakes in our original approach to engineering Interface Vision. However, the current version is architecturally strong.&lt;/p&gt;
+
+&lt;p&gt;Of course, a lot of the tricky stuff has been solved and the re-write will not be as difficult as the original so I don’t see it taking two years.&lt;/p&gt;
+
+&lt;h1 id='it_is_well_worth_it'&gt;It Is Well Worth It&lt;/h1&gt;
+
+&lt;p&gt;I’ve just finished my first big step of re-writing Interface Vision using BDD and all I can say is that it is amazing! During this 6 hour session I did not even one time ask myself if I had introduced any bugs. Not one time did I have to debug the code.&lt;/p&gt;
+
+&lt;p&gt;I had one mistake in the Gherkin due to an upper-case/lower-case mistake. Other than that, I am confident that my code base is 100% covered.&lt;/p&gt;
+
+&lt;p&gt;And it is a really nice feeling.&lt;/p&gt;
+
+&lt;h1 id='feeling_of_oneness'&gt;Feeling of Oneness&lt;/h1&gt;
+
+&lt;p&gt;After programming for decades and even using TDD I never felt confident that I wasn’t breaking my behaviour: I wasn’t breaking how the system worked.&lt;/p&gt;
+
+&lt;p&gt;For the first time ever, I don’t have a single worry in my head that I’ve made a mistake. I don’t have to worry that something isn’t right. I know that within all that code I’ve just added, there will be no horrible debug session waiting for me. I now have a feeling of Oneness with programming. I am not fighting programming anymore! It is really relaxing.&lt;/p&gt;
+
+&lt;h1 id='i_hate_debugging'&gt;I Hate Debugging&lt;/h1&gt;
+
+&lt;p&gt;I can not even start to describe how much I hate debugging. I’ve been doing it since I was 14 when I wrote my first program. I’ve been doing it up until recently. Now I know I will NEVER have to debug again.&lt;/p&gt;
+
+&lt;p&gt;The worst part about debugging is that it really slows me down. Not because it is more difficult than programming or that I’m not good at it. It slows me down because I always procrastinate when I know I have to start debugging something. Sometimes I’ll stop working on something for days because of it.&lt;/p&gt;
+
+&lt;h1 id='bdd_is_here_to_stay'&gt;BDD Is Here To Stay&lt;/h1&gt;
+
+&lt;p&gt;As I’ve said before, and if I haven’t then I guess I’ll say it now, BDD is the biggest advancement in 20 years both in terms of the concept and tools that implement it. BDD, conceptually, may have been here for a while. However, it is now so easy to drive your development using it… Well there is no reason not to do it.&lt;/p&gt;
+
+&lt;h1 id='conclusion'&gt;Conclusion&lt;/h1&gt;
+
+&lt;p&gt;I will never have to debug again! I hope.&lt;/p&gt;</content>
+ </entry>
+ 
+ <entry>
+   <title>Running an Agile Company – Keep An Agile Master Around</title>
+   <link href="http://bloginterfacevision.github.com/Agile/agile-master"/>
+   <updated>2010-11-05T00:00:00+07:00</updated>
+   <id>http://bloginterfacevision.github.com/Agile/agile-master</id>
+   <content type="html">&lt;h1 id='coo_of_east_agile'&gt;COO Of East Agile&lt;/h1&gt;
+
+&lt;p&gt;Recently I was made the COO of &lt;a href='http://www.eastagile.com'&gt;East Agile&lt;/a&gt;. What is interesting about Agile is that you can fit most of the concepts on a few pieces of paper: the agile rules as you will. It is, or should be, really easy.&lt;/p&gt;
+
+&lt;p&gt;I’ve had a chance to observe some of the companies that practice Agile on a large scale (involving 50 to 100 employees). As advanced as they were at Agile, I was surprised to see that they only apply a small part of Agile to their entire process. They were doing a great job but I saw a lot of room for improvement.&lt;/p&gt;
+
+&lt;p&gt;I think I could say that East Agile is ahead of most people in the “Agile” game. But it isn’t easy staying agile. In fact, it is really hard to do. Below are some examples why.&lt;/p&gt;
+
+&lt;p&gt;Oh, but if you haven’t read it yet, please see my blog on &lt;a href='/Agile/agile-branding/'&gt;Agile branding&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h1 id='an_agile_master_is_always_needed'&gt;An Agile Master Is Always Needed&lt;/h1&gt;
+
+&lt;p&gt;I was lucky enough to be trained by &lt;a href='http://www.mountaingoatsoftware.com/'&gt;Mike Cohn&lt;/a&gt; and his classes on being a Scrum Master and Estimation (I highly recommend his classes on estimation). I though that being an Agile Master would require some training of the Team initially. However, what I have found is that you have to continually observe and make suggestions on how to apply Agile itself.&lt;/p&gt;
+
+&lt;h2 id='planning_poker_example'&gt;Planning Poker Example&lt;/h2&gt;
+
+&lt;p&gt;A quick example is the Estimation process and planning poker. I’ve chatted with our different teams about Estimation and the dangers of contamination when estimation. Contamination is when one person in the team (or a product owner or stake holder) provides an estimate before other people have had a chance to think about the estimate themselves. This taints the estimate.&lt;/p&gt;
+
+&lt;p&gt;Often times, team members seem to “get into” the estimation process and yell out estimates during the Iteration Planning meeting. So, from time to time, I have to remind people to not “yell out the estimate”. Of course, eventually I pull out the poker playing &lt;a href='http://store.mountaingoatsoftware.com/'&gt;cards&lt;/a&gt; to stop this from happening.&lt;/p&gt;
+
+&lt;p&gt;Initially, it feels a little funny to use cards to do planning. However, it becomes obvious very quickly that estimation gets out of hand without them.&lt;/p&gt;
+
+&lt;h2 id='product_owner_and_the_team'&gt;Product Owner and the Team&lt;/h2&gt;
+
+&lt;p&gt;Sometimes I will see the team working on a story that was not estimated. When asked why, the say “Oh, the product owner said we don’t have to estimate.” Ahhh. Ummm. Another time, product owners have said we don’t need to do BDD or TDD on this because we just need to “get it out”.&lt;/p&gt;
+
+&lt;h1 id='conclusion'&gt;Conclusion&lt;/h1&gt;
+
+&lt;p&gt;If you want to run a company that uses Agile you are going to need an Agile Master. That Agile Master needs to stay on their toes at all times. Of course, this means that their training is going to come in almost all the time. The most important part of that training being communication and allowing teams to form naturally. However, at the same time remembering that you need to keep people on the Agile path.&lt;/p&gt;</content>
+ </entry>
+ 
+ <entry>
+   <title>Out With the Branding – In With Agile Terms</title>
+   <link href="http://bloginterfacevision.github.com/Agile/agile-branding"/>
+   <updated>2010-11-05T00:00:00+07:00</updated>
+   <id>http://bloginterfacevision.github.com/Agile/agile-branding</id>
+   <content type="html">&lt;h1 id='branding_and_agile'&gt;Branding and Agile&lt;/h1&gt;
+
+&lt;p&gt;I wanted to quickly talk about agile and branding.&lt;/p&gt;
+
+&lt;p&gt;Instead of using branded names like XP and Scrum, I thought I would try to generalise terms coined by these great systems. I took the advice of &lt;a href='http://www.mountaingoatsoftware.com/'&gt;Mike Cohn&lt;/a&gt; on this. So, for example, Scrum Master at East Agile is Agile Master. Daily Scrum is the Daily Planning Meeting. A sprint is an Iteration, etc.&lt;/p&gt;
+
+&lt;p&gt;I did this because I wanted to focus on what makes Agile great – The Agile tools. Agile itself is a collection of the best of best known practices. In fact, there is nothing “new” about agile per-se other than Agile brought together this best of the best known practices.&lt;/p&gt;
+
+&lt;p&gt;Here is a list of why I removed the branding from Agile:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Generalizing the terms made it easier for me to iteratively implement and introduce new Agile processes.&lt;/li&gt;
+
+&lt;li&gt;Misconceptions or bad experiences with some of the brand made people uncomfortable with implementing them.&lt;/li&gt;
+
+&lt;li&gt;Can pick and choose from different “brands” like XP, Crystal and Scrum without confusion.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id='credit_where_credit_is_due'&gt;Credit Where Credit is Due&lt;/h1&gt;
+
+&lt;p&gt;I do want to point out that I have great respect for those who created the &lt;a href='http://agilemanifesto.org/'&gt;Agile Manifesto&lt;/a&gt;. In no way do I want lesson their contribution to software engineering and the community as a whole.&lt;/p&gt;
+
+&lt;h1 id='conclusion'&gt;Conclusion&lt;/h1&gt;
+
+&lt;p&gt;If you are going to apply Agile in your company, try and generalise terms so you can pull the best from each brand. Implement Agile tools and processes iteratively. Don’t allow any “bad experiences” with Agile hold you back.&lt;/p&gt;
+
+&lt;p&gt;Remember to pay tribute to the original twelve.&lt;/p&gt;</content>
+ </entry>
+ 
+ <entry>
+   <title>Behaviour Driven Development (BDD) – An Invaluable Agile Tool for your Startup</title>
+   <link href="http://bloginterfacevision.github.com/Agile/bdd-tool"/>
+   <updated>2010-11-02T00:00:00+07:00</updated>
+   <id>http://bloginterfacevision.github.com/Agile/bdd-tool</id>
+   <content type="html">&lt;h2 id='introduction'&gt;Introduction&lt;/h2&gt;
+
+&lt;p&gt;You’ve been given or put on the product owner hat at your startup. You want to make a product that is successful. Optimally, that product contains that sweet spot of features that gives you that best ROI.&lt;/p&gt;
+
+&lt;p&gt;How do you assure that you provide that sweet spot?&lt;/p&gt;
+
+&lt;h2 id='use_agile_and_behaviour_driven_development_bdd'&gt;Use Agile and Behaviour Driven Development (BDD)&lt;/h2&gt;
+
+&lt;h3 id='behaviour_driven_development_bdd'&gt;Behaviour Driven Development (BDD)&lt;/h3&gt;
+
+&lt;p&gt;I’ve been in the software industry since I was 16. I am going on 24 years of software engineering. I’ve seen a lot of fads, technologies, and ideas come and go. BDD is here to stay. It is the biggest advance in software engineering I’ve seen in over a decade.&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;BDD is here to stay.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;This isn’t just the idea itself (that has been around a long time) but the implementation that is really exciting (&lt;a href='https://github.com/cucumber/cucumber'&gt;cucumber&lt;/a&gt; and &lt;a href='http://www.specflow.org/'&gt;specflow&lt;/a&gt; being two examples).&lt;/p&gt;
+
+&lt;p&gt;It has been pointed out that BDD is too time consuming for the product owner, or product owners are just too lazy to follow something like BDD. Let’s get this out of the way as soon as possible.&lt;/p&gt;
+
+&lt;h3 id='validate_mock_and_describe_features'&gt;Validate, Mock and Describe Features&lt;/h3&gt;
+
+&lt;p&gt;You have no excuse not to!&lt;/p&gt;
+
+&lt;p&gt;You’ve done the customer development, talked for hours with friends on the idea, taken input from stakeholders. Take the time to validate, mock and describe them.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Validate it Adds Business Value&lt;/li&gt;
+
+&lt;li&gt;Mock Your Feature&lt;/li&gt;
+
+&lt;li&gt;Describe the Feature in Detail&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id='validate_features'&gt;Validate Features&lt;/h3&gt;
+
+&lt;p&gt;The final goal of your startup is to be profitable. Simply adding features does not assure profitability.&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Validate! Only implement features that make money!&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id='mock_features'&gt;Mock Features&lt;/h3&gt;
+
+&lt;p&gt;Use a tool like &lt;a href='http://balsamiq.com/'&gt;Balsamiq Mockups&lt;/a&gt; or &lt;a href='https://gomockingbird.com/'&gt;Mocking Bird&lt;/a&gt; to mock your features. These are great tools that allow the product owner to quickly explain their vision to the team.&lt;/p&gt;
+
+&lt;h3 id='describe_features'&gt;Describe Features&lt;/h3&gt;
+
+&lt;p&gt;You can describe the features anyway you like. Just don’t assume anything.&lt;/p&gt;
+
+&lt;p&gt;Your development Team can transform what you have described into a standardised language like Gherkin.&lt;/p&gt;
+
+&lt;h2 id='behaviour_driven_development_bdd'&gt;Behaviour Driven Development (BDD)&lt;/h2&gt;
+
+&lt;p&gt;As a product owner, you shouldn’t simply consider BDD as something you might want to use for your startup.&lt;/p&gt;
+
+&lt;p&gt;You should require BDD to be implemented on your project(s).&lt;/p&gt;
+
+&lt;p&gt;And here is why…&lt;/p&gt;
+
+&lt;h3 id='find_that_sweet_spot'&gt;Find that Sweet Spot&lt;/h3&gt;
+
+&lt;p&gt;In conjunction with ideas like &lt;a href='http://venturehacks.com/articles/customer-development'&gt;Customer Development&lt;/a&gt; and Agile, BDD helps you to focus in and describe those features that give you the best ROI.&lt;/p&gt;
+
+&lt;h3 id='verify_you_get_what_you_pay_for'&gt;Verify You Get What You Pay For&lt;/h3&gt;
+
+&lt;p&gt;With BDD, it is now possible to validate that you are getting what you asked for. There is a one-to-many relationship between the features you ask for and the source code written to cover that feature.&lt;/p&gt;
+
+&lt;p&gt;You can, and should, hire a 3rd party contractor who will verify your team (or vendor) is using best-known practices.&lt;/p&gt;
+
+&lt;h3 id='assure_quality'&gt;Assure Quality&lt;/h3&gt;
+
+&lt;p&gt;I wrote a blog on &lt;a href='2010-11-01-specifications-quality'&gt;Specifications and Quality&lt;/a&gt; simply so I could make this very important point about BDD.&lt;/p&gt;
+
+&lt;p&gt;Quality is directly measured against specifications and the features of your product. If you go to your stakeholders saying you are providing a quality product, or a product for that matter, without describing your features then you are lying to your stakeholders: some of whom are investors.&lt;/p&gt;
+
+&lt;p&gt;Maybe this is something software companies could get away with before but not anymore. BDD allows you to assure quality like no other methodology has before (I will cover TDD in another post).&lt;/p&gt;
+
+&lt;h3 id='bridges_gap_between_business_and_development'&gt;Bridges Gap Between Business and Development&lt;/h3&gt;
+
+&lt;p&gt;It would be great if we could simply talk to a computer and ask it to do what we want. But we aren’t there yet. This is the next best thing. It might not be the perfect bridge between business and development but it is close.&lt;/p&gt;
+
+&lt;p&gt;The ability to read the features and behaviour of your system in a language that is effectively English is a huge value add for a company.&lt;/p&gt;
+
+&lt;h3 id='regression_testing'&gt;Regression Testing&lt;/h3&gt;
+
+&lt;p&gt;A side benefit of BDD is regression testing. Every time a change is made to your software, the behaviour of your system is automatically and fully tested.&lt;/p&gt;
+
+&lt;h3 id='switch_vendors_easily'&gt;Switch Vendors Easily&lt;/h3&gt;
+
+&lt;p&gt;Don’t like your current vendor but don’t want to have a drop in delivery time. This is no problem because the new vendor can be assured that they will not break existing behaviour.&lt;/p&gt;
+
+&lt;h3 id='switch_technology_easily'&gt;Switch Technology Easily&lt;/h3&gt;
+
+&lt;p&gt;Don’t like your current technology? Just switch. BDD languages, such as Gherkin, are supported across different computer languages and platforms. Effectively, your entire business process has been described centrally in a language that anyone can understand. Your business process is not longer embedded solely in weird programming languages that most people don’t understand.&lt;/p&gt;
+
+&lt;h2 id='conclusion'&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;I could go on with advantages but I think the point is made. BDD increases reliability, provides for quality, keeps you on your toes, keeps you team on their toes, keeps people focused, allows for regression testing, provides a one-to-many correlation between specifications and source code and removes a lot of risk in the software engineering process.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Require your teams to start using it today.&lt;/em&gt;&lt;/p&gt;</content>
+ </entry>
+ 
+ <entry>
+   <title>Specifications and Quality</title>
+   <link href="http://bloginterfacevision.github.com/Agile/specifications-quality"/>
+   <updated>2010-11-01T00:00:00+07:00</updated>
+   <id>http://bloginterfacevision.github.com/Agile/specifications-quality</id>
+   <content type="html">&lt;h2 id='what_are_specifications'&gt;What are Specifications?&lt;/h2&gt;
+
+&lt;p&gt;Specifications are “a detailed description of the design and materials used to make that something”.&lt;/p&gt;
+
+&lt;p&gt;Generally that “something” is a product and the detailed description is the features leaving us with:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Specifications describe the features of a product.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id='a_product_without_specifications_has_no_quality'&gt;A Product Without Specifications Has No Quality&lt;/h2&gt;
+
+&lt;p&gt;Two customers can have completely different expectations of what a good quality tire is:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;This tire is of low quality. I have to replace them every 30,000 kilometres. My other tires lasted me 90,000 kilometres.&lt;/li&gt;
+
+&lt;li&gt;This is a high quality tire. I can go much faster around corners.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;In both cases, the tire is soft providing better road traction allowing a car to go around corners faster. The side affect of this is that the tires have to be replaced more often.&lt;/p&gt;
+
+&lt;p&gt;This means there is no way to say the tire has quality because “quality” now becomes subjective to the user of the product. I could go on about what headaches this is going to lead to but may leave that for another post.&lt;/p&gt;
+
+&lt;h2 id='product_without_specifications_may_not_possible_to_produce'&gt;Product Without Specifications May Not Possible to Produce!&lt;/h2&gt;
+
+&lt;p&gt;I am asked to deliver a hole in a 3mm thick piece of aluminium that is 12.5mm in diameter. I proceed to drill a hole that is 12.51mm in diameter. I am told that the product does not meet the specifications. They needed a hole that is exactly 12.5mm in diameter.&lt;/p&gt;
+
+&lt;p&gt;Unfortunately, no matter how hard I try, I will not be able to make that hole exactly 12.5mm in diameter. There will always be a measuring device that will show that the hole I made is not exactly 12.5mm.&lt;/p&gt;
+
+&lt;p&gt;I could say “Yes, but it is 12.5000003mm. That is good enough.”&lt;/p&gt;
+
+&lt;p&gt;They disagree.&lt;/p&gt;
+
+&lt;p&gt;Subjective has just reared it’s ugly head. Even worse, in this case, I will not be able to make the product I committed to.&lt;/p&gt;
+
+&lt;h2 id='creating_specifications_allows_for_quality'&gt;Creating Specifications Allows for Quality&lt;/h2&gt;
+
+&lt;p&gt;Writing down specifications allows you to:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Know if the product can be made.&lt;/li&gt;
+
+&lt;li&gt;Assure you understand the vision (even if it is your own).&lt;/li&gt;
+
+&lt;li&gt;Estimate and do project management.&lt;/li&gt;
+
+&lt;li&gt;Assure you haven’t missed anything.&lt;/li&gt;
+
+&lt;li&gt;Verify the product.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The last point is really important.&lt;/p&gt;
+
+&lt;h2 id='specifications_are_testable'&gt;Specifications ARE Testable&lt;/h2&gt;
+
+&lt;p&gt;Wow! This is amazing because you are able to test and verify that what you are making matches with what was asked for:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Specifications are used to verify that features are correct.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;You must have a way to measure the specifications to assure that you have met the quality expected by the customer. That is, the features of the product being made have actually been made.&lt;/p&gt;
+
+&lt;p&gt;To do this, you must be able to measure or test that you have actually delivered the specifications.&lt;/p&gt;
+
+&lt;h2 id='how_does_agile_fit_into_all_of_this'&gt;How does Agile fit into all of this?&lt;/h2&gt;
+
+&lt;p&gt;I will go into detail in other blog entries but Agile provides tools to provide specifications and assure quality while minimising costs:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Current log and backlog contains specifications managed by product owner.&lt;/li&gt;
+
+&lt;li&gt;Specifications created in detail only when they will be developed in the current iteration (don’t need to spec out an entire product in detail up-front).&lt;/li&gt;
+
+&lt;li&gt;For software, Behaviour Driven Development (BDD) allows for one-to-many correlations between features and implementation.&lt;/li&gt;
+&lt;/ul&gt;</content>
+ </entry>
+ 
+ 
+</feed>

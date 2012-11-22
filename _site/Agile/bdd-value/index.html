@@ -1,0 +1,338 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>How to use BDD to Discover Value-add for Your Startup</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Eric Hosick">
+
+    <meta property="og:title" content="Interface Vision" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="http://blog.interfacevision.com/assets/img/logoFinalStormyDaze122x260.png"/>
+    <meta property="og:description" content="Interface Vision is a group working on software development platforms that can be used without coding."/>
+    <meta property="fb:admins" content="erichosick" />
+
+    <link href='//netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap-combined.min.css' rel='stylesheet'>    
+    <link href="/assets/themes/twitter/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <link href="http://fonts.googleapis.com/css?family=Pontano+Sans" rel="stylesheet" type="text/css">
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
+
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="http://www.interfacevision.com"><img src="/assets/img/logoFinalStormyDaze122x260.png"></img></a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li><a href="/index.html">Home</a></li>
+              <li><a href="/categories.html">Categories</a></li>
+              <li><a href="/pages.html">Pages</a></li>
+              <li><a href="/tags.html">Tags</a></li>
+            </ul>
+            <p class="pull-right">
+              <a class="nav-a-social" href="https://plus.google.com/101227313031284036080/posts" target="_blank"><i class="icon-google-color icon-social"></i></a>
+              <a class="nav-a-social" href="http://www.twitter.com/interfacevision" target="_blank"><i class="icon-twitter-color icon-social"></i></a>
+              <a class="nav-a-social" href="mailto:erichosick@interfacevision.com"><i class="icon-mail-color icon-social"></i></a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>    
+
+    <div class="container-fluid container-main">
+      
+<div class="row-fluid">
+  <div class="span3">
+    <div class="well sidebar-nav">
+  <ul class="nav nav-list">
+    <li class="nav-header">About</li>
+    <li> <a href="http://www.interfacevision.com">Interface Vision</a><p class="nav-about">a group working on software development platforms that can be used without coding.</p></li>
+  </ul>
+</div>
+
+    
+    <div class="well sidebar-nav">
+      <ul class="nav nav-list">
+        <li class="nav-header">Tags</li>
+        
+        
+
+
+  
+     
+    	<li><a href="/tags.html#bdd-ref">bdd <span>3</span></a></li>
+     
+    	<li><a href="/tags.html#Behat-ref">Behat <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#Behavior Driven Development-ref">Behavior Driven Development <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#BVADD-ref">BVADD <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#cucumber-ref">cucumber <span>2</span></a></li>
+     
+    	<li><a href="/tags.html#FDD-ref">FDD <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#Feature Driven Development-ref">Feature Driven Development <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#Gherkin-ref">Gherkin <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#specflow-ref">specflow <span>2</span></a></li>
+     
+    	<li><a href="/tags.html#tdd-ref">tdd <span>2</span></a></li>
+     
+    	<li><a href="/tags.html#Test Driven Development-ref">Test Driven Development <span>1</span></a></li>
+    
+  
+
+
+
+      </ul>
+    </div><!--/.well -->
+      
+    
+  </div>
+  <div class="span9">
+    <div class="hero-unit">
+      <div class="page-header">
+        <h1>How to use BDD to Discover Value-add for Your Startup</h1>
+        <div class="row-fluid">
+          <div class="span2">
+            <img src="/assets/img/eric_hosick.jpg" class="img-rounded">
+          </div>
+          <div class="span8">
+            <p>by <a href="http://twitter.com/erichosick" target="_blank">Eric Hosick</a> (erichosick at interfacevision.com)</p>
+            <h4>Published <small class="date">20 February 2011</small></h4>
+          </div>
+        </div>
+      </div>
+      <h2 id='introduction'>Introduction</h2>
+
+<p>I’ve seen chatter on <a href='http://news.ycombinator.com/'>Hacker News</a> about how BDD adds no value to a startup (<a href='http://news.ycombinator.com/item?id=2240826'>this post here</a> in response to <a href='http://news.ycombinator.com/item?id=2240730'>this</a>).</p>
+
+<p>This blog post will:</p>
+
+<ul>
+<li>clear up misunderstandings of BDD</li>
+
+<li>provide reasons why your startup should use BDD</li>
+
+<li>show how BDD helps you focus on value-add</li>
+</ul>
+
+<h2 id='what_bdd_is_not'>What BDD is NOT!</h2>
+
+<p>BDD is not only about testing or test coverage. In fact, BDD is such a mind boggling amazing improvement to software engineering that regression testing and testing are merely a measly nice to have side affect of BDD. It is not the reason why you do BDD.</p>
+
+<p>BDD is not TDD. They can overlap but they are as conceptually as different as structured programming and object-oriented programming.</p>
+
+<h2 id='bdd_fdd_bvadd_atdd__its_all_the_same'>BDD, FDD, BVADD, ATDD – It’s all the same</h2>
+
+<p>Behavior Driven Development (BDD) could also be called:</p>
+
+<ul>
+<li>Feature Driven Development (FDD)</li>
+
+<li>Business Value Add Driven Development (BVADD)</li>
+
+<li>Acceptance Test Driven Development (<a href='http://code.google.com/p/robotframework/wiki/ATDDWithRobotFrameworkArticle'>ATDD</a>)</li>
+
+<li>Story Test Driven Development</li>
+</ul>
+
+<h2 id='what_is_bddfddbvadd'>What is BDD/FDD/BVADD?</h2>
+
+<blockquote>
+<p>Behavior driven development <strong>drives</strong> the <strong>development</strong> of code from <strong>behavior</strong> defined through scenarios.</p>
+</blockquote>
+
+<p>You don’t drive development by chatting about it (CDD), by having meetings on it, by thinking how to test your system (TDD). You simply take the behavior/features of your system and build software against that.</p>
+
+<h3 id='what_are_scenarios'>What are scenarios?</h3>
+
+<p>A scenario is a description of how your system will add value for both your business and your customer. BDD has a “standard” way of describing these scenarios known as <a href='https://github.com/cucumber/cucumber/wiki/gherkin'>Gherkin</a>. By standard, I mean that once you’ve described that value add in Gherkin you can implement it in Rails, PHP, C#, Ruby, Java, etc using <a href='http://cukes.info/'>Cucumber</a>, <a href='http://behat.org/'>Behat</a> and <a href='http://www.specflow.org/'>SpecFlow</a>.</p>
+
+<h3 id='how_do_i_find_these_value_add_scenarios'>How do I find these “value add” scenarios?</h3>
+
+<p>BDD doesn’t find that value-add. That is up to the visionaries of the startup. However, it does allow you to add value to your company immediately by allowing you to start describing your value-add in that standard way.</p>
+
+<p>The best place to start is with mocking up your system. You can use paper and pencil or a tool like <a href='http://balsamiq.com/'>Balsamiq Mockups</a>. Once you have that, you can find the behavior (features) of your vision within the mockups.</p>
+
+<p>Finding that value-add is basically done by:</p>
+
+<ul>
+<li>Mocking up the features</li>
+
+<li>Write about and discuss them using in Gherkin</li>
+
+<li>Chose which ones add the most value.</li>
+
+<li>Implement the feature</li>
+</ul>
+
+<p>That fact is:</p>
+
+<blockquote>
+<p>If you can’t clearly describe your value-add in a hand full of features and scenarios then you shouldn’t even begin coding.</p>
+</blockquote>
+
+<p>And if you do accomplish that amazing feat you are almost half-way done with your product. No work was lost because you can now take those scenarios and implement them!</p>
+
+<blockquote>
+<p><strong>Now, and only now, should you start coding!</strong></p>
+</blockquote>
+
+<h3 id='so_bdd_can_help_me_focus_on_the_value_add_of_my_company'>So BDD can help me focus on the value add of my company?</h3>
+
+<p>Yes! Yes! Yes!</p>
+
+<p>If you spend all that time chatting about your vision to a lot of people that time is lost.</p>
+
+<p>If you spend all of your time chatting about your vision to other people and mocking it out and write scenarios describing that vision then it is a great start.</p>
+
+<p>If you can do all that and find that sweet spot of value that you want to deliver your customer… Well then, you can hand that to a developer (or yourself) and know they are only developing EXACTLY what was asked for.</p>
+
+<p>What this means is:</p>
+
+<blockquote>
+<p>It is not possible for someone to program or spend time programming any more or less than exactly what you need to get that value-add to the market as fast as possible.</p>
+</blockquote>
+
+<h3 id='wait_so_bdd_can_also_help_describe_my_vision_to_developers'>Wait! So BDD can also help describe my vision to developers?</h3>
+
+<p>Oh ya! I almost forgot to mention that aspect of BDD.</p>
+
+<p>If you thought it was hard getting your vision understood by those who you want to invest/accept/embrace your vision then it is just that much harder to get developers to understand and stick to that vision.</p>
+
+<p>Not that developers can’t grasp you vision. In fact, it is just the opposite and they might start trying to improve on it for you. That can also have it’s advantages and dis-advantages.</p>
+
+<p>BDD help you get that vision across to developers and helps them stick to your vision.</p>
+
+<h3 id='advantages_are_numerous'>Advantages are numerous</h3>
+
+<ul>
+<li>You can’t break behavior so your system can’t break</li>
+
+<li>Easy to change engineering direction</li>
+
+<li>East to move to a new technology or implement in multiple technologies</li>
+
+<li>Can regression test code and verify requirements</li>
+
+<li>Can be used as a bridge between the Product Owner and Team</li>
+
+<li>Heavy usage of off the shelf DSLs (Domain Specific Languages) can lead to Scenarios that require ZERO lines of test code to be written (<a href='https://github.com/brynary/webrat'>Webrat</a> and <a href='https://github.com/ianwhite/pickle'>Pickle</a> to name a few)</li>
+
+<li>Assures that only what you ask for is being coded</li>
+
+<li>Can verify that requirements are being met. There is an actual connection between a requirement and code.</li>
+</ul>
+
+<h2 id='counter_arguments_for_using_bdd_at_a_startup'>Counter Arguments for using BDD at a startup</h2>
+
+<p>Here are some quotes from a few of the posts on Hacker News.</p>
+
+<ul>
+<li>
+<p>Argument: “BDD assumes you know the problem and are coding to create a solution. In startups, however, you do not know the problem.”</p>
+</li>
+
+<li>
+<p>Counter argument Question: If you don’t know the problem then why are you even coding?</p>
+</li>
+
+<li>
+<p>Argument: “Startups are all about providing value — not flexibility, not bug-free code”</p>
+</li>
+
+<li>
+<p>Counter argument: BDD is not only about “bug-free” code or flexibility. It is mostly about helping to provide that minimal viable product – that value.</p>
+</li>
+</ul>
+      <hr>
+      <div class="pagination pagination-centered">
+        <ul>
+        
+          <li class="prev"><a href="/Language/custom-mono" title="MonoDevelop With A Custom Version of Mono on the Macintosh">&larr; Previous</a></li>
+        
+          <li><a href="/archive.html">Archive</a></li>
+        
+          <li class="next"><a href="/Software/developers" title="Developers: Give Each Other a Fighting Chance">Next &rarr;</a></li>
+        
+        </ul>
+      </div>    
+      <hr>
+      <div>
+        
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_developer = 1;
+    var disqus_shortname = 'interfacevisionblog'; // required: replace example with your forum shortname
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+      </div>
+
+    </div>    
+  </div>
+</div>
+
+
+
+      <hr>
+      <footer>
+         <p>&copy; <a href="http://www.twitter.com/erichosick" target="_blank">Eric Hosick</a> 2012</p>
+       </footer>
+    </div>    
+    <!--
+
+    <script src="/assets/js/jquery.js"></script>
+    <script src="/assets/js/bootstrap-transition.js"></script>
+    <script src="/assets/js/bootstrap-alert.js"></script>
+    <script src="/assets/js/bootstrap-modal.js"></script>
+    <script src="/assets/js/bootstrap-dropdown.js"></script>
+    <script src="/assets/js/bootstrap-scrollspy.js"></script>
+    <script src="/assets/js/bootstrap-tab.js"></script>
+    <script src="/assets/js/bootstrap-tooltip.js"></script>
+    <script src="/assets/js/bootstrap-popover.js"></script>
+    <script src="/assets/js/bootstrap-button.js"></script>
+    <script src="/assets/js/bootstrap-collapse.js"></script>
+    <script src="/assets/js/bootstrap-carousel.js"></script>
+    <script src="/assets/js/bootstrap-typeahead.js"></script>
+    
+    -->
+
+    
+  </body>
+</html>
+
