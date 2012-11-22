@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Interface Vision - Blog
+title: Eric Hosick - Blogs and Such
 tagline: Blog and Such
 group: navigation
 ---

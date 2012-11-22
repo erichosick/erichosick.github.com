@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
  
- <title>Interface Vision</title>
- <link href="http://bloginterfacevision.github.com/atom.xml" rel="self"/>
- <link href="http://bloginterfacevision.github.com"/>
- <updated>2012-11-10T11:30:43+07:00</updated>
- <id>http://bloginterfacevision.github.com</id>
+ <title>Eric Hosick</title>
+ <link href="http://erichosick.github.com/atom.xml" rel="self"/>
+ <link href="http://erichosick.github.com"/>
+ <updated>2012-11-22T22:51:48+07:00</updated>
+ <id>http://erichosick.github.com</id>
  <author>
    <name>Eric Hosick</name>
    <email>erichosick@interfacevision.com</email>
@@ -13,102 +13,10 @@
 
  
  <entry>
-   <title>Interface Vision Presentation to Matz</title>
-   <link href="http://bloginterfacevision.github.com/Interface Vision/presentation-matz"/>
-   <updated>2012-09-03T00:00:00+07:00</updated>
-   <id>http://bloginterfacevision.github.com/Interface Vision/presentation-matz</id>
-   <content type="html">&lt;h2 id='introduction'&gt;Introduction&lt;/h2&gt;
-
-&lt;p&gt;Around late May, 2012, &lt;a href='http://en.wikipedia.org/wiki/Yukihiro_Matsumoto'&gt;Yukihiro “Matz” Matsumoto&lt;/a&gt; came to the Ruby Forum in Ho Chi Minh City. I found out he was interested in new languages, so I made a quick presentation and &amp;#8220;pitched&amp;#8221; to him while he was here.&lt;/p&gt;
-
-&lt;p&gt;His response was really positive. To paraphrase, using my bad memory, he found the technology to be impressive and hopes it doesn&amp;#8217;t become a &amp;#8220;toy language&amp;#8221;. That is my hope too.&lt;/p&gt;
-
-&lt;h2 id='the_presentation'&gt;The Presentation&lt;/h2&gt;
-
-&lt;p&gt;I used high resolution images so the presentation may take a while to load.&lt;/p&gt;
-&lt;iframe allowfullscreen='true' frameborder='0' height='749' mozallowfullscreen='true' src='https://docs.google.com/presentation/embed?id=17SzvgCarX46rrBMM83Vazo7coB254j_-NHhsNsPsFqA&amp;nbsp;start=false&amp;nbsp;loop=false&amp;nbsp;delayms=5000' webkitallowfullscreen='true' width='960'&gt; &lt;/iframe&gt;</content>
- </entry>
- 
- <entry>
-   <title>Interface Vision Version 0.1</title>
-   <link href="http://bloginterfacevision.github.com/Interface Vision/vision-01"/>
-   <updated>2012-04-25T00:00:00+07:00</updated>
-   <id>http://bloginterfacevision.github.com/Interface Vision/vision-01</id>
-   <content type="html">&lt;h2 id='introduction'&gt;Introduction&lt;/h2&gt;
-
-&lt;p&gt;Today is a bit of a milestone. We’ve been able to create an iPad/iPhone app using the Interface Vision Framework. The cool thing… The framework requires no coding to use. Ok, that isn’t exactly true but read on…&lt;/p&gt;
-
-&lt;h2 id='about_the_video'&gt;About the Video&lt;/h2&gt;
-
-&lt;p&gt;The video shows a very simple OpenGl demo program running on an iPad. Nothing new there. The new thing is that everything about the program was created using configuration code: about 460 lines of it. Currently, this involves a lot of calls to constructors and the setting of properties. However, in the future, the configuration will be stored in json and serialization used to create instances (this is when the no coding part is realized).&lt;/p&gt;
-&lt;iframe allowfullscreen='allowfullscreen' frameborder='0' height='360' mozallowfullscreen='mozallowfullscreen' src='http://player.vimeo.com/video/41001941' webkitallowfullscreen='webkitallowfullscreen' width='640'&gt; &lt;/iframe&gt;
-&lt;h2 id='example_configuration'&gt;Example Configuration&lt;/h2&gt;
-
-&lt;p&gt;Here is an example configuration. In this case, it is the OpenGl shaders:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;ISimpleClass shaderList = new AggregateArrayList {};
-shaderList.actionInsert = new ProgramShaderNative {
-  shadingScript = new Vision.Core.String {
-    withString = @&amp;quot;
-      attribute vec4 position;
-      attribute vec4 color;
-      varying vec4 colorVarying;
-      uniform float translate;
-      void main() {
-        gl_Position = position;
-        gl_Position.y += sin(translate) / 2.0;
-        colorVarying = color;
-      }&amp;quot;
-  },
-  shaderType = ShaderType.vertexShader
-};
-shaderList.actionInsert = new ProgramShaderNative {
-  shadingScript = new Vision.Core.String {
-    withString = @&amp;quot;
-      varying lowp vec4 colorVarying;
-
-      void main() {
-        gl_FragColor = colorVarying;
-      }&amp;quot;
-  } ,
-  shaderType = ShaderType.fragmentShader
-};&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Here is an example of the OpenGL “camera”:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;ISimpleClass result = new Camera
-  sceneToRender = new ProgramGlslNative {
-    uniforms = uniformList,
-    attributes = attributeList,
-    shaders = shaderList
-  } ,
-  onCameraSetup = new GlClearColorNative {
-    color = new Vec4f {
-      r = 0.0f,
-      g = 0.0f,
-      b = 0.0f,
-      a = 1.0f
-    }
-  },
-  onSceneRenderBefore = new GlClearNative {
-    clearValue = ClearBufferMask.colorBufferBit
-  }
-};&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id='future'&gt;Future&lt;/h2&gt;
-
-&lt;p&gt;There is a chicken and egg problem with all of this. Eventually, we hope to be able to configure behaviour of Interface Vision within Interface Vision itself. However, for now, we have to resort to the Macintosh to finish out the framework and setup the configuration files.&lt;/p&gt;
-
-&lt;h2 id='conclusion'&gt;Conclusion&lt;/h2&gt;
-
-&lt;p&gt;For us, this is quite exciting. It is a good test of the framework. The fact it takes so few lines of configuration code to get a program up and running in OpenGL on an iPad with user interaction is a great test of the technology behind Interface Vision.&lt;/p&gt;</content>
- </entry>
- 
- <entry>
    <title>You see Coding as a Loosing Game if You Focus on Testing</title>
-   <link href="http://bloginterfacevision.github.com/Agile/coding-game"/>
+   <link href="http://erichosick.github.com/Agile/coding-game"/>
    <updated>2012-02-24T00:00:00+07:00</updated>
-   <id>http://bloginterfacevision.github.com/Agile/coding-game</id>
+   <id>http://erichosick.github.com/Agile/coding-game</id>
    <content type="html">&lt;h2 id='introduction'&gt;Introduction&lt;/h2&gt;
 
 &lt;p&gt;Focusing on testing is like assuming we are going to lose the game and we only want to loose by a little bit: we assume there will be bugs – a negative approach.&lt;/p&gt;
@@ -149,52 +57,10 @@ shaderList.actionInsert = new ProgramShaderNative {
  </entry>
  
  <entry>
-   <title>Feeling Dirty on Hacker News</title>
-   <link href="http://bloginterfacevision.github.com/Rant/dirty-hn"/>
-   <updated>2011-09-19T00:00:00+07:00</updated>
-   <id>http://bloginterfacevision.github.com/Rant/dirty-hn</id>
-   <content type="html">&lt;p&gt;I now feel dirty for trying to work with a startup on Hacker news. Or should I?&lt;/p&gt;
-
-&lt;h2 id='why'&gt;Why?&lt;/h2&gt;
-
-&lt;p&gt;I ran into a Show HN post about an interesting startup called Tinyproj. I posted a short project on Tinyproj because I like to work with like minded people: entrepreneurs.&lt;/p&gt;
-
-&lt;p&gt;Then comes a post from a pseudonymous named Edward Case (&lt;a href='http://news.ycombinator.com/item?id=3015677'&gt;http://news.ycombinator.com/item?id=3015677&lt;/a&gt;, &lt;a href='http://www.betabeat.com/2011/09/19/why-80-percent-of-web-projects-are-total-bullshit-a-freelancers-rant/'&gt;http://www.betabeat.com/2011/09/19/why-80-percent-of-web-projects-are-total-bullshit-a-freelancers-rant/&lt;/a&gt;).&lt;/p&gt;
-
-&lt;p&gt;(Edit: Note the short project description was supposed to be private and Edward Case did not have permission to make it public as was done in their blog)&lt;/p&gt;
-
-&lt;h2 id='im_not_anonymous'&gt;I’m Not Anonymous&lt;/h2&gt;
-
-&lt;p&gt;I have no reason to be anonymous. My name is Eric Hosick. I’ve been programming since I was 13. I’ve written hundreds of thousands of lines of code. I’ve lectured at a college for a few years in IT and BIS. I’ve started a few companies: even a few offshore. I’ve been successful and I’ve failed: both quite a few times now.&lt;/p&gt;
-
-&lt;p&gt;So, when someone, anonymously, says something like this:&lt;/p&gt;
-
-&lt;p&gt;“I’m sure I’m not the only programmer that can sniff out a fake nerd.” – Edward Case&lt;/p&gt;
-
-&lt;p&gt;And tries to oust me call me out as that fake nerd. Well. Ya. You’ve got a lot to learn about people on Hacker News. Generally, we know our shit.&lt;/p&gt;
-
-&lt;h2 id='the_1000_char_limit'&gt;The 1000 Char Limit&lt;/h2&gt;
-
-&lt;p&gt;I was limited to 1000 characters on Tinyproj. I did have more detailed requirements. The 1000 char limit was a pain, I have to say, and I was going to quickly give up on Tinyproj. But I am going to have to give cudos to Tinyproj for getting out that Minimal Viable Product. Good on you! It was the right move. So, I stuck in there.&lt;/p&gt;
-
-&lt;p&gt;I clipped off most of the requirements. I knew anyone really interested would just ask for more detail.&lt;/p&gt;
-
-&lt;p&gt;And it was worth it, because the entrepreneur has been really helpful.&lt;/p&gt;
-
-&lt;h2 id='conclusion'&gt;Conclusion&lt;/h2&gt;
-
-&lt;p&gt;Thanks for reading.&lt;/p&gt;
-
-&lt;p&gt;If you are interested in working with someone who is and respects programmers, please do drop a line.&lt;/p&gt;
-
-&lt;p&gt;I think I have some rather amazing stuff coming down the pipeline.&lt;/p&gt;</content>
- </entry>
- 
- <entry>
    <title>Developers: Give Each Other a Fighting Chance</title>
-   <link href="http://bloginterfacevision.github.com/Software/developers"/>
+   <link href="http://erichosick.github.com/Software/developers"/>
    <updated>2011-09-14T00:00:00+07:00</updated>
-   <id>http://bloginterfacevision.github.com/Software/developers</id>
+   <id>http://erichosick.github.com/Software/developers</id>
    <content type="html">&lt;h2 id='introduction'&gt;Introduction&lt;/h2&gt;
 
 &lt;p&gt;Figuring out an API can be difficult. Using one that is fraught with bugs and bad error messages is almost impossible.&lt;/p&gt;
@@ -250,9 +116,9 @@ shaderList.actionInsert = new ProgramShaderNative {
  
  <entry>
    <title>How to use BDD to Discover Value-add for Your Startup</title>
-   <link href="http://bloginterfacevision.github.com/Agile/bdd-value"/>
+   <link href="http://erichosick.github.com/Agile/bdd-value"/>
    <updated>2011-02-20T00:00:00+07:00</updated>
-   <id>http://bloginterfacevision.github.com/Agile/bdd-value</id>
+   <id>http://erichosick.github.com/Agile/bdd-value</id>
    <content type="html">&lt;h2 id='introduction'&gt;Introduction&lt;/h2&gt;
 
 &lt;p&gt;I’ve seen chatter on &lt;a href='http://news.ycombinator.com/'&gt;Hacker News&lt;/a&gt; about how BDD adds no value to a startup (&lt;a href='http://news.ycombinator.com/item?id=2240826'&gt;this post here&lt;/a&gt; in response to &lt;a href='http://news.ycombinator.com/item?id=2240730'&gt;this&lt;/a&gt;).&lt;/p&gt;
@@ -399,84 +265,10 @@ shaderList.actionInsert = new ProgramShaderNative {
  </entry>
  
  <entry>
-   <title>MonoDevelop With A Custom Version of Mono on the Macintosh</title>
-   <link href="http://bloginterfacevision.github.com/Language/custom-mono"/>
-   <updated>2010-12-05T00:00:00+07:00</updated>
-   <id>http://bloginterfacevision.github.com/Language/custom-mono</id>
-   <content type="html">&lt;h2 id='introduction'&gt;Introduction&lt;/h2&gt;
-
-&lt;p&gt;This blog post will tell you how to develop using MonoDevelop with your own custom version of C# Mono.&lt;/p&gt;
-
-&lt;h2 id='status_and_code_completion'&gt;Status and Code Completion&lt;/h2&gt;
-
-&lt;p&gt;Currently, everything seems to work and I am able to compile programs using my own version of Mono in MonoDevelop. Code completion using a custom compiled Mono seems to be intermittent. I’ve seen code completion include new properties for the object class but many times it doesn’t.&lt;/p&gt;
-
-&lt;h2 id='what_you_will_need_to_run_monodevelop'&gt;What you Will Need to run MonoDevelop&lt;/h2&gt;
-
-&lt;p&gt;You will need to install mono on your mac if you don’t already have it. Be sure to install the correct binary based on your mac. Intel, PowerPC or Universal. You can get mono here: &lt;a href='http://www.go-mono.com/mono-downloads/download.html'&gt;http://www.go-mono.com/mono-downloads/download.html&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;Of course, you need to install MonoDeveop. You can get MonoDevelop here: &lt;a href='http://monodevelop.com/Download'&gt;http://monodevelop.com/Download&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h2 id='compile_your_own_version_of_mono'&gt;Compile Your Own Version of Mono&lt;/h2&gt;
-
-&lt;p&gt;Follow the directions on getting mono to compile here &lt;a href='http://www.mono-project.com/SourceCodeRepository'&gt;http://www.mono-project.com/SourceCodeRepository&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h2 id='setup_where_mono_will_compile_to'&gt;Setup Where Mono Will Compile To&lt;/h2&gt;
-
-&lt;p&gt;Note: When I wrote this, Mono was still supported by Novell. The above process to compile mono may be better than what I&amp;#8217;ve provided below.&lt;/p&gt;
-
-&lt;p&gt;You can read here on how to compile mono for the Macintosh – &lt;a href='http://www.mono-project.com/Compiling_Mono_on_OSX'&gt;http://www.mono-project.com/Compiling_Mono_on_OSX&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;We will place our version of mono where MonoDevelop also looks for the unmodified version of Mono.&lt;/p&gt;
-
-&lt;p&gt;Create a directory where your mono version will be installed:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$ sudo mkdir /Library/Frameworks/Mono.framework/Versions/2.8.1-mine&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;You will need to change the owner to get make install to work.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$ sudo chown monoUser /Library/Frameworks/Mono.framework/Versions/2.8.1-mine&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;We can now configure, make and install our own version of mono.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$ cd ~/projects/mono/mono-2.8.1
-$ ./configure –prefix=/Library/Frameworks/Mono.framework/Versions/2.8.1-mine/ –with-blib=embedded –enable-nls=no
-$ make
-$ make install&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;To verify, change to your new install:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$ cd /Library/Frameworks/Mono.framework/Versions/2.8.1-mine/bin
-$ ./mono -V&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;and you should see that your version of mono was compiled today:&lt;/p&gt;
-
-&lt;p&gt;Mono JIT compiler version 2.8.1 (tarball Sun Dec 5 13:04:58 ICT 2010) Copyright (C) 2002-2010 Novell, Inc and Contributors. www.mono-project.com&lt;/p&gt;
-
-&lt;p&gt;NOTE: The mono package comes with everything you need to make and install mono. Make sure you have the correct binary type (Intel, PowerPC or Universal). All libraries need to be compiled using the same binary type. The mono package has done this for you. If you use something like Macports you may end up with a library using the wrong binary type giving you the errors described on the bottom of &lt;a href='http://www.mono-project.com/Compiling_Mono_on_OSX'&gt;http://www.mono-project.com/Compiling_Mono_on_OSX&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h2 id='using_your_version_of_mono'&gt;Using Your Version of Mono&lt;/h2&gt;
-
-&lt;p&gt;Run MonoDevelop and go to MonoDevelop -&amp;gt; Preferences. Select .NET Runtimes and your version will be there automatically! You just need to set it as the default library (this doesn’t seem to stick at the time of the writing of this document).&lt;/p&gt;
-
-&lt;p&gt;If you have a project open you can go to Project -&amp;gt; Active Runtime and see your version listed there. Select this version and you will be using your version of the .NET runtime.&lt;/p&gt;
-
-&lt;h2 id='what_next'&gt;What Next?&lt;/h2&gt;
-
-&lt;p&gt;Well, go to ~/projects/mono/mono-2.8.1/mcs/class/ or /YOUROOT/projects/mono/mono-2.8.1/mcs/class/corlib/System if you want to start with Object.cs and start hacking!&lt;/p&gt;
-
-&lt;h1 id='amazement_and_awe'&gt;Amazement and Awe&lt;/h1&gt;
-
-&lt;p&gt;I just want to say that after working with proprietary system for most of my life, I am totally inspired and awed by the ability to take something as big as Mono and simply hack at the root of the system (Object.cs). I really want to thank everyone who has spent their time adding to this amazing product! Thank you!&lt;/p&gt;
-
-&lt;p&gt;Also special thanks to Michael Hutchinson for helping me with this.&lt;/p&gt;</content>
- </entry>
- 
- <entry>
    <title>Being a Product Owner – The Achilles’ heel of Agile</title>
-   <link href="http://bloginterfacevision.github.com/Agile/product-owner"/>
+   <link href="http://erichosick.github.com/Agile/product-owner"/>
    <updated>2010-11-19T00:00:00+07:00</updated>
-   <id>http://bloginterfacevision.github.com/Agile/product-owner</id>
+   <id>http://erichosick.github.com/Agile/product-owner</id>
    <content type="html">&lt;p&gt;I often consider the product owner to be the hardest hat to ware in Agile. You are the Achilles’ heel of Agile. A few of the things your job requires are:&lt;/p&gt;
 
 &lt;ul&gt;
@@ -507,52 +299,10 @@ $ ./mono -V&lt;/code&gt;&lt;/pre&gt;
  </entry>
  
  <entry>
-   <title>Interface Vision and Behaviour Driven Development (BDD)</title>
-   <link href="http://bloginterfacevision.github.com/Agile/bdd"/>
-   <updated>2010-11-18T00:00:00+07:00</updated>
-   <id>http://bloginterfacevision.github.com/Agile/bdd</id>
-   <content type="html">&lt;h1 id='where_interface_vision_was_before'&gt;Where Interface Vision Was Before&lt;/h1&gt;
-
-&lt;p&gt;We are a few years into the code base for Interface Vision. An executive decision was made to rewrite the entire system using BDD.&lt;/p&gt;
-
-&lt;p&gt;This isn’t exactly an easy decision because there are many hundreds of thousands of lines of code. Over the years, the code has been re-written as we discovered mistakes in our original approach to engineering Interface Vision. However, the current version is architecturally strong.&lt;/p&gt;
-
-&lt;p&gt;Of course, a lot of the tricky stuff has been solved and the re-write will not be as difficult as the original so I don’t see it taking two years.&lt;/p&gt;
-
-&lt;h1 id='it_is_well_worth_it'&gt;It Is Well Worth It&lt;/h1&gt;
-
-&lt;p&gt;I’ve just finished my first big step of re-writing Interface Vision using BDD and all I can say is that it is amazing! During this 6 hour session I did not even one time ask myself if I had introduced any bugs. Not one time did I have to debug the code.&lt;/p&gt;
-
-&lt;p&gt;I had one mistake in the Gherkin due to an upper-case/lower-case mistake. Other than that, I am confident that my code base is 100% covered.&lt;/p&gt;
-
-&lt;p&gt;And it is a really nice feeling.&lt;/p&gt;
-
-&lt;h1 id='feeling_of_oneness'&gt;Feeling of Oneness&lt;/h1&gt;
-
-&lt;p&gt;After programming for decades and even using TDD I never felt confident that I wasn’t breaking my behaviour: I wasn’t breaking how the system worked.&lt;/p&gt;
-
-&lt;p&gt;For the first time ever, I don’t have a single worry in my head that I’ve made a mistake. I don’t have to worry that something isn’t right. I know that within all that code I’ve just added, there will be no horrible debug session waiting for me. I now have a feeling of Oneness with programming. I am not fighting programming anymore! It is really relaxing.&lt;/p&gt;
-
-&lt;h1 id='i_hate_debugging'&gt;I Hate Debugging&lt;/h1&gt;
-
-&lt;p&gt;I can not even start to describe how much I hate debugging. I’ve been doing it since I was 14 when I wrote my first program. I’ve been doing it up until recently. Now I know I will NEVER have to debug again.&lt;/p&gt;
-
-&lt;p&gt;The worst part about debugging is that it really slows me down. Not because it is more difficult than programming or that I’m not good at it. It slows me down because I always procrastinate when I know I have to start debugging something. Sometimes I’ll stop working on something for days because of it.&lt;/p&gt;
-
-&lt;h1 id='bdd_is_here_to_stay'&gt;BDD Is Here To Stay&lt;/h1&gt;
-
-&lt;p&gt;As I’ve said before, and if I haven’t then I guess I’ll say it now, BDD is the biggest advancement in 20 years both in terms of the concept and tools that implement it. BDD, conceptually, may have been here for a while. However, it is now so easy to drive your development using it… Well there is no reason not to do it.&lt;/p&gt;
-
-&lt;h1 id='conclusion'&gt;Conclusion&lt;/h1&gt;
-
-&lt;p&gt;I will never have to debug again! I hope.&lt;/p&gt;</content>
- </entry>
- 
- <entry>
    <title>Running an Agile Company – Keep An Agile Master Around</title>
-   <link href="http://bloginterfacevision.github.com/Agile/agile-master"/>
+   <link href="http://erichosick.github.com/Agile/agile-master"/>
    <updated>2010-11-05T00:00:00+07:00</updated>
-   <id>http://bloginterfacevision.github.com/Agile/agile-master</id>
+   <id>http://erichosick.github.com/Agile/agile-master</id>
    <content type="html">&lt;h1 id='coo_of_east_agile'&gt;COO Of East Agile&lt;/h1&gt;
 
 &lt;p&gt;Recently I was made the COO of &lt;a href='http://www.eastagile.com'&gt;East Agile&lt;/a&gt;. What is interesting about Agile is that you can fit most of the concepts on a few pieces of paper: the agile rules as you will. It is, or should be, really easy.&lt;/p&gt;
@@ -586,9 +336,9 @@ $ ./mono -V&lt;/code&gt;&lt;/pre&gt;
  
  <entry>
    <title>Out With the Branding – In With Agile Terms</title>
-   <link href="http://bloginterfacevision.github.com/Agile/agile-branding"/>
+   <link href="http://erichosick.github.com/Agile/agile-branding"/>
    <updated>2010-11-05T00:00:00+07:00</updated>
-   <id>http://bloginterfacevision.github.com/Agile/agile-branding</id>
+   <id>http://erichosick.github.com/Agile/agile-branding</id>
    <content type="html">&lt;h1 id='branding_and_agile'&gt;Branding and Agile&lt;/h1&gt;
 
 &lt;p&gt;I wanted to quickly talk about agile and branding.&lt;/p&gt;
@@ -620,9 +370,9 @@ $ ./mono -V&lt;/code&gt;&lt;/pre&gt;
  
  <entry>
    <title>Behaviour Driven Development (BDD) – An Invaluable Agile Tool for your Startup</title>
-   <link href="http://bloginterfacevision.github.com/Agile/bdd-tool"/>
+   <link href="http://erichosick.github.com/Agile/bdd-tool"/>
    <updated>2010-11-02T00:00:00+07:00</updated>
-   <id>http://bloginterfacevision.github.com/Agile/bdd-tool</id>
+   <id>http://erichosick.github.com/Agile/bdd-tool</id>
    <content type="html">&lt;h2 id='introduction'&gt;Introduction&lt;/h2&gt;
 
 &lt;p&gt;You’ve been given or put on the product owner hat at your startup. You want to make a product that is successful. Optimally, that product contains that sweet spot of features that gives you that best ROI.&lt;/p&gt;
@@ -728,9 +478,9 @@ $ ./mono -V&lt;/code&gt;&lt;/pre&gt;
  
  <entry>
    <title>Specifications and Quality</title>
-   <link href="http://bloginterfacevision.github.com/Agile/specifications-quality"/>
+   <link href="http://erichosick.github.com/Agile/specifications-quality"/>
    <updated>2010-11-01T00:00:00+07:00</updated>
-   <id>http://bloginterfacevision.github.com/Agile/specifications-quality</id>
+   <id>http://erichosick.github.com/Agile/specifications-quality</id>
    <content type="html">&lt;h2 id='what_are_specifications'&gt;What are Specifications?&lt;/h2&gt;
 
 &lt;p&gt;Specifications are “a detailed description of the design and materials used to make that something”.&lt;/p&gt;
