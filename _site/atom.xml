@@ -4,13 +4,53 @@
  <title>Eric Hosick</title>
  <link href="http://erichosick.github.com/atom.xml" rel="self"/>
  <link href="http://erichosick.github.com"/>
- <updated>2012-11-22T23:06:03+07:00</updated>
+ <updated>2012-11-23T12:04:57+07:00</updated>
  <id>http://erichosick.github.com</id>
  <author>
    <name>Eric Hosick</name>
    <email>erichosick@interfacevision.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Entrepreneurship and Chess Clocks</title>
+   <link href="http://erichosick.github.com/Personal/chess-clock"/>
+   <updated>2012-11-23T00:00:00+07:00</updated>
+   <id>http://erichosick.github.com/Personal/chess-clock</id>
+   <content type="html">&lt;h2 id='introduction'&gt;Introduction&lt;/h2&gt;
+
+&lt;p&gt;I work too much and it has been affecting my personal life: &lt;strong&gt;in a bad way&lt;/strong&gt;. So, I started using a chess clock.&lt;/p&gt;
+
+&lt;h2 id='why_a_chess_clock'&gt;Why A Chess Clock&lt;/h2&gt;
+
+&lt;p&gt;To manage expectations of others and myself. We think we own 100% of our own time but do we? What about sleep? Significant others? Family? The Dentist?&lt;/p&gt;
+
+&lt;p&gt;I&amp;#8217;ve committed to those close to me, and myself, that I will not work more than 9 hours a day.&lt;/p&gt;
+
+&lt;h2 id='its_about_deliverables_not_hours'&gt;It&amp;#8217;s About Deliverables: Not Hours&lt;/h2&gt;
+
+&lt;p&gt;This is very true. It&amp;#8217;s working smart not hard, right?&lt;/p&gt;
+
+&lt;p&gt;However, as an entrepreneur, there is always more stuff that can be done. Another video to make. Finish up a new blog post. Another feature to deliver. It is so easy to start that next deliverable: 15 hours into a day.&lt;/p&gt;
+
+&lt;h2 id='does_this_help_with_motivation'&gt;Does This Help With Motivation?&lt;/h2&gt;
+
+&lt;p&gt;I am not sure how this affects motivation. Feedback from others who have tried/will try this would be great.&lt;/p&gt;
+
+&lt;p&gt;I do have &amp;#8220;less time&amp;#8221; in the day to get work done so I am tempted to work &amp;#8220;harder&amp;#8221; during the time I have allotted to work.&lt;/p&gt;
+
+&lt;h2 id='how_does_it_work'&gt;How Does It Work&lt;/h2&gt;
+
+&lt;p&gt;It&amp;#8217;s really easy. I set the chess clock to 9 hours (though 8 hours seems more reasonable). When I am interrupted by someone, need to take a break, need to eat, etc. I &amp;#8220;end my turn&amp;#8221; working. That&amp;#8217;s it. When I hit the 9 hours I am done for the day.&lt;/p&gt;
+
+&lt;p&gt;I&amp;#8217;m using &lt;a href='https://itunes.apple.com/us/app/clock-pro-hd/id376826715'&gt;Clock Pro&lt;/a&gt; as my Chess clock. I&amp;#8217;m sure there are other solutions out there (including a physical Chess Clock) and would like to hear from others.&lt;/p&gt;
+&lt;p class='featurette pagination-centered'&gt;
+    &lt;img class='featurette-image img-polaroid' src='/assets/img/chess-clock-clockpro.png' /&gt;&lt;img /&gt;
+&lt;/p&gt;
+&lt;h2 id='conclusion'&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;If you are an over-motivated workaholic entrepreneur then try a Chess Clock.&lt;/p&gt;</content>
+ </entry>
  
  <entry>
    <title>You see Coding as a Loosing Game if You Focus on Testing</title>
