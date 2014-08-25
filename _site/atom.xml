@@ -4,7 +4,7 @@
  <title>Eric Hosick</title>
  <link href="http://erichosick.github.com/atom.xml" rel="self"/>
  <link href="http://erichosick.github.com"/>
- <updated>2012-11-29T12:53:07+07:00</updated>
+ <updated>2014-08-25T10:50:06-07:00</updated>
  <id>http://erichosick.github.com</id>
  <author>
    <name>Eric Hosick</name>
@@ -13,67 +13,167 @@
 
  
  <entry>
+   <title>Why Software Engineering Is Being Taught Incorrectly In Schools</title>
+   <link href="http://erichosick.github.com/education/teaching-software-engineering"/>
+   <updated>2012-11-29T00:00:00-08:00</updated>
+   <id>http://erichosick.github.com/education/teaching-software-engineering</id>
+   <content type="html">
+
+## Introduction
+
+I&#39;ve had a peek at academia (I lectured a few years at a university) and I&#39;ve been involved in the software industry for quite some time (about 25 years). This has given me a chance to reflect on how Object-Oriented Methodologies (OOM) are taught -vs- current day best known practices in industry.
+
+My feeling is that software engineering, in general, is being taught incorrectly.
+
+## People Learn and Understand Through Physical Things
+
+We start, as children, playing with physical things that are physically distinct and separate from other physical things. Give a toddler anything (a pen, a cookie, two blocks, etc.), and they will apply all behaviors they know (push, bite, lick, kick, gnaw) to that physical thing (the object). From this, they learn what behaviors an object accepts and the outcome of those behaviors: cookies taste better than pens. They also begin to understand that objects have different properties: blocks are heavier then pens.
+
+Eventually, as they get older (and at what age I know not), they begin to start putting things into groups and generalizing: these are my fun toys and these are my boring toys. It is inherently (genetically) natural for people to generalize and group things: generalization and inheritance.
+
+Further, it is inherently (genetically) natural for people to attribute behavior and attributes as **inseparable** aspects of physical things. Stop and think about this for a moment because that sentence is the core underlying foundation by which object-oriented methodologies are based.
+
+Structured-programming, on the other hand, doesn’t naturally support the idea that functions (behavior) and variables/data (properties) are always intertwined. Instead, in structured-programming, functions (behavior) are fully separated from the properties that are required to define/support those functions [1] and the work (behavior/functions) they perform. The Struct construct supports the grouping of properties but it does not support the grouping of behavior (functions/methods): something that is natural in the real world.
+
+So, this leads to a simple and obvious question [2] - How can something &quot;unnatural&quot; be easier to learn then something that is natural to people from birth?
+
+Perhaps it is because we are learning methodologies and paradigms in the wrong order.
+
+## Where I Lectured, Methodologies Were Taught in the Wrong Order
+
+If we look at the history of teaching, we see object-oriented programming methodologies were “discovered” after structured programming and thus structured programming was part of the learning curriculum before object-oriented programming [3]. So, at one point in time, structured programming was one of the primary methods software developers learned before entering the business sector. With the introduction of object-oriented programming (and eventual acceptance) there was a natural need to educate those that were already developing using structured methods (including educators). There was also a need to make changes to programs within Universities to incorporate object-oriented methodologies into the curriculum. So, the approach to learning object-oriented programming was not OOM first and then structured. Instead, the learning process is: This is how we do it now in structured programming (learn this first) and this is how it is different in OOM.
+
+The approach to learning object-oriented programming is effectively through built up knowledge based on structured programming methodologies. However, these two methodologies are drastically different [4]. Someone using structured programming methodologies will have problems “unlearning” best known practices of structured programming. Some of the best know practices of structured programming do not work well within object-oriented programming (and visa-versa). However, interestingly enough, object-oriented programming is “backwards” compatible with structured programming. Someone who knows object-oriented programming can easily see the differences and advantages of structured programming.
+
+The learning of a new methodology to software engineering based on core knowledge of a different engineering methodology leads to a feelings of difficulty. This is due to the vast differences between the methodologies: specifically engineering differences in architecting software. So, to these students, object-oriented programming just doesn’t “feel right” and is “difficult to understand.” This idea has continued throughout the years through a self fulfilling prophecy where we teach a student structured programming and then later have to help them “unlearn” some of the important concepts of structured programming so they may grasp object-oriented programming.
+
+I am not trying to argue that any one methodology is better at solving problems then another. There are many problem domains that are best solved using structured programming. I am arguing that object-oriented programming is fundamentally easier to understand.
+
+From day one, students should be taught software engineering from the aspect of object-oriented methodologies. This, after all, is the most natural approach to modeling the world: the world is object centric.
+
+So, if we teach object-oriented concepts first and students are still not getting it and if object-oriented concepts are so easy to understand then what are we doing wrong? Maybe, if this were the case, it is because we are teaching the concepts in the wrong order.
+
+## Where I Lectured, Object-Oriented Concepts Were Introduced In The Wrong Order
+
+The first thing toddlers learn is that behavior and properties are inseparable. If you break a cookie in half it can still be eaten but there isn’t as much cookie to eat (it weighs less).
+
+So, why not teach students how to programming from day one with only this one object-oriented concept: encapsulation of behavior (methods) and attributes (properties) within a single construct called a class. Forget about abstraction, inheritance, polymorphism, interfaces, etc. These are all concepts used to improve on code re-use and have little to do with “object-oriented.” In fact, many of these concepts fall within the realm of structured programming (polymorphism is not a strictly object-oriented concept. Abstraction/Generalization is used in structured programming to help with code-reuse.).
+
+From this step, it is easy to build up on concepts such as messaging (very important and also a fundamental aspect of OOM), scope, parameters, computer memory and allocation, re-entrance, etc. Once these concepts are mastered, students could then delve into the concepts of inheritance, polymorphism interfaces, etc. In this way, they can see these programming concepts as not intrinsic to the methodology itself but just simple helpers towards a final goal of code re-use.
+
+However, instead of allowing a student to focus on the core aspect of object-oriented programming, we seem to trivialize it and dash forward with what are then confusing concepts.
+
+So, what if this isn’t enough? What other factors could be making object-oriented programming “difficult to understand?” Maybe incorrect aspects of OO are still being taught in schools.
+
+## Where I Lectured, They Were Knowingly Teaching Object-Oriented Methodologies Which are Incorrect
+
+Object-oriented methodologies are a relatively young art. As such, there has been growing pains and mistakes made in the last few decades. The fact is mistakes have been made in the basic knowledge foundations of object-oriented methodologies which have been corrected. However, these mistakes are still prevalent in schools and the industry (Not enough focus on messaging for example).
+
+Here is a common example used in schools which tries to teach students how, when and why to use inheritance and polymorphism: A dog barks and a cat meows. This common behavior can be abstracted into a base class called Animal with an abstract method PlaySound(). We then create two separate classes, one a Cat class and one a Dog class, and inherit from the base class Animal. We then override the PlaySound() abstract method and implement the specific way a cat or dog makes sounds. If we want a cat, we instantiate the cat and automatically have the ability to meow. When we create a dog, we automatically have the ability to bark.
+
+The above paragraph doesn’t make much sense unless you’ve had a lot of experience developing using object-oriented methodologies. Heck, I have to think a lot just to understand the above paragraph every time I read it. This is probably because the entire example has been shown to be wrong: it isn’t an intuitive answer. The fact is, animals aren’t sounds and the process to make a sound isn’t distinct to animals (lots of things make sounds).
+
+Here is the best-known practice:
+
+Sounds are real and part of the world so lets make a Sound class which has an abstract method PlaySound(). We then inherit from that sound class and implement different sounds: bark, meow, moo, talk, etc. Common sense knows that an animal will make different sounds but they aren’t physically made of sounds (so it is something the animal can do, not what they are). We then develop an Animal class which has a Sound attribute (not a sound behavior). When we create an animal [5] in the program, we simply choose the correct sound they make and place it in the sound property. If you are making a dog, then you would use the Bark Sound Class [6]. If we are making a cat, we choose the Meow sound class. So, when the animal needs to make a sound it doesn’t make the sound. It asks the Sound class to make the sound.
+
+Just to note: the above best-known practice example is known as the Strategy Pattern.
+
+I believe that the process of learning object-oriented programming should incorporate best known practices as early on in the learning process as possible. Teach students how to do it right from day one when learning new knowledge that will be used as a foundation for further knowledge. Don’t try to build up a basic foundation of knowledge (such as inheritance and behavior) on proven incorrect solutions (Anti-patterns like the Animals, Dogs and Cats example) and later force a student to unlearn/relearn the foundation of knowledge using the correct solution [7].
+
+As a side note: I find it funny that one of the artifacts of spaghetti code is the best known practice (anti-pattern) of not using global variables. Though, this is a great practice to follow, it is silly to bring it up (unless the developer knows how to do it in the first place). After all, if we no longer need global variables to program using object-oriented programming methods, then why teach it in the first place. Even worse, why teach it to blossoming programmers? Just don’t tell them that such a feature exists. This idea of teaching something we know is wrong to help a student “move forward” in their learning process and then later explaining it was wrong doesn’t make sense. I do believe in “learning from mistakes” but not teaching mistakes to learn. These are foundations of knowledge we are trying to build upon!
+
+## Conclusion
+
+Object-oriented methodologies are a natural way of modeling the real world. It is the way people naturally learn as children. Current lecture material for object-oriented programming is based on the idea that students are coming from a background with some knowledge in structured programming: this is no longer necessary. We can teach a &quot;common sense&quot; methodology like object-oriented programming first. This makes later teaching of structured programming easier.
+
+Object-oriented programming methodologies should be taught from day one using up-to-date “proven” knowledge foundations. We shouldn’t teach anti-patterns (what not to do) until students have a firm grasp on how to do it right.
+
+### Footnotes
+
+[1] I fully agree in many cases this is acceptable. Like int Sum(int a, int b) { return a + b; }. There is no need to create a class to simply add two numbers. Further, I am talking about the variables/data passed as parameters as opposed to parameters and local variables within the scope of a function.
+
+[2] Even more to the point: How can a methodology to simulate the real world be so lacking in one of the most fundamental aspects of the universe: the concept that behavior and attributes are inseparable aspects of the world we live in?
+
+[3] This begs the question: Then why was it first? The reasons for this I believe are many and I look forward to writing about this in the future.
+
+[4] For example, the way code-reuse is done in structured programming is fundamentally different from object-oriented programming. The architecture and propagation of data through that architecture is drastically different between object-oriented programming and structured programming. Encapsulation of both functionality and behavior is not as obvious coming out of structured programming because so many of the best known practices of structured programming attempt to implement this behavior in a conceptually different way.
+
+[5] Note that we no longer need a class for every type of animal there is.
+
+[6] If you want to get technical, sound is created by air flowing through a “voice box” which generates sound waves. So, in reality, we would picture the voice box as a sound generator and create different types of sound generators. Some could bark and some could meow.
+
+[7] I do believe that at some point it is important to teach the mistakes of the past: but not while learning fundamentally new concepts.
+
+</content>
+ </entry>
+ 
+ <entry>
    <title>Entrepreneurship and Chess Clocks</title>
-   <link href="http://erichosick.github.com/Personal/chess-clock"/>
-   <updated>2012-11-23T00:00:00+07:00</updated>
-   <id>http://erichosick.github.com/Personal/chess-clock</id>
-   <content type="html">&lt;h2 id='introduction'&gt;Introduction&lt;/h2&gt;
+   <link href="http://erichosick.github.com/personal/chess-clock"/>
+   <updated>2012-11-23T00:00:00-08:00</updated>
+   <id>http://erichosick.github.com/personal/chess-clock</id>
+   <content type="html">
+&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
 
 &lt;p&gt;I work too much and it has been affecting my personal life: &lt;strong&gt;in a bad way&lt;/strong&gt;. So, I started using a chess clock.&lt;/p&gt;
 
-&lt;h2 id='why_a_chess_clock'&gt;Why A Chess Clock&lt;/h2&gt;
+&lt;h2 id=&quot;why-a-chess-clock&quot;&gt;Why A Chess Clock&lt;/h2&gt;
 
 &lt;p&gt;To manage expectations of others and myself. We think we own 100% of our own time but do we? What about sleep? Significant others? Family? The Dentist?&lt;/p&gt;
 
-&lt;p&gt;I&amp;#8217;ve committed to those close to me, and myself, that I will not work more than 9 hours a day.&lt;/p&gt;
+&lt;p&gt;I’ve committed to those close to me, and myself, that I will not work more than 9 hours a day.&lt;/p&gt;
 
-&lt;h2 id='its_about_deliverables_not_hours'&gt;It&amp;#8217;s About Deliverables: Not Hours&lt;/h2&gt;
+&lt;h2 id=&quot;its-about-deliverables-not-hours&quot;&gt;It’s About Deliverables: Not Hours&lt;/h2&gt;
 
-&lt;p&gt;This is very true. It&amp;#8217;s working smart not hard, right?&lt;/p&gt;
+&lt;p&gt;This is very true. It’s working smart not hard, right?&lt;/p&gt;
 
 &lt;p&gt;However, as an entrepreneur, there is always more stuff that can be done. Another video to make. Finish up a new blog post. Another feature to deliver. It is so easy to start that next deliverable: 15 hours into a day.&lt;/p&gt;
 
-&lt;h2 id='does_this_help_with_motivation'&gt;Does This Help With Motivation?&lt;/h2&gt;
+&lt;h2 id=&quot;does-this-help-with-motivation&quot;&gt;Does This Help With Motivation?&lt;/h2&gt;
 
 &lt;p&gt;I am not sure how this affects motivation. Feedback from others who have tried/will try this would be great.&lt;/p&gt;
 
-&lt;p&gt;I do have &amp;#8220;less time&amp;#8221; in the day to get work done so I am tempted to work &amp;#8220;harder&amp;#8221; during the time I have allotted to work.&lt;/p&gt;
+&lt;p&gt;I do have “less time” in the day to get work done so I am tempted to work “harder” during the time I have allotted to work.&lt;/p&gt;
 
-&lt;h2 id='how_does_it_work'&gt;How Does It Work&lt;/h2&gt;
+&lt;h2 id=&quot;how-does-it-work&quot;&gt;How Does It Work&lt;/h2&gt;
 
-&lt;p&gt;It&amp;#8217;s really easy. I set the chess clock to 9 hours (though 8 hours seems more reasonable). When I am interrupted by someone, need to take a break, need to eat, etc. I &amp;#8220;end my turn&amp;#8221; working. That&amp;#8217;s it. When I hit the 9 hours I am done for the day.&lt;/p&gt;
+&lt;p&gt;It’s really easy. I set the chess clock to 9 hours (though 8 hours seems more reasonable). When I am interrupted by someone, need to take a break, need to eat, etc. I “end my turn” working. That’s it. When I hit the 9 hours I am done for the day.&lt;/p&gt;
 
-&lt;p&gt;I&amp;#8217;m using &lt;a href='https://itunes.apple.com/us/app/clock-pro-hd/id376826715'&gt;Clock Pro&lt;/a&gt; as my Chess clock. I&amp;#8217;m sure there are other solutions out there (including a physical Chess Clock) and would like to hear from others.&lt;/p&gt;
-&lt;p class='featurette pagination-centered'&gt;
-    &lt;img class='featurette-image img-polaroid' src='/assets/img/chess-clock-clockpro.png' /&gt;&lt;img /&gt;
+&lt;p&gt;I’m using &lt;a href=&quot;https://itunes.apple.com/us/app/clock-pro-hd/id376826715&quot;&gt;Clock Pro&lt;/a&gt; as my Chess clock. I’m sure there are other solutions out there (including a physical Chess Clock) and would like to hear from others.&lt;/p&gt;
+
+&lt;p class=&quot;featurette pagination-centered&quot;&gt;
+    &lt;img class=&quot;featurette-image img-polaroid&quot; src=&quot;/assets/img/chess-clock-clockpro.png&quot; /&gt;
 &lt;/p&gt;
-&lt;h2 id='conclusion'&gt;Conclusion&lt;/h2&gt;
 
-&lt;p&gt;If you are an over-motivated workaholic entrepreneur then try a Chess Clock.&lt;/p&gt;</content>
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;If you are an over-motivated workaholic entrepreneur then try a Chess Clock.&lt;/p&gt;
+</content>
  </entry>
  
  <entry>
    <title>You see Coding as a Loosing Game if You Focus on Testing</title>
-   <link href="http://erichosick.github.com/Agile/coding-game"/>
-   <updated>2012-02-24T00:00:00+07:00</updated>
-   <id>http://erichosick.github.com/Agile/coding-game</id>
-   <content type="html">&lt;h2 id='introduction'&gt;Introduction&lt;/h2&gt;
+   <link href="http://erichosick.github.com/agile/coding-game"/>
+   <updated>2012-02-24T00:00:00-08:00</updated>
+   <id>http://erichosick.github.com/agile/coding-game</id>
+   <content type="html">
+&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
 
 &lt;p&gt;Focusing on testing is like assuming we are going to lose the game and we only want to loose by a little bit: we assume there will be bugs – a negative approach.&lt;/p&gt;
 
 &lt;p&gt;The thing we should focus on is the User Experience (UX). Testing should be our second line of defence.&lt;/p&gt;
 
-&lt;h2 id='focus_on_the_features_and_ux'&gt;Focus on the Features and UX&lt;/h2&gt;
+&lt;h2 id=&quot;focus-on-the-features-and-ux&quot;&gt;Focus on the Features and UX&lt;/h2&gt;
 
 &lt;p&gt;Focusing on the UX, the behaviour, the features is a positive approach. We focus on the wining game: delivering exactly what the stakeholders want (1).&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Behaviour Driven Development (BDD)&lt;/strong&gt; assures we are implementing only what the stakeholders want (1). We are “testing” the features before we even think about testing code. This is our first line of defence.&lt;/li&gt;
-
-&lt;li&gt;&lt;strong&gt;Test Driven Development (TDD)&lt;/strong&gt; provides the robustness and engineering – it is our second line of defence.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Behaviour Driven Development (BDD)&lt;/strong&gt; assures we are implementing only what the stakeholders want (1). We are “testing” the features before we even think about testing code. This is our first line of defence.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Test Driven Development (TDD)&lt;/strong&gt; provides the robustness and engineering – it is our second line of defence.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id='use_both_bdd_and_tdd'&gt;Use Both BDD and TDD&lt;/h2&gt;
+&lt;h2 id=&quot;use-both-bdd-and-tdd&quot;&gt;Use Both BDD and TDD&lt;/h2&gt;
 
 &lt;p&gt;behaviour Driven Development, using a DSL like gherkin, provides the glue between the stakeholders (aka the UX) and the code. This glue drives our development and, following red/yellow/green/refactor, assures that every line of code written is directly related to implementing the behaviour (aka the UX) (2).&lt;/p&gt;
 
@@ -81,7 +181,7 @@
 
 &lt;p&gt;Test Driven Development, as our second line of defence, is where the engineering comes in assuring the software system is robust. Additional behaviour may be discovered, such as what to do with errors, and TDD is a good way to discover such edge cases. TDD feeds back into BDD allowing for the discovery of additional behaviour perhaps missed when mocking out that initial UX.&lt;/p&gt;
 
-&lt;h2 id='conclusion'&gt;Conclusion&lt;/h2&gt;
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
 
 &lt;p&gt;Don’t focus on testing your code, focus on implementing only the behaviour asked for by the stakeholder.&lt;/p&gt;
 
@@ -90,26 +190,27 @@
 &lt;p&gt;Use testing to assure robustness, good engineering and as a feedback loop to fill in missing behaviour.&lt;/p&gt;
 
 &lt;ol&gt;
-&lt;li&gt;Business still needs to figure out what stakeholders want to assure minimal behaviour (Minimal Viable Product). This process should be as painful as possible. The more pain, the less behaviour. The less behaviour, the less code. Less code means less bugs.&lt;/li&gt;
-
-&lt;li&gt;The ability to regression test our behaviour is a huge benefit but pales in comparison to the benefits from assuring the minimum amount of code is being written.&lt;/li&gt;
-&lt;/ol&gt;</content>
+  &lt;li&gt;Business still needs to figure out what stakeholders want to assure minimal behaviour (Minimal Viable Product). This process should be as painful as possible. The more pain, the less behaviour. The less behaviour, the less code. Less code means less bugs.&lt;/li&gt;
+  &lt;li&gt;The ability to regression test our behaviour is a huge benefit but pales in comparison to the benefits from assuring the minimum amount of code is being written.&lt;/li&gt;
+&lt;/ol&gt;
+</content>
  </entry>
  
  <entry>
    <title>Developers: Give Each Other a Fighting Chance</title>
-   <link href="http://erichosick.github.com/Software/developers"/>
-   <updated>2011-09-14T00:00:00+07:00</updated>
-   <id>http://erichosick.github.com/Software/developers</id>
-   <content type="html">&lt;h2 id='introduction'&gt;Introduction&lt;/h2&gt;
+   <link href="http://erichosick.github.com/software/developers"/>
+   <updated>2011-09-14T00:00:00-07:00</updated>
+   <id>http://erichosick.github.com/software/developers</id>
+   <content type="html">
+&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
 
 &lt;p&gt;Figuring out an API can be difficult. Using one that is fraught with bugs and bad error messages is almost impossible.&lt;/p&gt;
 
-&lt;h2 id='my_plead__give_each_other_a_fighting_chance'&gt;My Plead – Give Each Other a Fighting Chance&lt;/h2&gt;
+&lt;h2 id=&quot;my-plead--give-each-other-a-fighting-chance&quot;&gt;My Plead – Give Each Other a Fighting Chance&lt;/h2&gt;
 
 &lt;p&gt;Development is hard enough without having APIs fraught with bugs and no good error messages. It seems to me, that over the years, APIs and frameworks aren’t getting better. Instead, they are becoming more fragile than ever before. There are probably a lot of reasons for this but I think one of the main reasons is a misunderstanding of what software development really is.&lt;/p&gt;
 
-&lt;h2 id='quick_point__seeing_software_development_as_automation_of_a_system'&gt;Quick Point – Seeing Software Development as Automation of a System&lt;/h2&gt;
+&lt;h2 id=&quot;quick-point--seeing-software-development-as-automation-of-a-system&quot;&gt;Quick Point – Seeing Software Development as Automation of a System&lt;/h2&gt;
 
 &lt;p&gt;Software Development is no more than the automation/simulation of systems (that is a strong statement to make so take a second to think about it.). The development process takes a system that is/can be done manually and automates that system via software run on a computing device.&lt;/p&gt;
 
@@ -117,7 +218,7 @@
 
 &lt;p&gt;As such, not only is the optimal process of a system written down, but also actions to take when events occur within a system that are non-optimal.&lt;/p&gt;
 
-&lt;h2 id='the_solution__software_developers_must_consider_nonoptimal_aspects_of_the_system'&gt;The Solution – Software Developers must Consider non-optimal Aspects of the System&lt;/h2&gt;
+&lt;h2 id=&quot;the-solution--software-developers-must-consider-non-optimal-aspects-of-the-system&quot;&gt;The Solution – Software Developers must Consider non-optimal Aspects of the System&lt;/h2&gt;
 
 &lt;p&gt;When automating a system, as engineers, we have to take into account all of the aspects of the system we are automating: not just the optimal outcomes. Further, we have to view the computing device itself, and the software running on it, as another part of the system being automated. That means, unexpected outcomes, such as out of memory errors, must now also be considered within that system (even at the business level #1).&lt;/p&gt;
 
@@ -129,7 +230,7 @@
 
 &lt;p&gt;Really, if you are going to write an API, you have an obligation as an engineer to consider all aspects of a system you are automating and provide the right exception and/or information allowing users of your API to make the correct business decisions.&lt;/p&gt;
 
-&lt;h2 id='conclusion'&gt;Conclusion&lt;/h2&gt;
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
 
 &lt;p&gt;The APIs of today need to be more developer friendly. This can be achieved by software developers realising that the software they write must automate both the optimal and non-optimal processes within the system: including those non-optimal processes injected into the system because it is now using said computing device.&lt;/p&gt;
 
@@ -137,7 +238,7 @@
 
 &lt;p&gt;Give your fellow/fellowet developers a chance to be successful in their development efforts.&lt;/p&gt;
 
-&lt;h2 id='the_story__why_this_post'&gt;The Story – Why This Post&lt;/h2&gt;
+&lt;h2 id=&quot;the-story--why-this-post&quot;&gt;The Story – Why This Post&lt;/h2&gt;
 
 &lt;p&gt;I was trying to use a console based API (I will not flame the API) and was getting an error message “File not found”. That would be a fine error message except for the part where the command line options required four different files. I did try to pass each one separately, and in each case the “File not found” error did not occur: replaced by the error “Missing option xyz”. There was also a debug option which was also of no help.&lt;/p&gt;
 
@@ -148,94 +249,87 @@
 &lt;p&gt;Do developers actually care about helping other developers become successful?&lt;/p&gt;
 
 &lt;ol&gt;
-&lt;li&gt;As an example, I may want to restart a process if it starts taking up too much memory or I might want to start a new server instance running in my cloud computing environment. This is a business decision made by the product owner.&lt;/li&gt;
-
-&lt;li&gt;I realise that there are edge cases that are difficult to find. I also know that no systems are closed, and as such it is not practical to cover all edge cases. However, knowing those edge cases and not accounting for them should not be called an error. It should be called an incomplete API and a failure to automate that system.&lt;/li&gt;
-&lt;/ol&gt;</content>
+  &lt;li&gt;As an example, I may want to restart a process if it starts taking up too much memory or I might want to start a new server instance running in my cloud computing environment. This is a business decision made by the product owner.&lt;/li&gt;
+  &lt;li&gt;I realise that there are edge cases that are difficult to find. I also know that no systems are closed, and as such it is not practical to cover all edge cases. However, knowing those edge cases and not accounting for them should not be called an error. It should be called an incomplete API and a failure to automate that system.&lt;/li&gt;
+&lt;/ol&gt;
+</content>
  </entry>
  
  <entry>
    <title>How to use BDD to Discover Value-add for Your Startup</title>
-   <link href="http://erichosick.github.com/Agile/bdd-value"/>
-   <updated>2011-02-20T00:00:00+07:00</updated>
-   <id>http://erichosick.github.com/Agile/bdd-value</id>
-   <content type="html">&lt;h2 id='introduction'&gt;Introduction&lt;/h2&gt;
+   <link href="http://erichosick.github.com/agile/bdd-value"/>
+   <updated>2011-02-20T00:00:00-08:00</updated>
+   <id>http://erichosick.github.com/agile/bdd-value</id>
+   <content type="html">
+&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
 
-&lt;p&gt;I’ve seen chatter on &lt;a href='http://news.ycombinator.com/'&gt;Hacker News&lt;/a&gt; about how BDD adds no value to a startup (&lt;a href='http://news.ycombinator.com/item?id=2240826'&gt;this post here&lt;/a&gt; in response to &lt;a href='http://news.ycombinator.com/item?id=2240730'&gt;this&lt;/a&gt;).&lt;/p&gt;
+&lt;p&gt;I’ve seen chatter on &lt;a href=&quot;http://news.ycombinator.com/&quot;&gt;Hacker News&lt;/a&gt; about how BDD adds no value to a startup (&lt;a href=&quot;http://news.ycombinator.com/item?id=2240826&quot;&gt;this post here&lt;/a&gt; in response to &lt;a href=&quot;http://news.ycombinator.com/item?id=2240730&quot;&gt;this&lt;/a&gt;).&lt;/p&gt;
 
 &lt;p&gt;This blog post will:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;clear up misunderstandings of BDD&lt;/li&gt;
-
-&lt;li&gt;provide reasons why your startup should use BDD&lt;/li&gt;
-
-&lt;li&gt;show how BDD helps you focus on value-add&lt;/li&gt;
+  &lt;li&gt;clear up misunderstandings of BDD&lt;/li&gt;
+  &lt;li&gt;provide reasons why your startup should use BDD&lt;/li&gt;
+  &lt;li&gt;show how BDD helps you focus on value-add&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id='what_bdd_is_not'&gt;What BDD is NOT!&lt;/h2&gt;
+&lt;h2 id=&quot;what-bdd-is-not&quot;&gt;What BDD is NOT!&lt;/h2&gt;
 
 &lt;p&gt;BDD is not only about testing or test coverage. In fact, BDD is such a mind boggling amazing improvement to software engineering that regression testing and testing are merely a measly nice to have side affect of BDD. It is not the reason why you do BDD.&lt;/p&gt;
 
 &lt;p&gt;BDD is not TDD. They can overlap but they are as conceptually as different as structured programming and object-oriented programming.&lt;/p&gt;
 
-&lt;h2 id='bdd_fdd_bvadd_atdd__its_all_the_same'&gt;BDD, FDD, BVADD, ATDD – It’s all the same&lt;/h2&gt;
+&lt;h2 id=&quot;bdd-fdd-bvadd-atdd--its-all-the-same&quot;&gt;BDD, FDD, BVADD, ATDD – It’s all the same&lt;/h2&gt;
 
 &lt;p&gt;Behavior Driven Development (BDD) could also be called:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;Feature Driven Development (FDD)&lt;/li&gt;
-
-&lt;li&gt;Business Value Add Driven Development (BVADD)&lt;/li&gt;
-
-&lt;li&gt;Acceptance Test Driven Development (&lt;a href='http://code.google.com/p/robotframework/wiki/ATDDWithRobotFrameworkArticle'&gt;ATDD&lt;/a&gt;)&lt;/li&gt;
-
-&lt;li&gt;Story Test Driven Development&lt;/li&gt;
+  &lt;li&gt;Feature Driven Development (FDD)&lt;/li&gt;
+  &lt;li&gt;Business Value Add Driven Development (BVADD)&lt;/li&gt;
+  &lt;li&gt;Acceptance Test Driven Development (&lt;a href=&quot;http://code.google.com/p/robotframework/wiki/ATDDWithRobotFrameworkArticle&quot;&gt;ATDD&lt;/a&gt;)&lt;/li&gt;
+  &lt;li&gt;Story Test Driven Development&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id='what_is_bddfddbvadd'&gt;What is BDD/FDD/BVADD?&lt;/h2&gt;
+&lt;h2 id=&quot;what-is-bddfddbvadd&quot;&gt;What is BDD/FDD/BVADD?&lt;/h2&gt;
 
 &lt;blockquote&gt;
-&lt;p&gt;Behavior driven development &lt;strong&gt;drives&lt;/strong&gt; the &lt;strong&gt;development&lt;/strong&gt; of code from &lt;strong&gt;behavior&lt;/strong&gt; defined through scenarios.&lt;/p&gt;
+  &lt;p&gt;Behavior driven development &lt;strong&gt;drives&lt;/strong&gt; the &lt;strong&gt;development&lt;/strong&gt; of code from &lt;strong&gt;behavior&lt;/strong&gt; defined through scenarios.&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;p&gt;You don’t drive development by chatting about it (CDD), by having meetings on it, by thinking how to test your system (TDD). You simply take the behavior/features of your system and build software against that.&lt;/p&gt;
 
-&lt;h3 id='what_are_scenarios'&gt;What are scenarios?&lt;/h3&gt;
+&lt;h3 id=&quot;what-are-scenarios&quot;&gt;What are scenarios?&lt;/h3&gt;
 
-&lt;p&gt;A scenario is a description of how your system will add value for both your business and your customer. BDD has a “standard” way of describing these scenarios known as &lt;a href='https://github.com/cucumber/cucumber/wiki/gherkin'&gt;Gherkin&lt;/a&gt;. By standard, I mean that once you’ve described that value add in Gherkin you can implement it in Rails, PHP, C#, Ruby, Java, etc using &lt;a href='http://cukes.info/'&gt;Cucumber&lt;/a&gt;, &lt;a href='http://behat.org/'&gt;Behat&lt;/a&gt; and &lt;a href='http://www.specflow.org/'&gt;SpecFlow&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;A scenario is a description of how your system will add value for both your business and your customer. BDD has a “standard” way of describing these scenarios known as &lt;a href=&quot;https://github.com/cucumber/cucumber/wiki/gherkin&quot;&gt;Gherkin&lt;/a&gt;. By standard, I mean that once you’ve described that value add in Gherkin you can implement it in Rails, PHP, C#, Ruby, Java, etc using &lt;a href=&quot;http://cukes.info/&quot;&gt;Cucumber&lt;/a&gt;, &lt;a href=&quot;http://behat.org/&quot;&gt;Behat&lt;/a&gt; and &lt;a href=&quot;http://www.specflow.org/&quot;&gt;SpecFlow&lt;/a&gt;.&lt;/p&gt;
 
-&lt;h3 id='how_do_i_find_these_value_add_scenarios'&gt;How do I find these “value add” scenarios?&lt;/h3&gt;
+&lt;h3 id=&quot;how-do-i-find-these-value-add-scenarios&quot;&gt;How do I find these “value add” scenarios?&lt;/h3&gt;
 
 &lt;p&gt;BDD doesn’t find that value-add. That is up to the visionaries of the startup. However, it does allow you to add value to your company immediately by allowing you to start describing your value-add in that standard way.&lt;/p&gt;
 
-&lt;p&gt;The best place to start is with mocking up your system. You can use paper and pencil or a tool like &lt;a href='http://balsamiq.com/'&gt;Balsamiq Mockups&lt;/a&gt;. Once you have that, you can find the behavior (features) of your vision within the mockups.&lt;/p&gt;
+&lt;p&gt;The best place to start is with mocking up your system. You can use paper and pencil or a tool like &lt;a href=&quot;http://balsamiq.com/&quot;&gt;Balsamiq Mockups&lt;/a&gt;. Once you have that, you can find the behavior (features) of your vision within the mockups.&lt;/p&gt;
 
 &lt;p&gt;Finding that value-add is basically done by:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;Mocking up the features&lt;/li&gt;
-
-&lt;li&gt;Write about and discuss them using in Gherkin&lt;/li&gt;
-
-&lt;li&gt;Chose which ones add the most value.&lt;/li&gt;
-
-&lt;li&gt;Implement the feature&lt;/li&gt;
+  &lt;li&gt;Mocking up the features&lt;/li&gt;
+  &lt;li&gt;Write about and discuss them using in Gherkin&lt;/li&gt;
+  &lt;li&gt;Chose which ones add the most value.&lt;/li&gt;
+  &lt;li&gt;Implement the feature&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;That fact is:&lt;/p&gt;
 
 &lt;blockquote&gt;
-&lt;p&gt;If you can’t clearly describe your value-add in a hand full of features and scenarios then you shouldn’t even begin coding.&lt;/p&gt;
+  &lt;p&gt;If you can’t clearly describe your value-add in a hand full of features and scenarios then you shouldn’t even begin coding.&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;p&gt;And if you do accomplish that amazing feat you are almost half-way done with your product. No work was lost because you can now take those scenarios and implement them!&lt;/p&gt;
 
 &lt;blockquote&gt;
-&lt;p&gt;&lt;strong&gt;Now, and only now, should you start coding!&lt;/strong&gt;&lt;/p&gt;
+  &lt;p&gt;&lt;strong&gt;Now, and only now, should you start coding!&lt;/strong&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;h3 id='so_bdd_can_help_me_focus_on_the_value_add_of_my_company'&gt;So BDD can help me focus on the value add of my company?&lt;/h3&gt;
+&lt;h3 id=&quot;so-bdd-can-help-me-focus-on-the-value-add-of-my-company&quot;&gt;So BDD can help me focus on the value add of my company?&lt;/h3&gt;
 
 &lt;p&gt;Yes! Yes! Yes!&lt;/p&gt;
 
@@ -243,15 +337,15 @@
 
 &lt;p&gt;If you spend all of your time chatting about your vision to other people and mocking it out and write scenarios describing that vision then it is a great start.&lt;/p&gt;
 
-&lt;p&gt;If you can do all that and find that sweet spot of value that you want to deliver your customer… Well then, you can hand that to a developer (or yourself) and know they are only developing EXACTLY what was asked for.&lt;/p&gt;
+&lt;p&gt;If you can do all that and find that sweet spot of value that you want to deliver your customer… Well then,  you can hand that to a developer (or yourself) and know they are only developing EXACTLY what was asked for.&lt;/p&gt;
 
 &lt;p&gt;What this means is:&lt;/p&gt;
 
 &lt;blockquote&gt;
-&lt;p&gt;It is not possible for someone to program or spend time programming any more or less than exactly what you need to get that value-add to the market as fast as possible.&lt;/p&gt;
+  &lt;p&gt;It is not possible for someone to program or spend time programming any more or less than exactly what you need to get that value-add to the market as fast as possible.&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;h3 id='wait_so_bdd_can_also_help_describe_my_vision_to_developers'&gt;Wait! So BDD can also help describe my vision to developers?&lt;/h3&gt;
+&lt;h3 id=&quot;wait-so-bdd-can-also-help-describe-my-vision-to-developers&quot;&gt;Wait! So BDD can also help describe my vision to developers?&lt;/h3&gt;
 
 &lt;p&gt;Oh ya! I almost forgot to mention that aspect of BDD.&lt;/p&gt;
 
@@ -261,62 +355,46 @@
 
 &lt;p&gt;BDD help you get that vision across to developers and helps them stick to your vision.&lt;/p&gt;
 
-&lt;h3 id='advantages_are_numerous'&gt;Advantages are numerous&lt;/h3&gt;
+&lt;h3 id=&quot;advantages-are-numerous&quot;&gt;Advantages are numerous&lt;/h3&gt;
 
 &lt;ul&gt;
-&lt;li&gt;You can’t break behavior so your system can’t break&lt;/li&gt;
-
-&lt;li&gt;Easy to change engineering direction&lt;/li&gt;
-
-&lt;li&gt;East to move to a new technology or implement in multiple technologies&lt;/li&gt;
-
-&lt;li&gt;Can regression test code and verify requirements&lt;/li&gt;
-
-&lt;li&gt;Can be used as a bridge between the Product Owner and Team&lt;/li&gt;
-
-&lt;li&gt;Heavy usage of off the shelf DSLs (Domain Specific Languages) can lead to Scenarios that require ZERO lines of test code to be written (&lt;a href='https://github.com/brynary/webrat'&gt;Webrat&lt;/a&gt; and &lt;a href='https://github.com/ianwhite/pickle'&gt;Pickle&lt;/a&gt; to name a few)&lt;/li&gt;
-
-&lt;li&gt;Assures that only what you ask for is being coded&lt;/li&gt;
-
-&lt;li&gt;Can verify that requirements are being met. There is an actual connection between a requirement and code.&lt;/li&gt;
+  &lt;li&gt;You can’t break behavior so your system can’t break&lt;/li&gt;
+  &lt;li&gt;Easy to change engineering direction&lt;/li&gt;
+  &lt;li&gt;East to move to a new technology or implement in multiple technologies&lt;/li&gt;
+  &lt;li&gt;Can regression test code and verify requirements&lt;/li&gt;
+  &lt;li&gt;Can be used as a bridge between the Product Owner and Team&lt;/li&gt;
+  &lt;li&gt;Heavy usage of off the shelf DSLs (Domain Specific Languages) can lead to Scenarios that require ZERO lines of test code to be written (&lt;a href=&quot;https://github.com/brynary/webrat&quot;&gt;Webrat&lt;/a&gt; and &lt;a href=&quot;https://github.com/ianwhite/pickle&quot;&gt;Pickle&lt;/a&gt; to name a few)&lt;/li&gt;
+  &lt;li&gt;Assures that only what you ask for is being coded&lt;/li&gt;
+  &lt;li&gt;Can verify that requirements are being met. There is an actual connection between a requirement and code.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id='counter_arguments_for_using_bdd_at_a_startup'&gt;Counter Arguments for using BDD at a startup&lt;/h2&gt;
+&lt;h2 id=&quot;counter-arguments-for-using-bdd-at-a-startup&quot;&gt;Counter Arguments for using BDD at a startup&lt;/h2&gt;
 
 &lt;p&gt;Here are some quotes from a few of the posts on Hacker News.&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Argument: “BDD assumes you know the problem and are coding to create a solution. In startups, however, you do not know the problem.”&lt;/p&gt;
-&lt;/li&gt;
-
-&lt;li&gt;
-&lt;p&gt;Counter argument Question: If you don’t know the problem then why are you even coding?&lt;/p&gt;
-&lt;/li&gt;
-
-&lt;li&gt;
-&lt;p&gt;Argument: “Startups are all about providing value — not flexibility, not bug-free code”&lt;/p&gt;
-&lt;/li&gt;
-
-&lt;li&gt;
-&lt;p&gt;Counter argument: BDD is not only about “bug-free” code or flexibility. It is mostly about helping to provide that minimal viable product – that value.&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;</content>
+  &lt;li&gt;Argument: “BDD assumes you know the problem and are coding to create a solution. In startups, however, you do not know the problem.”&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Counter argument Question: If you don’t know the problem then why are you even coding?&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Argument: “Startups are all about providing value — not flexibility, not bug-free code”&lt;/li&gt;
+  &lt;li&gt;Counter argument: BDD is not only about “bug-free” code or flexibility. It is mostly about helping to provide that minimal viable product – that value.&lt;/li&gt;
+&lt;/ul&gt;
+</content>
  </entry>
  
  <entry>
    <title>Being a Product Owner – The Achilles’ heel of Agile</title>
-   <link href="http://erichosick.github.com/Agile/product-owner"/>
-   <updated>2010-11-19T00:00:00+07:00</updated>
-   <id>http://erichosick.github.com/Agile/product-owner</id>
-   <content type="html">&lt;p&gt;I often consider the product owner to be the hardest hat to ware in Agile. You are the Achilles’ heel of Agile. A few of the things your job requires are:&lt;/p&gt;
+   <link href="http://erichosick.github.com/agile/product-owner"/>
+   <updated>2010-11-19T00:00:00-08:00</updated>
+   <id>http://erichosick.github.com/agile/product-owner</id>
+   <content type="html">
+&lt;p&gt;I often consider the product owner to be the hardest hat to ware in Agile. You are the Achilles’ heel of Agile. A few of the things your job requires are:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;Getting consensus from all stakeholders: that vision&lt;/li&gt;
-
-&lt;li&gt;Giving that Vision to your Team&lt;/li&gt;
-
-&lt;li&gt;Planning and prune the backlog (Project Management) for the next iteration.&lt;/li&gt;
+  &lt;li&gt;Getting consensus from all stakeholders: that vision&lt;/li&gt;
+  &lt;li&gt;Giving that Vision to your Team&lt;/li&gt;
+  &lt;li&gt;Planning and prune the backlog (Project Management) for the next iteration.&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;You are the voice of reason. You work with everyone involved to find that minimal viable product. You work with sales people, customers, engineers, designers, marketing and so on.&lt;/p&gt;
@@ -331,141 +409,143 @@
 
 &lt;p&gt;And once you’ve done that for the day, you will need to get ready for the next iteration planning meeting: finding that sweet spot of work for the next iteration.&lt;/p&gt;
 
-&lt;p&gt;There is a huge reward for this however. You are able to provide something to your customers weekly if not daily. And you are assured that you receive exactly what you ask for. You write the specifications and a good Agile shop using BDD (see &lt;a href='/Agile/bdd-tool/'&gt;Behavior Driven Development – An Invaluable Tool&lt;/a&gt;) will deliver that exact specification.&lt;/p&gt;
+&lt;p&gt;There is a huge reward for this however. You are able to provide something to your customers weekly if not daily. And you are assured that you receive exactly what you ask for. You write the specifications and a good Agile shop using BDD (see &lt;a href=&quot;/Agile/bdd-tool/&quot;&gt;Behavior Driven Development – An Invaluable Tool&lt;/a&gt;) will deliver that exact specification.&lt;/p&gt;
 
 &lt;p&gt;Of course, if you mess up it can be devastating. Weeks or months worth of work can be lost. Which is why the Product Owner is the Achilles’ heel of Agile.&lt;/p&gt;
 
-&lt;p&gt;Are you ready?&lt;/p&gt;</content>
+&lt;p&gt;Are you ready?&lt;/p&gt;
+</content>
  </entry>
  
  <entry>
    <title>Running an Agile Company – Keep An Agile Master Around</title>
-   <link href="http://erichosick.github.com/Agile/agile-master"/>
-   <updated>2010-11-05T00:00:00+07:00</updated>
-   <id>http://erichosick.github.com/Agile/agile-master</id>
-   <content type="html">&lt;h1 id='coo_of_east_agile'&gt;COO Of East Agile&lt;/h1&gt;
+   <link href="http://erichosick.github.com/agile/agile-master"/>
+   <updated>2010-11-05T00:00:00-07:00</updated>
+   <id>http://erichosick.github.com/agile/agile-master</id>
+   <content type="html">
+&lt;h1 id=&quot;coo-of-east-agile&quot;&gt;COO Of East Agile&lt;/h1&gt;
 
-&lt;p&gt;Recently I was made the COO of &lt;a href='http://www.eastagile.com'&gt;East Agile&lt;/a&gt;. What is interesting about Agile is that you can fit most of the concepts on a few pieces of paper: the agile rules as you will. It is, or should be, really easy.&lt;/p&gt;
+&lt;p&gt;Recently I was made the COO of &lt;a href=&quot;http://www.eastagile.com&quot;&gt;East Agile&lt;/a&gt;. What is interesting about Agile is that you can fit most of the concepts on a few pieces of paper: the agile rules as you will. It is, or should be, really easy.&lt;/p&gt;
 
 &lt;p&gt;I’ve had a chance to observe some of the companies that practice Agile on a large scale (involving 50 to 100 employees). As advanced as they were at Agile, I was surprised to see that they only apply a small part of Agile to their entire process. They were doing a great job but I saw a lot of room for improvement.&lt;/p&gt;
 
 &lt;p&gt;I think I could say that East Agile is ahead of most people in the “Agile” game. But it isn’t easy staying agile. In fact, it is really hard to do. Below are some examples why.&lt;/p&gt;
 
-&lt;p&gt;Oh, but if you haven’t read it yet, please see my blog on &lt;a href='/Agile/agile-branding/'&gt;Agile branding&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Oh, but if you haven’t read it yet, please see my blog on &lt;a href=&quot;/Agile/agile-branding/&quot;&gt;Agile branding&lt;/a&gt;.&lt;/p&gt;
 
-&lt;h1 id='an_agile_master_is_always_needed'&gt;An Agile Master Is Always Needed&lt;/h1&gt;
+&lt;h1 id=&quot;an-agile-master-is-always-needed&quot;&gt;An Agile Master Is Always Needed&lt;/h1&gt;
 
-&lt;p&gt;I was lucky enough to be trained by &lt;a href='http://www.mountaingoatsoftware.com/'&gt;Mike Cohn&lt;/a&gt; and his classes on being a Scrum Master and Estimation (I highly recommend his classes on estimation). I though that being an Agile Master would require some training of the Team initially. However, what I have found is that you have to continually observe and make suggestions on how to apply Agile itself.&lt;/p&gt;
+&lt;p&gt;I was lucky enough to be trained by &lt;a href=&quot;http://www.mountaingoatsoftware.com/&quot;&gt;Mike Cohn&lt;/a&gt; and his classes on being a Scrum Master and Estimation (I highly recommend his classes on estimation). I though that being an Agile Master would require some training of the Team initially. However, what I have found is that you have to continually observe and make suggestions on how to apply Agile itself.&lt;/p&gt;
 
-&lt;h2 id='planning_poker_example'&gt;Planning Poker Example&lt;/h2&gt;
+&lt;h2 id=&quot;planning-poker-example&quot;&gt;Planning Poker Example&lt;/h2&gt;
 
 &lt;p&gt;A quick example is the Estimation process and planning poker. I’ve chatted with our different teams about Estimation and the dangers of contamination when estimation. Contamination is when one person in the team (or a product owner or stake holder) provides an estimate before other people have had a chance to think about the estimate themselves. This taints the estimate.&lt;/p&gt;
 
-&lt;p&gt;Often times, team members seem to “get into” the estimation process and yell out estimates during the Iteration Planning meeting. So, from time to time, I have to remind people to not “yell out the estimate”. Of course, eventually I pull out the poker playing &lt;a href='http://store.mountaingoatsoftware.com/'&gt;cards&lt;/a&gt; to stop this from happening.&lt;/p&gt;
+&lt;p&gt;Often times, team members seem to “get into” the estimation process and yell out estimates during the Iteration Planning meeting. So, from time to time, I have to remind people to not “yell out the estimate”. Of course, eventually I pull out the poker playing &lt;a href=&quot;http://store.mountaingoatsoftware.com/&quot;&gt;cards&lt;/a&gt; to stop this from happening.&lt;/p&gt;
 
 &lt;p&gt;Initially, it feels a little funny to use cards to do planning. However, it becomes obvious very quickly that estimation gets out of hand without them.&lt;/p&gt;
 
-&lt;h2 id='product_owner_and_the_team'&gt;Product Owner and the Team&lt;/h2&gt;
+&lt;h2 id=&quot;product-owner-and-the-team&quot;&gt;Product Owner and the Team&lt;/h2&gt;
 
 &lt;p&gt;Sometimes I will see the team working on a story that was not estimated. When asked why, the say “Oh, the product owner said we don’t have to estimate.” Ahhh. Ummm. Another time, product owners have said we don’t need to do BDD or TDD on this because we just need to “get it out”.&lt;/p&gt;
 
-&lt;h1 id='conclusion'&gt;Conclusion&lt;/h1&gt;
+&lt;h1 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h1&gt;
 
-&lt;p&gt;If you want to run a company that uses Agile you are going to need an Agile Master. That Agile Master needs to stay on their toes at all times. Of course, this means that their training is going to come in almost all the time. The most important part of that training being communication and allowing teams to form naturally. However, at the same time remembering that you need to keep people on the Agile path.&lt;/p&gt;</content>
+&lt;p&gt;If you want to run a company that uses Agile you are going to need an Agile Master. That Agile Master needs to stay on their toes at all times. Of course, this means that their training is going to come in almost all the time. The most important part of that training being communication and allowing teams to form naturally. However, at the same time remembering that you need to keep people on the Agile path.&lt;/p&gt;
+</content>
  </entry>
  
  <entry>
    <title>Out With the Branding – In With Agile Terms</title>
-   <link href="http://erichosick.github.com/Agile/agile-branding"/>
-   <updated>2010-11-05T00:00:00+07:00</updated>
-   <id>http://erichosick.github.com/Agile/agile-branding</id>
-   <content type="html">&lt;h1 id='branding_and_agile'&gt;Branding and Agile&lt;/h1&gt;
+   <link href="http://erichosick.github.com/agile/agile-branding"/>
+   <updated>2010-11-05T00:00:00-07:00</updated>
+   <id>http://erichosick.github.com/agile/agile-branding</id>
+   <content type="html">
+&lt;h1 id=&quot;branding-and-agile&quot;&gt;Branding and Agile&lt;/h1&gt;
 
 &lt;p&gt;I wanted to quickly talk about agile and branding.&lt;/p&gt;
 
-&lt;p&gt;Instead of using branded names like XP and Scrum, I thought I would try to generalise terms coined by these great systems. I took the advice of &lt;a href='http://www.mountaingoatsoftware.com/'&gt;Mike Cohn&lt;/a&gt; on this. So, for example, Scrum Master at East Agile is Agile Master. Daily Scrum is the Daily Planning Meeting. A sprint is an Iteration, etc.&lt;/p&gt;
+&lt;p&gt;Instead of using branded names like XP and Scrum, I thought I would try to generalise terms coined by these great systems. I took the advice of &lt;a href=&quot;http://www.mountaingoatsoftware.com/&quot;&gt;Mike Cohn&lt;/a&gt; on this. So, for example, Scrum Master at East Agile is Agile Master. Daily Scrum is the Daily Planning Meeting. A sprint is an Iteration, etc.&lt;/p&gt;
 
 &lt;p&gt;I did this because I wanted to focus on what makes Agile great – The Agile tools. Agile itself is a collection of the best of best known practices. In fact, there is nothing “new” about agile per-se other than Agile brought together this best of the best known practices.&lt;/p&gt;
 
 &lt;p&gt;Here is a list of why I removed the branding from Agile:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;Generalizing the terms made it easier for me to iteratively implement and introduce new Agile processes.&lt;/li&gt;
-
-&lt;li&gt;Misconceptions or bad experiences with some of the brand made people uncomfortable with implementing them.&lt;/li&gt;
-
-&lt;li&gt;Can pick and choose from different “brands” like XP, Crystal and Scrum without confusion.&lt;/li&gt;
+  &lt;li&gt;Generalizing the terms made it easier for me to iteratively implement and introduce new Agile processes.&lt;/li&gt;
+  &lt;li&gt;Misconceptions or bad experiences with some of the brand made people uncomfortable with implementing them.&lt;/li&gt;
+  &lt;li&gt;Can pick and choose from different “brands” like XP, Crystal and Scrum without confusion.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h1 id='credit_where_credit_is_due'&gt;Credit Where Credit is Due&lt;/h1&gt;
+&lt;h1 id=&quot;credit-where-credit-is-due&quot;&gt;Credit Where Credit is Due&lt;/h1&gt;
 
-&lt;p&gt;I do want to point out that I have great respect for those who created the &lt;a href='http://agilemanifesto.org/'&gt;Agile Manifesto&lt;/a&gt;. In no way do I want lesson their contribution to software engineering and the community as a whole.&lt;/p&gt;
+&lt;p&gt;I do want to point out that I have great respect for those who created the &lt;a href=&quot;http://agilemanifesto.org/&quot;&gt;Agile Manifesto&lt;/a&gt;. In no way do I want lesson their contribution to software engineering and the community as a whole.&lt;/p&gt;
 
-&lt;h1 id='conclusion'&gt;Conclusion&lt;/h1&gt;
+&lt;h1 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h1&gt;
 
 &lt;p&gt;If you are going to apply Agile in your company, try and generalise terms so you can pull the best from each brand. Implement Agile tools and processes iteratively. Don’t allow any “bad experiences” with Agile hold you back.&lt;/p&gt;
 
-&lt;p&gt;Remember to pay tribute to the original twelve.&lt;/p&gt;</content>
+&lt;p&gt;Remember to pay tribute to the original twelve.&lt;/p&gt;
+</content>
  </entry>
  
  <entry>
    <title>Behaviour Driven Development (BDD) – An Invaluable Agile Tool for your Startup</title>
-   <link href="http://erichosick.github.com/Agile/bdd-tool"/>
-   <updated>2010-11-02T00:00:00+07:00</updated>
-   <id>http://erichosick.github.com/Agile/bdd-tool</id>
-   <content type="html">&lt;h2 id='introduction'&gt;Introduction&lt;/h2&gt;
+   <link href="http://erichosick.github.com/agile/bdd-tool"/>
+   <updated>2010-11-02T00:00:00-07:00</updated>
+   <id>http://erichosick.github.com/agile/bdd-tool</id>
+   <content type="html">
+&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
 
 &lt;p&gt;You’ve been given or put on the product owner hat at your startup. You want to make a product that is successful. Optimally, that product contains that sweet spot of features that gives you that best ROI.&lt;/p&gt;
 
 &lt;p&gt;How do you assure that you provide that sweet spot?&lt;/p&gt;
 
-&lt;h2 id='use_agile_and_behaviour_driven_development_bdd'&gt;Use Agile and Behaviour Driven Development (BDD)&lt;/h2&gt;
+&lt;h2 id=&quot;use-agile-and-behaviour-driven-development-bdd&quot;&gt;Use Agile and Behaviour Driven Development (BDD)&lt;/h2&gt;
 
-&lt;h3 id='behaviour_driven_development_bdd'&gt;Behaviour Driven Development (BDD)&lt;/h3&gt;
+&lt;h3 id=&quot;behaviour-driven-development-bdd&quot;&gt;Behaviour Driven Development (BDD)&lt;/h3&gt;
 
 &lt;p&gt;I’ve been in the software industry since I was 16. I am going on 24 years of software engineering. I’ve seen a lot of fads, technologies, and ideas come and go. BDD is here to stay. It is the biggest advance in software engineering I’ve seen in over a decade.&lt;/p&gt;
 
 &lt;blockquote&gt;
-&lt;p&gt;BDD is here to stay.&lt;/p&gt;
+  &lt;p&gt;BDD is here to stay.&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;p&gt;This isn’t just the idea itself (that has been around a long time) but the implementation that is really exciting (&lt;a href='https://github.com/cucumber/cucumber'&gt;cucumber&lt;/a&gt; and &lt;a href='http://www.specflow.org/'&gt;specflow&lt;/a&gt; being two examples).&lt;/p&gt;
+&lt;p&gt;This isn’t just the idea itself (that has been around a long time) but the implementation that is really exciting (&lt;a href=&quot;https://github.com/cucumber/cucumber&quot;&gt;cucumber&lt;/a&gt; and &lt;a href=&quot;http://www.specflow.org/&quot;&gt;specflow&lt;/a&gt; being two examples).&lt;/p&gt;
 
 &lt;p&gt;It has been pointed out that BDD is too time consuming for the product owner, or product owners are just too lazy to follow something like BDD. Let’s get this out of the way as soon as possible.&lt;/p&gt;
 
-&lt;h3 id='validate_mock_and_describe_features'&gt;Validate, Mock and Describe Features&lt;/h3&gt;
+&lt;h3 id=&quot;validate-mock-and-describe-features&quot;&gt;Validate, Mock and Describe Features&lt;/h3&gt;
 
 &lt;p&gt;You have no excuse not to!&lt;/p&gt;
 
 &lt;p&gt;You’ve done the customer development, talked for hours with friends on the idea, taken input from stakeholders. Take the time to validate, mock and describe them.&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;Validate it Adds Business Value&lt;/li&gt;
-
-&lt;li&gt;Mock Your Feature&lt;/li&gt;
-
-&lt;li&gt;Describe the Feature in Detail&lt;/li&gt;
+  &lt;li&gt;Validate it Adds Business Value&lt;/li&gt;
+  &lt;li&gt;Mock Your Feature&lt;/li&gt;
+  &lt;li&gt;Describe the Feature in Detail&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h3 id='validate_features'&gt;Validate Features&lt;/h3&gt;
+&lt;h3 id=&quot;validate-features&quot;&gt;Validate Features&lt;/h3&gt;
 
 &lt;p&gt;The final goal of your startup is to be profitable. Simply adding features does not assure profitability.&lt;/p&gt;
 
 &lt;blockquote&gt;
-&lt;p&gt;Validate! Only implement features that make money!&lt;/p&gt;
+  &lt;p&gt;Validate! Only implement features that make money!&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;h3 id='mock_features'&gt;Mock Features&lt;/h3&gt;
+&lt;h3 id=&quot;mock-features&quot;&gt;Mock Features&lt;/h3&gt;
 
-&lt;p&gt;Use a tool like &lt;a href='http://balsamiq.com/'&gt;Balsamiq Mockups&lt;/a&gt; or &lt;a href='https://gomockingbird.com/'&gt;Mocking Bird&lt;/a&gt; to mock your features. These are great tools that allow the product owner to quickly explain their vision to the team.&lt;/p&gt;
+&lt;p&gt;Use a tool like &lt;a href=&quot;http://balsamiq.com/&quot;&gt;Balsamiq Mockups&lt;/a&gt; or &lt;a href=&quot;https://gomockingbird.com/&quot;&gt;Mocking Bird&lt;/a&gt; to mock your features. These are great tools that allow the product owner to quickly explain their vision to the team.&lt;/p&gt;
 
-&lt;h3 id='describe_features'&gt;Describe Features&lt;/h3&gt;
+&lt;h3 id=&quot;describe-features&quot;&gt;Describe Features&lt;/h3&gt;
 
 &lt;p&gt;You can describe the features anyway you like. Just don’t assume anything.&lt;/p&gt;
 
 &lt;p&gt;Your development Team can transform what you have described into a standardised language like Gherkin.&lt;/p&gt;
 
-&lt;h2 id='behaviour_driven_development_bdd'&gt;Behaviour Driven Development (BDD)&lt;/h2&gt;
+&lt;h2 id=&quot;behaviour-driven-development-bdd-1&quot;&gt;Behaviour Driven Development (BDD)&lt;/h2&gt;
 
 &lt;p&gt;As a product owner, you shouldn’t simply consider BDD as something you might want to use for your startup.&lt;/p&gt;
 
@@ -473,131 +553,49 @@
 
 &lt;p&gt;And here is why…&lt;/p&gt;
 
-&lt;h3 id='find_that_sweet_spot'&gt;Find that Sweet Spot&lt;/h3&gt;
+&lt;h3 id=&quot;find-that-sweet-spot&quot;&gt;Find that Sweet Spot&lt;/h3&gt;
 
-&lt;p&gt;In conjunction with ideas like &lt;a href='http://venturehacks.com/articles/customer-development'&gt;Customer Development&lt;/a&gt; and Agile, BDD helps you to focus in and describe those features that give you the best ROI.&lt;/p&gt;
+&lt;p&gt;In conjunction with ideas like &lt;a href=&quot;http://venturehacks.com/articles/customer-development&quot;&gt;Customer Development&lt;/a&gt; and Agile, BDD helps you to focus in and describe those features that give you the best ROI.&lt;/p&gt;
 
-&lt;h3 id='verify_you_get_what_you_pay_for'&gt;Verify You Get What You Pay For&lt;/h3&gt;
+&lt;h3 id=&quot;verify-you-get-what-you-pay-for&quot;&gt;Verify You Get What You Pay For&lt;/h3&gt;
 
 &lt;p&gt;With BDD, it is now possible to validate that you are getting what you asked for. There is a one-to-many relationship between the features you ask for and the source code written to cover that feature.&lt;/p&gt;
 
 &lt;p&gt;You can, and should, hire a 3rd party contractor who will verify your team (or vendor) is using best-known practices.&lt;/p&gt;
 
-&lt;h3 id='assure_quality'&gt;Assure Quality&lt;/h3&gt;
+&lt;h3 id=&quot;assure-quality&quot;&gt;Assure Quality&lt;/h3&gt;
 
-&lt;p&gt;I wrote a blog on &lt;a href='2010-11-01-specifications-quality'&gt;Specifications and Quality&lt;/a&gt; simply so I could make this very important point about BDD.&lt;/p&gt;
+&lt;p&gt;I wrote a blog on &lt;a href=&quot;2010-11-01-specifications-quality&quot;&gt;Specifications and Quality&lt;/a&gt; simply so I could make this very important point about BDD.&lt;/p&gt;
 
 &lt;p&gt;Quality is directly measured against specifications and the features of your product. If you go to your stakeholders saying you are providing a quality product, or a product for that matter, without describing your features then you are lying to your stakeholders: some of whom are investors.&lt;/p&gt;
 
 &lt;p&gt;Maybe this is something software companies could get away with before but not anymore. BDD allows you to assure quality like no other methodology has before (I will cover TDD in another post).&lt;/p&gt;
 
-&lt;h3 id='bridges_gap_between_business_and_development'&gt;Bridges Gap Between Business and Development&lt;/h3&gt;
+&lt;h3 id=&quot;bridges-gap-between-business-and-development&quot;&gt;Bridges Gap Between Business and Development&lt;/h3&gt;
 
 &lt;p&gt;It would be great if we could simply talk to a computer and ask it to do what we want. But we aren’t there yet. This is the next best thing. It might not be the perfect bridge between business and development but it is close.&lt;/p&gt;
 
 &lt;p&gt;The ability to read the features and behaviour of your system in a language that is effectively English is a huge value add for a company.&lt;/p&gt;
 
-&lt;h3 id='regression_testing'&gt;Regression Testing&lt;/h3&gt;
+&lt;h3 id=&quot;regression-testing&quot;&gt;Regression Testing&lt;/h3&gt;
 
 &lt;p&gt;A side benefit of BDD is regression testing. Every time a change is made to your software, the behaviour of your system is automatically and fully tested.&lt;/p&gt;
 
-&lt;h3 id='switch_vendors_easily'&gt;Switch Vendors Easily&lt;/h3&gt;
+&lt;h3 id=&quot;switch-vendors-easily&quot;&gt;Switch Vendors Easily&lt;/h3&gt;
 
 &lt;p&gt;Don’t like your current vendor but don’t want to have a drop in delivery time. This is no problem because the new vendor can be assured that they will not break existing behaviour.&lt;/p&gt;
 
-&lt;h3 id='switch_technology_easily'&gt;Switch Technology Easily&lt;/h3&gt;
+&lt;h3 id=&quot;switch-technology-easily&quot;&gt;Switch Technology Easily&lt;/h3&gt;
 
 &lt;p&gt;Don’t like your current technology? Just switch. BDD languages, such as Gherkin, are supported across different computer languages and platforms. Effectively, your entire business process has been described centrally in a language that anyone can understand. Your business process is not longer embedded solely in weird programming languages that most people don’t understand.&lt;/p&gt;
 
-&lt;h2 id='conclusion'&gt;Conclusion&lt;/h2&gt;
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
 
 &lt;p&gt;I could go on with advantages but I think the point is made. BDD increases reliability, provides for quality, keeps you on your toes, keeps you team on their toes, keeps people focused, allows for regression testing, provides a one-to-many correlation between specifications and source code and removes a lot of risk in the software engineering process.&lt;/p&gt;
 
-&lt;p&gt;&lt;em&gt;Require your teams to start using it today.&lt;/em&gt;&lt;/p&gt;</content>
- </entry>
- 
- <entry>
-   <title>Specifications and Quality</title>
-   <link href="http://erichosick.github.com/Agile/specifications-quality"/>
-   <updated>2010-11-01T00:00:00+07:00</updated>
-   <id>http://erichosick.github.com/Agile/specifications-quality</id>
-   <content type="html">&lt;h2 id='what_are_specifications'&gt;What are Specifications?&lt;/h2&gt;
+&lt;p&gt;&lt;em&gt;Require your teams to start using it today.&lt;/em&gt;&lt;/p&gt;
 
-&lt;p&gt;Specifications are “a detailed description of the design and materials used to make that something”.&lt;/p&gt;
-
-&lt;p&gt;Generally that “something” is a product and the detailed description is the features leaving us with:&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;Specifications describe the features of a product.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id='a_product_without_specifications_has_no_quality'&gt;A Product Without Specifications Has No Quality&lt;/h2&gt;
-
-&lt;p&gt;Two customers can have completely different expectations of what a good quality tire is:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;This tire is of low quality. I have to replace them every 30,000 kilometres. My other tires lasted me 90,000 kilometres.&lt;/li&gt;
-
-&lt;li&gt;This is a high quality tire. I can go much faster around corners.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;In both cases, the tire is soft providing better road traction allowing a car to go around corners faster. The side affect of this is that the tires have to be replaced more often.&lt;/p&gt;
-
-&lt;p&gt;This means there is no way to say the tire has quality because “quality” now becomes subjective to the user of the product. I could go on about what headaches this is going to lead to but may leave that for another post.&lt;/p&gt;
-
-&lt;h2 id='product_without_specifications_may_not_possible_to_produce'&gt;Product Without Specifications May Not Possible to Produce!&lt;/h2&gt;
-
-&lt;p&gt;I am asked to deliver a hole in a 3mm thick piece of aluminium that is 12.5mm in diameter. I proceed to drill a hole that is 12.51mm in diameter. I am told that the product does not meet the specifications. They needed a hole that is exactly 12.5mm in diameter.&lt;/p&gt;
-
-&lt;p&gt;Unfortunately, no matter how hard I try, I will not be able to make that hole exactly 12.5mm in diameter. There will always be a measuring device that will show that the hole I made is not exactly 12.5mm.&lt;/p&gt;
-
-&lt;p&gt;I could say “Yes, but it is 12.5000003mm. That is good enough.”&lt;/p&gt;
-
-&lt;p&gt;They disagree.&lt;/p&gt;
-
-&lt;p&gt;Subjective has just reared it’s ugly head. Even worse, in this case, I will not be able to make the product I committed to.&lt;/p&gt;
-
-&lt;h2 id='creating_specifications_allows_for_quality'&gt;Creating Specifications Allows for Quality&lt;/h2&gt;
-
-&lt;p&gt;Writing down specifications allows you to:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Know if the product can be made.&lt;/li&gt;
-
-&lt;li&gt;Assure you understand the vision (even if it is your own).&lt;/li&gt;
-
-&lt;li&gt;Estimate and do project management.&lt;/li&gt;
-
-&lt;li&gt;Assure you haven’t missed anything.&lt;/li&gt;
-
-&lt;li&gt;Verify the product.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;The last point is really important.&lt;/p&gt;
-
-&lt;h2 id='specifications_are_testable'&gt;Specifications ARE Testable&lt;/h2&gt;
-
-&lt;p&gt;Wow! This is amazing because you are able to test and verify that what you are making matches with what was asked for:&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;Specifications are used to verify that features are correct.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;You must have a way to measure the specifications to assure that you have met the quality expected by the customer. That is, the features of the product being made have actually been made.&lt;/p&gt;
-
-&lt;p&gt;To do this, you must be able to measure or test that you have actually delivered the specifications.&lt;/p&gt;
-
-&lt;h2 id='how_does_agile_fit_into_all_of_this'&gt;How does Agile fit into all of this?&lt;/h2&gt;
-
-&lt;p&gt;I will go into detail in other blog entries but Agile provides tools to provide specifications and assure quality while minimising costs:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Current log and backlog contains specifications managed by product owner.&lt;/li&gt;
-
-&lt;li&gt;Specifications created in detail only when they will be developed in the current iteration (don’t need to spec out an entire product in detail up-front).&lt;/li&gt;
-
-&lt;li&gt;For software, Behaviour Driven Development (BDD) allows for one-to-many correlations between features and implementation.&lt;/li&gt;
-&lt;/ul&gt;</content>
+</content>
  </entry>
  
  

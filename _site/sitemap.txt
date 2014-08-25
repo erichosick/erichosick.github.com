@@ -7,12 +7,12 @@ http://erichosick.github.com/pages.html
 http://erichosick.github.com/sitemap.txt
 http://erichosick.github.com/tags.html
 
-http://erichosick.github.com/Personal/chess-clock
-http://erichosick.github.com/Agile/coding-game
-http://erichosick.github.com/Software/developers
-http://erichosick.github.com/Agile/bdd-value
-http://erichosick.github.com/Agile/product-owner
-http://erichosick.github.com/Agile/agile-master
-http://erichosick.github.com/Agile/agile-branding
-http://erichosick.github.com/Agile/bdd-tool
-http://erichosick.github.com/Agile/specifications-quality
+http://erichosick.github.com/education/teaching-software-engineering
+http://erichosick.github.com/personal/chess-clock
+http://erichosick.github.com/agile/coding-game
+http://erichosick.github.com/software/developers
+http://erichosick.github.com/agile/bdd-value
+http://erichosick.github.com/agile/product-owner
+http://erichosick.github.com/agile/agile-master
+http://erichosick.github.com/agile/agile-branding
+http://erichosick.github.com/agile/bdd-tool
