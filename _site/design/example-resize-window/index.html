@@ -1,0 +1,379 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Resizing Windows and Configuration Re-Use</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="This time we are talking about resizing windows and more on re-using configurations in Interface Vision.">
+    <meta name="author" content="Eric Hosick">
+
+    <meta property="og:title" content="Eric Hosick" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="http://www.erichosick.com/assets/img/eric_hosick.jpg"/> 
+    <meta property="og:description" content="Eric Hosick's personal blog page and stuff."/>
+    <meta property="fb:admins" content="erichosick" />
+
+    <link href='//netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap-combined.min.css' rel='stylesheet'>    
+    <link href="/assets/themes/twitter/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <link href="http://fonts.googleapis.com/css?family=Pontano+Sans" rel="stylesheet" type="text/css">
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
+
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="http://www.erichosick.com"><img src="/assets/img/logoRuby.png"></img></a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li><a href="/index.html">Home</a></li>
+              <li><a href="/categories.html">Categories</a></li>
+              <li><a href="/pages.html">Pages</a></li>
+              <li><a href="/tags.html">Tags</a></li>
+            </ul>
+            <p class="pull-right">
+              <a class="nav-a-social" href="https://plus.google.com/101227313031284036080/posts" target="_blank"><i class="icon-google-color icon-social"></i></a>
+              <a class="nav-a-social" href="http://www.twitter.com/erichosick" target="_blank"><i class="icon-twitter-color icon-social"></i></a>
+              <a class="nav-a-social" href="mailto:erichosick@gmail.com"><i class="icon-mail-color icon-social"></i></a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>    
+
+    <div class="container-fluid container-main">
+      
+<div class="row-fluid">
+  <div class="span3">
+    <div class="well sidebar-nav">
+  <ul class="nav nav-list">
+    <li class="nav-header">About</li>
+    <li><img src="/assets/img/eric_hosick.jpg" class="img-rounded"></li>
+    <li> <a href="http://www.erichosick.com">Eric Hosick</a><p class="nav-about">Creator of Interface Vision, NoMethods, Agile enthusiast, entrepreneur, founder, BDD advocate, lecturer, technologist, developer, scrum master and book writer.</p></li>
+    <li><p><a href="http://twitter.com/erichosick" target="_blank">erichosick@gmail.com</a></p></li>
+  </ul>
+</div>
+
+    
+    <div class="well sidebar-nav">
+      <ul class="nav nav-list">
+        <li class="nav-header">Tags</li>
+        
+        
+
+
+  
+     
+    	<li><a href="/tags.html#Code re-use-ref">Code re-use <span>4</span></a></li>
+     
+    	<li><a href="/tags.html#Interface Vision-ref">Interface Vision <span>12</span></a></li>
+     
+    	<li><a href="/tags.html#resize-ref">resize <span>5</span></a></li>
+    
+  
+
+
+
+      </ul>
+    </div><!--/.well -->
+      
+    
+  </div>
+  <div class="span9">
+    <div class="hero-unit">
+      <div class="page-header">
+        <h1>Resizing Windows and Configuration Re-Use</h1>
+        <div class="row-fluid">
+          <div class="span2">
+            <img src="/assets/img/eric_hosick.jpg" class="img-rounded">
+          </div>
+          <div class="span8">
+            <p>by <a href="http://twitter.com/erichosick" target="_blank">Eric Hosick</a> (erichosick@gmail.com)</p>
+            <h4>Published <small class="date">16 January 2014</small></h4>
+          </div>
+        </div>
+      </div>
+      <h2 id="introduction">Introduction</h2>
+
+<p>I was planning on blogging about zooming in and out but it’s been a challenge (which I will talk about in detail when we do get it working).</p>
+
+<p>So, we’ve taken a quick detour and decided to add resizing of windows. This was surprisingly simple in Interface Vision. We also did some refactoring to take advantage of the ability for properties to contain behavior.</p>
+
+<h3 id="the-results">The Results</h3>
+
+<iframe width="746" height="420" src="http://www.youtube.com/embed/mhfJohCRCrg?vq=hd1080" frameborder="0" allowfullscreen="allowfullscreen"> </iframe>
+
+<h2 id="calculating-how-much-we-moved-our-mousefinger">Calculating How Much We Moved Our Mouse/Finger</h2>
+
+<p>In our post on <a href="/design/example-window-move">draggable controls</a>, we needed to calculate the difference between where the mouse/finger is and where it was. We could then add this delta to the windows left top corner giving us the new window position.</p>
+
+<p>Our initial configuration, using <a href="/design/design-composition-based-language">SipCoffee</a> to adjust:</p>
+
+<p>the left of the window:</p>
+
+<pre><code>Add (
+  left PropDynamicGet ( nameStr "left" part PropScopeGet ( nameStr "viewFocus") )
+  right Subtract (
+    left PropGet ( nameStr "x" part PropScopeGet ( nameStr "position") )
+    right PropGet ( nameStr "x" part PropScopeGet ( nameStr "positionPrior") )
+  )
+)
+</code></pre>
+
+<p>the top of the window.</p>
+
+<pre><code>Add (
+  left PropDynamicGet ( nameStr "top" part PropScopeGet ( nameStr "viewFocus") )
+  right Subtract (
+    left PropGet ( nameStr "y" part PropScopeGet ( nameStr "position") )
+    right PropGet ( nameStr "y" part PropScopeGet ( nameStr "positionPrior") )
+  )
+)
+</code></pre>
+
+<p>Resizing a window will also require knowing the distance a Mouse/Finger moved. So, let’s turn the delta behavior into something that is re-usable.</p>
+
+<p>{#position-delta-config}
+First, let’s add the delta behavior to the program’s scope calling them ‘posDeltaX’ and ‘posDeltaY’ so they can be re-used in other parts of the configuration:</p>
+
+<pre><code>Scope (
+  properties HashTable (
+    ... // other properites here
+    insert PartNamedString ( keyString "posDeltaX"
+      part Subtract (
+        left PropGet ( nameStr "x" part PropScopeGet ( nameStr "position") )
+        right PropGet ( nameStr "x" part PropScopeGet ( nameStr "positionPrior") )
+      )
+    )
+    insert PartNamedString ( keyString "posDeltaY"
+      part Subtract (
+        left PropGet ( nameStr "y" part PropScopeGet ( nameStr "position") )
+        right PropGet ( nameStr "y" part PropScopeGet ( nameStr "positionPrior") )
+      )
+    )
+  )
+)
+</code></pre>
+
+<p>and now let’s re-factor our Add to use the “named” behavior:</p>
+
+<p>for left:</p>
+
+<pre><code>Add (
+  left PropDynamicGet ( nameStr "left" part PropScopeGet ( nameStr "viewFocus") )
+  right PropScopeGet ( nameStr "posDeltaX" )
+)
+</code></pre>
+
+<p>for top:</p>
+
+<pre><code>Add (
+  left PropDynamicGet ( nameStr "top" part PropScopeGet ( nameStr "viewFocus") )
+  right PropScopeGet ( nameStr "posDeltaY" )
+)
+</code></pre>
+
+<p>This is looking a lot better. When Add.right is accessed, PropScopeGet is run. ProprScopeGet causes the behavior in posDeltaX or posDeltaY to run causing the subtraction.</p>
+
+<p>How very interesting. The subtraction behavior has access to posDeltaX and posDeltaY even though it was defined outside of the Scope’s part property. How does that work?</p>
+
+<h3 id="the-scope-part-is-nest-able">The Scope Part Is Nest-able</h3>
+
+<p>One of the cool things about Scope Parts is that they are nest-able: scopes can contain scope.</p>
+
+<div id="id-f1-1-top">&nbsp;</div>
+<p class="pagination-centered"><img class="img-polaroid" src="/assets/img/example_scope_nesting.png" /><img /></p>
+<p>###### Figure-1.1: Scopes can nest allowing behavior to access properties of any scope ‘above’ them. {#id-f1-1}</p>
+
+<p>This is really powerful because behavior, even configured outside of the scope, run within a scope has access to that scope’s properties and any scope ‘above’ the behavior.</p>
+
+<h2 id="moving-and-resizing-windows">Moving And Resizing Windows</h2>
+
+<p>To move a window, we take our deltas (posDeltaX and posDeltaX) and we add them to the top, left corner of the window.
+To resize a window, we take that same delta and add it to the width and height of the window.</p>
+
+<p>We can re-use the exact same logic as we did for moving a window but replace “top” (of the window) with “height” (of the window) and “left” with “width”.</p>
+
+<p>First, let’s create a configuration, placed within the main scope, that can both resize and move a window:</p>
+
+<pre><code>Scope (
+  properties HashTable (
+    ... // other properites here
+    insert PartNamedString ( keyString "viewResMov"
+      part ArrayList ( callBehavior true
+        insert PropSet ( nameStr "withFloat"
+          part PropDynamicGet ( name PropScopeGet ( nameStr "scopeHeight" )
+            part PropScopeGet ( nameStr "uxViewFocus" )
+          )
+          source Add (
+            left PropDynamicGet ( name PropScopeGet ( nameStr "scopeHeight" )
+              part PropScopeGet ( nameStr "uxViewFocus" )
+            )
+            right PropScopeGet ( nameStr "posDeltaY" )
+          )
+        )
+        insert PropSet ( nameStr "withFloat"
+          part PropDynamicGet ( name PropScopeGet ( nameStr "scopeWidth" )
+            part PropScopeGet ( nameStr "uxViewFocus" )
+          )
+          source Add (
+            left PropDynamicGet ( name PropScopeGet ( nameStr "scopeWidth" )
+              part PropScopeGet ( nameStr "uxViewFocus" )
+            )
+            right PropScopeGet ( nameStr "posDeltaX" )
+          )
+        )
+      )
+    )
+  )
+)
+</code></pre>
+
+<p>The interesting part is that original configurations for PropDynamicGet had “hard coded” the name of the property to get: in this case “hard coded” to “top”.</p>
+
+<pre><code>PropDynamicGet ( nameStr "top" part PropScopeGet ( nameStr "viewFocus") )
+</code></pre>
+
+<p>The new configuration gets the name of the property using PropScopeGet:</p>
+
+<pre><code>PropDynamicGet ( name PropScopeGet ( nameStr "scopeHeight" )
+  part PropScopeGet ( nameStr "uxViewFocus" )
+)
+</code></pre>
+
+<p>{#shared-resize-move}</p>
+
+<p>All we have to do then is run our configuration within a Scope that has an extended-property named “scopeHeight”. Our original configuration for moving windows was <a href="/design/example-shared-configuration#configuring-properties">here</a>. Let’s see what our changes have done:</p>
+
+<pre><code>insert PartNamedString ( keyString "behaviorPanProcEnd"
+  part ArrayList ( callBehavior true
+    insert PropScopeSet ( nameStr "positionPrior"
+      source PropGet ( nameStr "posInWindow" part PropScopeGet ( nameStr "eventCurrent" ) )
+    )
+    insert When (
+      condition IsNotNil ( part PropDynamicGet ( nameStr "draggable" required false part PropScopeGet ( nameStr "controlFocus" )) )
+      action ArrayList ( callBehavior true
+        insert Scope (
+          properties HashTable (
+            insert StringKeyString ( keyString "scopeHeight" withString = "top" )
+            insert StringKeyString ( keyString "scopeWidth" withString = "left" )
+          )
+          part PropScopeGet ( nameStr "viewResMov" )
+        )
+      )
+    )
+    insert When (
+      condition IsNotNil ( part PropDynamicGet ( nameStr "draggable" required false part PropScopeGet ( nameStr "controlFocus" )) )
+      action ArrayList ( callBehavior true
+        insert Scope (
+          properties HashTable (
+            insert StringKeyString ( keyString "scopeHeight" withString = "height" )
+            insert StringKeyString ( keyString "scopeWidth" withString = "width" )
+          )
+          part PropScopeGet ( nameStr "viewResMov" )
+        )
+      )
+   )
+)        
+</code></pre>
+
+<p>We can now re-use the “viewResMov” behavior for both moving and resizing windows.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>We’ve been able to further refactor or configuration to improve on re-use by taking advantage of the nesting feature of Scope. We’ll probably write a post on how nesting Scope is so much more awesome than relying on the function calling chain: passing information through parameters all the way down.</p>
+
+<p>If you find our work interesting, please follow us <a href="http://www.twitter.com/interfaceVision">@interfaceVision</a> and/or <a href="http://www.twitter.com/erichosick">@erichosick</a>.</p>
+
+<h2 id="next-step">Next Step</h2>
+
+<p>The <a href="/design/example-zoom-in-out">next step</a> in our goal of creating Interface Vision’s Gui based visual development environment is to allow us to zoom in and out of a view using the pinch gesture.</p>
+
+<p>The <a href="/design/example-shared-configuration">prior step</a> allows us to ‘re-use’ parts of a configuration.</p>
+
+      <hr>
+      <div class="pagination pagination-centered">
+        <ul>
+        
+          <li class="prev"><a href="/design/example-shared-configuration" title="Configuration re-use">&larr; Previous</a></li>
+        
+          <li><a href="/archive.html">Archive</a></li>
+        
+          <li class="next"><a href="/design/example-zoom-in-out" title="Zooming And Scaling">Next &rarr;</a></li>
+        
+        </ul>
+      </div>    
+      <hr>
+      <div>
+        
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_developer = 1;
+    var disqus_shortname = 'erichosickblog'; // required: replace example with your forum shortname
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+      </div>
+
+    </div>    
+  </div>
+</div>
+
+
+
+      <hr>
+      <footer>
+         <p>&copy; <a href="http://www.twitter.com/erichosick" target="_blank">Eric Hosick</a> 2012</p>
+       </footer>
+    </div>    
+    <!--
+
+    <script src="/assets/js/jquery.js"></script>
+    <script src="/assets/js/bootstrap-transition.js"></script>
+    <script src="/assets/js/bootstrap-alert.js"></script>
+    <script src="/assets/js/bootstrap-modal.js"></script>
+    <script src="/assets/js/bootstrap-dropdown.js"></script>
+    <script src="/assets/js/bootstrap-scrollspy.js"></script>
+    <script src="/assets/js/bootstrap-tab.js"></script>
+    <script src="/assets/js/bootstrap-tooltip.js"></script>
+    <script src="/assets/js/bootstrap-popover.js"></script>
+    <script src="/assets/js/bootstrap-button.js"></script>
+    <script src="/assets/js/bootstrap-collapse.js"></script>
+    <script src="/assets/js/bootstrap-carousel.js"></script>
+    <script src="/assets/js/bootstrap-typeahead.js"></script>
+    
+    -->
+
+    
+  </body>
+</html>
+

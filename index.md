@@ -15,12 +15,6 @@ group: navigation
   </div>
   <div class="span9">
     <div class="hero-unit">
-      
-      <h1>Introduction</h1>
-      
-      <p>This site contains posts that are of a more personal nature. Posts specific to Interface Vision are located at the <a href ="http://blog.interfacevision.com">Interface Vision Blog.</a></p>
-      <p>I've left the interface vision logo on my personal blog because, if you really want to learn what I am <strong>passionate</strong> about, you should visit <a hreft="http://www.interfacevision.com">Interface Vision</a>.</p>
-
       <h1>Blog Posts</h1>
       <ul>
         {% if site.JB.posts_collate.provider == "custom" %}

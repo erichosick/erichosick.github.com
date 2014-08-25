@@ -1,0 +1,261 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Interface Vision Version 0.1</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Eric Hosick">
+
+    <meta property="og:title" content="Eric Hosick" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="http://www.erichosick.com/assets/img/eric_hosick.jpg"/> 
+    <meta property="og:description" content="Eric Hosick's personal blog page and stuff."/>
+    <meta property="fb:admins" content="erichosick" />
+
+    <link href='//netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap-combined.min.css' rel='stylesheet'>    
+    <link href="/assets/themes/twitter/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <link href="http://fonts.googleapis.com/css?family=Pontano+Sans" rel="stylesheet" type="text/css">
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
+
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="http://www.erichosick.com"><img src="/assets/img/logoRuby.png"></img></a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li><a href="/index.html">Home</a></li>
+              <li><a href="/categories.html">Categories</a></li>
+              <li><a href="/pages.html">Pages</a></li>
+              <li><a href="/tags.html">Tags</a></li>
+            </ul>
+            <p class="pull-right">
+              <a class="nav-a-social" href="https://plus.google.com/101227313031284036080/posts" target="_blank"><i class="icon-google-color icon-social"></i></a>
+              <a class="nav-a-social" href="http://www.twitter.com/erichosick" target="_blank"><i class="icon-twitter-color icon-social"></i></a>
+              <a class="nav-a-social" href="mailto:erichosick@gmail.com"><i class="icon-mail-color icon-social"></i></a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>    
+
+    <div class="container-fluid container-main">
+      
+<div class="row-fluid">
+  <div class="span3">
+    <div class="well sidebar-nav">
+  <ul class="nav nav-list">
+    <li class="nav-header">About</li>
+    <li><img src="/assets/img/eric_hosick.jpg" class="img-rounded"></li>
+    <li> <a href="http://www.erichosick.com">Eric Hosick</a><p class="nav-about">Creator of Interface Vision, NoMethods, Agile enthusiast, entrepreneur, founder, BDD advocate, lecturer, technologist, developer, scrum master and book writer.</p></li>
+    <li><p><a href="http://twitter.com/erichosick" target="_blank">erichosick@gmail.com</a></p></li>
+  </ul>
+</div>
+
+    
+    <div class="well sidebar-nav">
+      <ul class="nav nav-list">
+        <li class="nav-header">Tags</li>
+        
+        
+
+
+  
+     
+    	<li><a href="/tags.html#C#-ref">C# <span>2</span></a></li>
+     
+    	<li><a href="/tags.html#NoMethods-ref">NoMethods <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#framework-ref">framework <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#iPad-ref">iPad <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#iPhone-ref">iPhone <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#interface vision-ref">interface vision <span>1</span></a></li>
+    
+  
+
+
+
+      </ul>
+    </div><!--/.well -->
+      
+    
+  </div>
+  <div class="span9">
+    <div class="hero-unit">
+      <div class="page-header">
+        <h1>Interface Vision Version 0.1</h1>
+        <div class="row-fluid">
+          <div class="span2">
+            <img src="/assets/img/eric_hosick.jpg" class="img-rounded">
+          </div>
+          <div class="span8">
+            <p>by <a href="http://twitter.com/erichosick" target="_blank">Eric Hosick</a> (erichosick@gmail.com)</p>
+            <h4>Published <small class="date">25 April 2012</small></h4>
+          </div>
+        </div>
+      </div>
+      
+<h2 id="introduction">Introduction</h2>
+
+<p>Today is a bit of a milestone. We’ve been able to create an iPad/iPhone app using the Interface Vision Framework. The cool thing… The framework requires no coding to use. Ok, that isn’t exactly true but read on…</p>
+
+<h2 id="about-the-video">About the Video</h2>
+
+<p>The video shows a very simple OpenGl demo program running on an iPad. Nothing new there. The new thing is that everything about the program was created using configuration code: about 460 lines of it. Currently, this involves a lot of calls to constructors and the setting of properties. However, in the future, the configuration will be stored in json and serialization used to create instances (this is when the no coding part is realized).</p>
+
+<iframe src="http://player.vimeo.com/video/41001941" width="640" height="360" frameborder="0" webkitallowfullscreen="webkitallowfullscreen" mozallowfullscreen="mozallowfullscreen" allowfullscreen="allowfullscreen"> </iframe>
+
+<h2 id="example-configuration">Example Configuration</h2>
+
+<p>Here is an example configuration. In this case, it is the OpenGl shaders:</p>
+
+<pre><code>ISimpleClass shaderList = new AggregateArrayList {};
+shaderList.actionInsert = new ProgramShaderNative {
+  shadingScript = new Vision.Core.String {
+    withString = @"
+      attribute vec4 position;
+      attribute vec4 color;
+      varying vec4 colorVarying;
+      uniform float translate;
+      void main() {
+        gl_Position = position;
+        gl_Position.y += sin(translate) / 2.0;
+        colorVarying = color;
+      }"
+  },
+  shaderType = ShaderType.vertexShader
+};
+shaderList.actionInsert = new ProgramShaderNative {
+  shadingScript = new Vision.Core.String {
+    withString = @"
+      varying lowp vec4 colorVarying;
+
+      void main() {
+        gl_FragColor = colorVarying;
+      }"
+  } ,
+  shaderType = ShaderType.fragmentShader
+};
+</code></pre>
+
+<p>Here is an example of the OpenGL “camera”:</p>
+
+<pre><code>ISimpleClass result = new Camera
+  sceneToRender = new ProgramGlslNative {
+    uniforms = uniformList,
+    attributes = attributeList,
+    shaders = shaderList
+  } ,
+  onCameraSetup = new GlClearColorNative {
+    color = new Vec4f {
+      r = 0.0f,
+      g = 0.0f,
+      b = 0.0f,
+      a = 1.0f
+    }
+  },
+  onSceneRenderBefore = new GlClearNative {
+    clearValue = ClearBufferMask.colorBufferBit
+  }
+};
+</code></pre>
+
+<h2 id="future">Future</h2>
+
+<p>There is a chicken and egg problem with all of this. Eventually, we hope to be able to configure behaviour of Interface Vision within Interface Vision itself. However, for now, we have to resort to the Macintosh to finish out the framework and setup the configuration files.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>For us, this is quite exciting. It is a good test of the framework. The fact it takes so few lines of configuration code to get a program up and running in OpenGL on an iPad with user interaction is a great test of the technology behind Interface Vision.</p>
+
+      <hr>
+      <div class="pagination pagination-centered">
+        <ul>
+        
+          <li class="prev"><a href="/agile/coding-game" title="You see Coding as a Loosing Game if You Focus on Testing">&larr; Previous</a></li>
+        
+          <li><a href="/archive.html">Archive</a></li>
+        
+          <li class="next"><a href="/framework/object-aggregate" title="Should the Class Object Be Enumerable?">Next &rarr;</a></li>
+        
+        </ul>
+      </div>    
+      <hr>
+      <div>
+        
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_developer = 1;
+    var disqus_shortname = 'erichosickblog'; // required: replace example with your forum shortname
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+      </div>
+
+    </div>    
+  </div>
+</div>
+
+
+
+      <hr>
+      <footer>
+         <p>&copy; <a href="http://www.twitter.com/erichosick" target="_blank">Eric Hosick</a> 2012</p>
+       </footer>
+    </div>    
+    <!--
+
+    <script src="/assets/js/jquery.js"></script>
+    <script src="/assets/js/bootstrap-transition.js"></script>
+    <script src="/assets/js/bootstrap-alert.js"></script>
+    <script src="/assets/js/bootstrap-modal.js"></script>
+    <script src="/assets/js/bootstrap-dropdown.js"></script>
+    <script src="/assets/js/bootstrap-scrollspy.js"></script>
+    <script src="/assets/js/bootstrap-tab.js"></script>
+    <script src="/assets/js/bootstrap-tooltip.js"></script>
+    <script src="/assets/js/bootstrap-popover.js"></script>
+    <script src="/assets/js/bootstrap-button.js"></script>
+    <script src="/assets/js/bootstrap-collapse.js"></script>
+    <script src="/assets/js/bootstrap-carousel.js"></script>
+    <script src="/assets/js/bootstrap-typeahead.js"></script>
+    
+    -->
+
+    
+  </body>
+</html>
+

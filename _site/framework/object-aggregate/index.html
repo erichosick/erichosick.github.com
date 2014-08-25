@@ -1,0 +1,315 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Should the Class Object Be Enumerable?</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Eric Hosick">
+
+    <meta property="og:title" content="Eric Hosick" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="http://www.erichosick.com/assets/img/eric_hosick.jpg"/> 
+    <meta property="og:description" content="Eric Hosick's personal blog page and stuff."/>
+    <meta property="fb:admins" content="erichosick" />
+
+    <link href='//netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap-combined.min.css' rel='stylesheet'>    
+    <link href="/assets/themes/twitter/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <link href="http://fonts.googleapis.com/css?family=Pontano+Sans" rel="stylesheet" type="text/css">
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
+
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="http://www.erichosick.com"><img src="/assets/img/logoRuby.png"></img></a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li><a href="/index.html">Home</a></li>
+              <li><a href="/categories.html">Categories</a></li>
+              <li><a href="/pages.html">Pages</a></li>
+              <li><a href="/tags.html">Tags</a></li>
+            </ul>
+            <p class="pull-right">
+              <a class="nav-a-social" href="https://plus.google.com/101227313031284036080/posts" target="_blank"><i class="icon-google-color icon-social"></i></a>
+              <a class="nav-a-social" href="http://www.twitter.com/erichosick" target="_blank"><i class="icon-twitter-color icon-social"></i></a>
+              <a class="nav-a-social" href="mailto:erichosick@gmail.com"><i class="icon-mail-color icon-social"></i></a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>    
+
+    <div class="container-fluid container-main">
+      
+<div class="row-fluid">
+  <div class="span3">
+    <div class="well sidebar-nav">
+  <ul class="nav nav-list">
+    <li class="nav-header">About</li>
+    <li><img src="/assets/img/eric_hosick.jpg" class="img-rounded"></li>
+    <li> <a href="http://www.erichosick.com">Eric Hosick</a><p class="nav-about">Creator of Interface Vision, NoMethods, Agile enthusiast, entrepreneur, founder, BDD advocate, lecturer, technologist, developer, scrum master and book writer.</p></li>
+    <li><p><a href="http://twitter.com/erichosick" target="_blank">erichosick@gmail.com</a></p></li>
+  </ul>
+</div>
+
+    
+    <div class="well sidebar-nav">
+      <ul class="nav nav-list">
+        <li class="nav-header">Tags</li>
+        
+        
+
+
+  
+     
+    	<li><a href="/tags.html#Interface Vision-ref">Interface Vision <span>12</span></a></li>
+     
+    	<li><a href="/tags.html#Aggregate-ref">Aggregate <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#Collection-ref">Collection <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#Objects-ref">Objects <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#Framework-ref">Framework <span>3</span></a></li>
+     
+    	<li><a href="/tags.html#Architecture-ref">Architecture <span>2</span></a></li>
+    
+  
+
+
+
+      </ul>
+    </div><!--/.well -->
+      
+    
+  </div>
+  <div class="span9">
+    <div class="hero-unit">
+      <div class="page-header">
+        <h1>Should the Class Object Be Enumerable?</h1>
+        <div class="row-fluid">
+          <div class="span2">
+            <img src="/assets/img/eric_hosick.jpg" class="img-rounded">
+          </div>
+          <div class="span8">
+            <p>by <a href="http://twitter.com/erichosick" target="_blank">Eric Hosick</a> (erichosick@gmail.com)</p>
+            <h4>Published <small class="date">15 November 2012</small></h4>
+          </div>
+        </div>
+      </div>
+      
+<h2 id="introduction">Introduction</h2>
+
+<p>We’ve spent a lot of time thinking about framework. One question we asked ourselves was:</p>
+
+<blockquote>
+  <p>Should our class object be enumerable?</p>
+</blockquote>
+
+<p><a href="http://en.wikipedia.org/wiki/Jonathan_Swift">Jonathan Swift</a> has something to say on this:</p>
+
+<blockquote>
+  <p>So nat’ralists observe, a flea
+Hath smaller fleas that on him prey;
+And these have smaller fleas to bite ‘em.
+And so proceeds <a href="http://en.wikipedia.org/wiki/Ad_infinitum">Ad infinitum</a></p>
+</blockquote>
+
+<h3 id="our-thoughts">Our Thoughts</h3>
+
+<p>We started by asking ourselves if all things in the Universe are composed of other things. The answer is apparently a big yes (though it could be that at some point, at some quantum level, this is not the case).</p>
+
+<div class="pagination-centered img-polaroid">
+  <p>
+    <img src="/assets/img/object-aggregate-tortugues.jpg" alt="" />
+  </p>
+</div>
+
+<p>Being that all things in the real world are composed of other things, it made sense for us to add this behavior to our class object.</p>
+
+<h3 id="an-example">An Example</h3>
+
+<p>Let’s look at what a foreach loop looks like within our framework:</p>
+
+<pre><code>...
+object information = new Thing();
+foreach ( object o in information) {
+  o.action = Empty.instance;
+}
+...
+</code></pre>
+
+<p>In this case, we have some information of type object. We do not know if that information is an actual aggregate or a single instance (though we do allow you to query if an object is an actual aggregate by calling isAggregate). However, this doesn’t matter and we are able to traverse the returned object instance.</p>
+
+<p>Traditionally, a developer would have to write something like this:</p>
+
+<pre><code>...
+object information = new Thing();
+if ( information is AggregateThing) {
+  foreach ( object o in (information as AggregateThing)) {
+    o.action = Empty.instance;
+  }
+} else {
+  o.action = Empty.instance;
+}
+...
+</code></pre>
+
+<h3 id="we-are-anti-if">We Are Anti-If</h3>
+
+<p>From our example usage, you can see that we do not need an if statement.</p>
+
+<p>Personally, I’m a fan of the <a href="http://www.antiifcampaign.com/">Anti-if Campaign</a>. Treating all objects as aggregates allows us to remove quite a few ifs from our framework and also allows users of our framework to use less ifs.</p>
+
+<h3 id="implementation">Implementation</h3>
+
+<p>Treating object as an instance is relatively easy.</p>
+
+<p>The length of object is always 1.</p>
+
+<pre><code>...
+public virtual int length {
+  get { return 1; }
+}
+...
+</code></pre>
+
+<p>Making the instance enumerable requires a little extra work (note this is for C#):</p>
+
+<pre><code>public virtual IEnumerable enumerable {
+  get {
+    IEnumerable result = new ObjectEnumerable() {  
+      theEnumerator =  new ObjectEnumerator() { singleItem = this } as IEnumerator
+    } as IEnumerable;
+    return result;
+  }
+}
+</code></pre>
+
+<p>Implementing the indexers is a little more difficult requiring design decisions.</p>
+
+<pre><code>public virtual IItem this[int position] {
+  get {
+    return this;
+  }
+  set {
+    throw new Exception("No can do.");
+  }
+}
+</code></pre>
+
+<p>In the example code, for get, we are simply returning the instance. Should we throw an exception if the index is greater than 0? We are of the mind set that exceptions are bad. So, it might be better to just ignore the index itself and always return this.</p>
+
+<p>Setting also requires some consideration. We really can’t set the single instance. Overwriting the properties of the existing object with the new object’s properties is probably totally out of the question.</p>
+
+<p>Throwing an exception is an option, as was done, but perhaps simply ignoring the set is the best option.</p>
+
+<p>Design decisions.</p>
+
+<h3 id="systems-thinking">Systems Thinking</h3>
+
+<p>In systems thinking, every part of that system must be required to transform some input into a desired output. If you are able to remove any part of that system, and still have the same desired output, then it’s not a system. You have to remove that part of the system.</p>
+
+<p>Of course, this is based on the context of the system and desired output.</p>
+
+<p>From the standpoint of systems thinking, a coded object is not necessarily always an aggregate. In this way, we have violated a principal of systems thinking.</p>
+
+<h3 id="conclusion">Conclusion</h3>
+
+<p>All objects in the Universe are composed of other objects so, within our framework, object should also be enumerable.</p>
+
+<p>Treating object as an enumerable allowed us to greatly simplify our framework and usage of our framework.</p>
+
+<h3 id="references">References</h3>
+
+<p>Image from <a href="http://en.wikipedia.org/wiki/File:Giambologna_tortugues.jpg">http://en.wikipedia.org/wiki/File:Giambologna_tortugues.jpg</a>.</p>
+
+
+      <hr>
+      <div class="pagination pagination-centered">
+        <ul>
+        
+          <li class="prev"><a href="/interface%20vision/vision-01" title="Interface Vision Version 0.1">&larr; Previous</a></li>
+        
+          <li><a href="/archive.html">Archive</a></li>
+        
+          <li class="next"><a href="/personal/chess-clock" title="Entrepreneurship and Chess Clocks">Next &rarr;</a></li>
+        
+        </ul>
+      </div>    
+      <hr>
+      <div>
+        
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_developer = 1;
+    var disqus_shortname = 'erichosickblog'; // required: replace example with your forum shortname
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+      </div>
+
+    </div>    
+  </div>
+</div>
+
+
+
+      <hr>
+      <footer>
+         <p>&copy; <a href="http://www.twitter.com/erichosick" target="_blank">Eric Hosick</a> 2012</p>
+       </footer>
+    </div>    
+    <!--
+
+    <script src="/assets/js/jquery.js"></script>
+    <script src="/assets/js/bootstrap-transition.js"></script>
+    <script src="/assets/js/bootstrap-alert.js"></script>
+    <script src="/assets/js/bootstrap-modal.js"></script>
+    <script src="/assets/js/bootstrap-dropdown.js"></script>
+    <script src="/assets/js/bootstrap-scrollspy.js"></script>
+    <script src="/assets/js/bootstrap-tab.js"></script>
+    <script src="/assets/js/bootstrap-tooltip.js"></script>
+    <script src="/assets/js/bootstrap-popover.js"></script>
+    <script src="/assets/js/bootstrap-button.js"></script>
+    <script src="/assets/js/bootstrap-collapse.js"></script>
+    <script src="/assets/js/bootstrap-carousel.js"></script>
+    <script src="/assets/js/bootstrap-typeahead.js"></script>
+    
+    -->
+
+    
+  </body>
+</html>
+

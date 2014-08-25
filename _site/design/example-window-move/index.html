@@ -1,0 +1,609 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Configurable Dragging of Gui Controls</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="How we got dragging of Gui controls to work in iOS and OSX on a scrollable view.">
+    <meta name="author" content="Eric Hosick">
+
+    <meta property="og:title" content="Eric Hosick" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="http://www.erichosick.com/assets/img/eric_hosick.jpg"/> 
+    <meta property="og:description" content="Eric Hosick's personal blog page and stuff."/>
+    <meta property="fb:admins" content="erichosick" />
+
+    <link href='//netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap-combined.min.css' rel='stylesheet'>    
+    <link href="/assets/themes/twitter/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <link href="http://fonts.googleapis.com/css?family=Pontano+Sans" rel="stylesheet" type="text/css">
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
+
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="http://www.erichosick.com"><img src="/assets/img/logoRuby.png"></img></a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li><a href="/index.html">Home</a></li>
+              <li><a href="/categories.html">Categories</a></li>
+              <li><a href="/pages.html">Pages</a></li>
+              <li><a href="/tags.html">Tags</a></li>
+            </ul>
+            <p class="pull-right">
+              <a class="nav-a-social" href="https://plus.google.com/101227313031284036080/posts" target="_blank"><i class="icon-google-color icon-social"></i></a>
+              <a class="nav-a-social" href="http://www.twitter.com/erichosick" target="_blank"><i class="icon-twitter-color icon-social"></i></a>
+              <a class="nav-a-social" href="mailto:erichosick@gmail.com"><i class="icon-mail-color icon-social"></i></a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>    
+
+    <div class="container-fluid container-main">
+      
+<div class="row-fluid">
+  <div class="span3">
+    <div class="well sidebar-nav">
+  <ul class="nav nav-list">
+    <li class="nav-header">About</li>
+    <li><img src="/assets/img/eric_hosick.jpg" class="img-rounded"></li>
+    <li> <a href="http://www.erichosick.com">Eric Hosick</a><p class="nav-about">Creator of Interface Vision, NoMethods, Agile enthusiast, entrepreneur, founder, BDD advocate, lecturer, technologist, developer, scrum master and book writer.</p></li>
+    <li><p><a href="http://twitter.com/erichosick" target="_blank">erichosick@gmail.com</a></p></li>
+  </ul>
+</div>
+
+    
+    <div class="well sidebar-nav">
+      <ul class="nav nav-list">
+        <li class="nav-header">Tags</li>
+        
+        
+
+
+  
+     
+    	<li><a href="/tags.html#Composition-ref">Composition <span>4</span></a></li>
+     
+    	<li><a href="/tags.html#Interface Vision-ref">Interface Vision <span>12</span></a></li>
+     
+    	<li><a href="/tags.html#Window-ref">Window <span>3</span></a></li>
+     
+    	<li><a href="/tags.html#Event-ref">Event <span>2</span></a></li>
+     
+    	<li><a href="/tags.html#Events-ref">Events <span>2</span></a></li>
+     
+    	<li><a href="/tags.html#Drag and Drop-ref">Drag and Drop <span>2</span></a></li>
+    
+  
+
+
+
+      </ul>
+    </div><!--/.well -->
+      
+    
+  </div>
+  <div class="span9">
+    <div class="hero-unit">
+      <div class="page-header">
+        <h1>Configurable Dragging of Gui Controls</h1>
+        <div class="row-fluid">
+          <div class="span2">
+            <img src="/assets/img/eric_hosick.jpg" class="img-rounded">
+          </div>
+          <div class="span8">
+            <p>by <a href="http://twitter.com/erichosick" target="_blank">Eric Hosick</a> (erichosick@gmail.com)</p>
+            <h4>Published <small class="date">13 January 2014</small></h4>
+          </div>
+        </div>
+      </div>
+      <h2 id="introduction">Introduction</h2>
+
+<p>This took a little longer to get working than we thought it would. There really are quite a few differences between iOS and OSX. Getting them to work using the same configuration was a bit of a challenge.</p>
+
+<p>In this post, we are going to show how we used our [configurable event system] (/design/example-events-basic) to configure the dragging of controls.</p>
+
+<h3 id="the-results">The Results</h3>
+
+<iframe width="746" height="420" src="http://www.youtube.com/embed/hQPRShW7Qfc?vq=hd1080" frameborder="0" allowfullscreen="allowfullscreen"> </iframe>
+
+<h3 id="the-approach">The Approach</h3>
+
+<p>We want a user to be able to drag controls around on a screen using a button attached to the window.</p>
+
+<p>We will use the Pan Gesture with a single finger touch and apply the following logic:</p>
+
+<ul>
+  <li>At the beginning of the Pan gesture, we set a prior event to the current event (automatically set by the event system). If there is a control at the position of the current event, we set a reference at this step.</li>
+  <li>During the processing of the Pan gesture, we check if the current control is marked “draggable”. If the control is draggable, we update the view’s frame position based on the distance a mouse/finger moved.</li>
+  <li>We then update the prior position to the current position (for the next pan gesture).</li>
+  <li>During the ending of the Pan gesture, we also update the view’s frame position for that last little movement.</li>
+</ul>
+
+<p>{#complete-application}
+### The Complete Configuration</p>
+
+<p><a href="#id-s1-1-top">Configuration-1.1</a> contains the complete configuration in [SipCoffee] (/design/design-composition-based-language) for an application that runs on iOS and OSX devices that allows controls to be dragged around in a scrollable canvas. The complete configuration is broken down and explained in detail below.</p>
+
+<p>Please note that this is a complete application, excluding the CSS, that is able to define the entire behavior of a cross platform application with a GUI user experience configured in around 110 lines <a href="#id-1">1</a>. </p>
+
+<div id="id-s1-1-top">&nbsp;</div>
+
+<pre><code>Scope (
+  properties HashTable ( // Contains the 'variables' for this Scope.
+    insert PartNamedString ( keyString "eventCurrent" ) // current event
+    insert PartNamedString ( keyString "eventPrior" ) // prior event
+    insert PartNamedString ( keyString "viewFocus" ) // view with focus
+    insert PartNamedString ( keyString "controlFocus" ) // control with focus
+    insert PartNamedString ( keyString "position" ) // current event position
+    insert PartNamedString ( keyString "positionPrior" ) prior event position
+    insert CssManager ( ... )
+    insert EventManager ( keyString "PropEventManager"
+      properties HashTable (
+        insert EventMonitor (
+          eventToMonitor GesturePan ( eventStep "Begin" touchesMin 1 )
+          action ArrayList ( callBehavior true
+            insert PropScopeSet ( nameStr "eventBegin" source PropScopeGet ( nameStr "eventCurrent" ) )
+            insert PropScopeSet ( nameStr "eventPrior" source PropScopeGet ( nameStr "eventCurrent" ) )
+            insert PropScopeSet ( nameStr "viewFocus"
+              source PropGet ( nameStr "view"
+                part PropScopeGet ( nameStr "eventCurrent" )
+              )
+            )
+            insert PropScopeSet ( nameStr "positionPrior"
+              source PropGet ( nameStr "posInWindow"
+                part PropScopeGet ( nameStr "eventCurrent" )
+              )
+            )
+            insert PropScopeSet ( nameStr "controlFocus" sourceRequired false
+              source UxControlAtPoint ( returnView false
+                position PropGet ( nameStr "posInView"
+                  part PropScopeGet ( nameStr "eventCurrent")
+                )
+                shapes PropScopeGet ( nameStr "viewFocus" )
+              )
+            )
+          )
+        )
+        insert EventMonitor (
+          eventToMonitor GesturePan ( eventStep "Processing" touchesMin 1 )
+          action ArrayList ( callBehavior true
+            insert PropScopeSet ( nameStr "positionPrior"
+              source PropGet ( nameStr "posInWindow" part PropScopeGet ( nameStr "eventCurrent" ) )
+            )
+            insert When (
+              condition IsNotNil ( part PropDynamicGet ( nameStr "draggable" required false part PropScopeGet ( nameStr "controlFocus" )) )
+              action ArrayList ( callBehavior true
+                insert PropSet ( nameStr "withFloat"
+                  part PropDynamicGet ( nameStr "top" part PropScopeGet ( nameStr "viewFocus") )
+                  source Add (
+                    left PropDynamicGet ( nameStr "top" part PropScopeGet ( nameStr "viewFocus") )
+                    right Subtract (
+                      left PropGet ( nameStr "y" part PropScopeGet ( nameStr "position") )
+                      right PropGet ( nameStr "y" part PropScopeGet ( nameStr "positionPrior") )
+                    )
+                  )
+                )
+                insert PropSet ( nameStr "withFloat"
+                  part PropDynamicGet ( nameStr "left" part PropScopeGet ( nameStr "viewFocus") )
+                  source Add (
+                    left PropDynamicGet ( nameStr "left" part PropScopeGet ( nameStr "viewFocus") )
+                    right Subtract (
+                      left PropGet ( nameStr "x" part PropScopeGet ( nameStr "position") )
+                      right PropGet ( nameStr "x" part PropScopeGet ( nameStr "positionPrior") )
+                    )
+                  )
+                )
+                insert PropScopeSet ( nameStr "eventPrior" source PropScopeGet ( nameStr "eventCurrent" ) ) 
+                insert PropScopeSet ( nameStr "positionPrior" source PropScopeGet ( nameStr "position" ) ) 
+              )
+            )
+          )
+        )
+        insert EventMonitor (
+          eventToMonitor GesturePan ( eventStep "End" touchesMin 1 )
+          action ArrayList ( callBehavior true
+            insert PropScopeSet ( nameStr "positionPrior"
+              source PropGet ( nameStr "posInWindow" part PropScopeGet ( nameStr "eventCurrent" ) )
+            )
+            insert When (
+              condition IsNotNil ( part PropDynamicGet ( nameStr "draggable" required false part PropScopeGet ( nameStr "controlFocus" )) )
+              action ArrayList ( callBehavior true
+                insert PropSet ( nameStr "withFloat"
+                  part PropDynamicGet ( nameStr "top" part PropScopeGet ( nameStr "viewFocus") )
+                  source Add (
+                    left PropDynamicGet ( nameStr "top" part PropScopeGet ( nameStr "viewFocus") )
+                    right Subtract (
+                      left PropGet ( nameStr "y" part PropScopeGet ( nameStr "position") )
+                      right PropGet ( nameStr "y" part PropScopeGet ( nameStr "positionPrior") )
+                    )
+                  )
+                )
+                insert PropSet ( nameStr "withFloat"
+                  part PropDynamicGet ( nameStr "left" part PropScopeGet ( nameStr "viewFocus") )
+                  source Add (
+                    left PropDynamicGet ( nameStr "left" part PropScopeGet ( nameStr "viewFocus") )
+                    right Subtract (
+                      left PropGet ( nameStr "x" part PropScopeGet ( nameStr "position") )
+                      right PropGet ( nameStr "x" part PropScopeGet ( nameStr "positionPrior") )
+                    )
+                  )
+                )
+                insert PropScopeSet ( nameStr "eventPrior" source PropScopeGet ( nameStr "eventCurrent" ) ) 
+                insert PropScopeSet ( nameStr "positionPrior" source PropScopeGet ( nameStr "position" ) ) 
+              )
+            )
+          )              
+        )
+      )
+    )
+  )
+  part AppNat (
+    action UxWindowNat (
+      titleStr "Interface Vision"
+      frame RectanglefFixed ( x 10 y 10 width 768 height 1024 )
+      uxControls UxViewPrimaryNat ( styling ".windowNative"
+        statusBarHiddenBool true
+        uxControls UxViewScrollable ( styling ".canvas"
+          scrollVerticalAllowedBool true
+          scrollHorizontalAllowedBool true
+          uxControls UxViewDrawNat ( styling ".canvasDoc"
+            properties HashTable (
+              insert StringKeyString ( keyString "Css"
+                withString "{ width: 4000px; height: 4000px }"
+              )
+            )
+            uxControls ArrayList ( callBehavior true
+              insert UxViewDrawNat ( styling ".windowFrame"
+                properties HashTable (
+                  insert StringKeyString ( keyString "Css"
+                    withString "{ top: 50px; left: 50px; width: 200px; height: 200px }"
+                  )
+                )
+                uxActions GesturePanRecognizerNat ( touchesMinVal 1 )
+                uxControls UxRectRoundNat ( styling ".windowButton"
+                    uxControls UxImageNat (
+                      properties HashTable ( insert StringKeyString ( keyString "draggable" ) )
+                      image ImageNat ( fileName Vision.Core.String ( withString "list.png" ) )
+                    )
+                )
+              )
+              insert UxViewDrawNat ( styling ".windowFrame"
+                properties HashTable (
+                  insert StringKeyString ( keyString "Css"
+                    withString "{ top: 50px; left: 270px; width: 200px; height: 200px }"
+                  )
+                )
+                uxActions GesturePanRecognizerNat ( touchesMinVal 1 )
+                uxControls UxRectRoundNat ( styling ".windowButton"
+                    uxControls UxImageNat (
+                      properties HashTable ( insert StringKeyString ( keyString "draggable" ) )
+                      image ImageNat ( fileName Vision.Core.String ( withString "list.png" ) )
+                    )
+                )
+              )
+            )
+          )
+        )
+      )
+    )
+  )
+)
+</code></pre>
+
+<h6 id="configuration-11-a-configured-ios-and-osx-application-allowing-controls-to-be-draggedid-s1-1">Configuration-1.1: A configured iOS and OSX application allowing controls to be dragged.{#id-s1-1}</h6>
+
+<p>There is some redundant configuration code that should be reused: specifically the Processing and End panning events. It is easy to re-use configurations and we’ll write a post on this.</p>
+
+<p>{#declaring-variables}
+### Declaring and Using Variables</p>
+
+<h4 id="traditional-approach">Traditional Approach</h4>
+
+<p>We need to keep some easily accessible information about the status of our dragging of windows. Traditionally, we would declare variables within some scope: a function, a method or passed as parameters. So, we may have something like:</p>
+
+<pre><code>public class MoveWindow {
+  Event eventCurrent = null;
+  Event eventPrior = null;
+  UxControl controlFocus = null;
+  Pos2f position = null;
+  Pos2f positionPrior = null;
+  
+  public void MoveWindow {
+    // add code here.
+  }
+}
+</code></pre>
+
+<p>or, maybe we just pass all the information into a function using parameters:</p>
+
+<pre><code>public void MoveWindow ( Event eventCurrent, Event eventPrior, UxControl controlFocus, Pos2f position, Pos2f positionPrior ) {
+  // add code here.
+}
+</code></pre>
+
+<p>Traditionally, we access variables by reading from them and setting them as follows:</p>
+
+<pre><code>MoveWindow mw = new MoveWindow;
+mw.eventCurrent = // some logic
+mw.eventPrior = null;
+mw.position = eventCurrent.position;
+</code></pre>
+
+<h4 id="how-we-declare-and-use-variables">How We Declare and Use Variables</h4>
+
+<p>Interface Vision is designed to be fully compose-able using Parts. As such, we define scope (see [How We do Scope] (/design/example-window-basic/#id-scope) ) and variables using Parts.</p>
+
+<h4 id="scope-properties">Scope Properties</h4>
+
+<p>Within our Scope we define variables using different Parts. In this case, we are using the PartNamedString part allowing us to define a part using a string as the variable name. There are also parts like LongKeyLong which allow us to define a long variable with a number as a variable name.</p>
+
+<pre><code>Scope (
+  properties HashTable ( // Contains the 'variables' for this Scope.
+    insert PartNamedString ( keyString "eventCurrent" ) // current event
+    insert PartNamedString ( keyString "eventPrior" ) // prior event
+    insert PartNamedString ( keyString "viewFocus" ) // view with focus
+    insert PartNamedString ( keyString "controlFocus" ) // control with focus
+    insert PartNamedString ( keyString "position" ) // current event position
+    insert PartNamedString ( keyString "positionPrior" ) prior event position
+  )
+  action TheAction (
+    // behavior within the scope
+  )
+)
+</code></pre>
+
+<p>The purpose of the variables is to allow us to drag a control around using Pan gestures.</p>
+
+<ul>
+  <li>eventCurrent - The current event. This is set automatically when setting the property EventManager.insert to a new event.</li>
+  <li>eventPrior - This contains the prior event.</li>
+  <li>viewFocus - This is the view that had focus when the pan event began.</li>
+  <li>controlFocus - This is the control that had focus, if any, when the pan event began.</li>
+  <li>position - This is the (x,y) position on the view of the current event. This is a temporary variable used to keep the logic easier. This information is also contained within eventCurrent.</li>
+  <li>positionPrior - This is the (x,y) position on the view of the prior event. This is a temporary variable used to keep the logic easier. This information is also contained within eventPrior.</li>
+</ul>
+
+<p>Accessing variables within Interface Vision is also done using Parts <a href="#id-2">2</a>. For reading to and writing from Scope “variables” we have the following:</p>
+
+<pre><code>PropScopeGet ( nameStr "eventCurrent" required false )
+</code></pre>
+
+<p>This reads a property defined within the current scope named “eventPrior”. required being set to false will stop any warning from being generated if the variable does not exist.</p>
+
+<pre><code>PropScopeSet ( nameStr "eventPrior" part PropScopeGet ( nameStr "eventCurrent" ) )
+</code></pre>
+
+<p>This sets a property defined within the current scope named “eventPrior” to the item located in part. In this case, the item located in part is PropScopeGet which, when used, will return a reference to the current event.</p>
+
+<p>This is equivalent to the equal operator: destination = source.</p>
+
+<h4 id="dynamic-properties">Dynamic Properties</h4>
+
+<p>A dynamic property is a property that can be defined on any Part instance: even at run time.</p>
+
+<pre><code>UxImageNat (
+  properties HashTable (
+    insert StringKeyString ( keyString "draggable" )
+  )
+)
+</code></pre>
+
+<p>In this case, we have added to a UxImageNat Part a dynamic property named “draggable”.</p>
+
+<p>To access this dynamic property, we use the PropDynamicGet part:</p>
+
+<pre><code>PropDynamicGet (
+  nameStr "draggable"  // the name of the dynamic property
+  part SomePart ( ) // the part that contains the dynamic property we want to get
+)
+</code></pre>
+
+<p>To set a dynamic property, we use the PropDynamicSet part (not used in our configuration).</p>
+
+<h4 id="instance-properties">Instance Properties</h4>
+
+<p>To access a property of an instance of a class, we use PropGet.</p>
+
+<pre><code>PropGet ( nameStr "view"
+  part PropScopeGet ( nameStr "eventCurrent" )
+)
+</code></pre>
+
+<p>In this case, we are getting the property named view of the Part located within the current event. The eventCurrent is actually a Part of type EventGesture which contains a view property.</p>
+
+<p>Traditionally, we would access a property as follows:</p>
+
+<pre><code>EventGesture someEvent;
+object eventView = someEvent.view; // view is a property of someEvent.
+</code></pre>
+
+<p>To write to a property of an instance of a class, we use PropSet.</p>
+
+<pre><code>PropSet ( nameStr "withFloat"
+  part PropDynamicGet ( nameStr "top" part PropScopeGet ( nameStr "viewFocus") )
+  source PropDynamicGet ( nameStr "top" part PropScopeGet ( nameStr "viewFocus") )
+)
+</code></pre>
+
+<p>nameStr is the name of the property, part contains the instance that we want to write too. Source contains the value we want to place into the property, in this case, named ‘withFloat’.</p>
+
+<h3 id="logic-and-flow">Logic and Flow</h3>
+
+<p>A goal of Interface Vision is to make our framework really easy to use. If you look at <a href="#id-s1-1-top">Configuration-1.1</a> you’ll note that there really is very little logic and flow defined within the configuration. All the minutia for creating native windows, native view, native images, and allocating memory are “hidden” within our framework. This allows the programmer to focus on the domain specific behavior of the program itself. Programmers don’t have to twiddle with the idiosyncrasies languages and frameworks introduce into the development process.</p>
+
+<p>That being said, there are cases where logic and flow needs to be supported at the domain level. For these cases, Interface Vision has Parts to deal with logic and flow.</p>
+
+<p>Controls marked as “draggable” can be dragged. To check if a control is draggable requires some logic and flow within our configuration.</p>
+
+<p>In <a href="#id-s1-1-top">Configuration-1.1</a> we use When to alter flow and IsNotNil as our Logic.</p>
+
+<pre><code>When (
+  condition IsNotNil ( part PropDynamicGet ( nameStr "draggable" part PropScopeGet ( nameStr "controlFocus" ) required false ) )
+  action (
+    // do the dragging thing
+  )        
+)
+</code></pre>
+
+<p>The above could be read as “When condition is not nil property ‘draggable’ part scope ‘controlFocus’”.</p>
+
+<p>The action is run only if the condition is true: in this case, only if there is a control with focus and it has a dynamic property “draggable”.</p>
+
+<h3 id="configuring-domain-specific-behavior">Configuring Domain Specific Behavior</h3>
+
+<p>In Interface Vision, the position of a control is determined using two dynamic properties named ‘top’ and ‘left’ (the same as CSS). To move a control, we need to update these two values.</p>
+
+<p>To do this, we will need to get the current position of our mouse/touch within the current event and subtract it from the prior position of the mouse/touch of the prior event. This gives us the distance the mouse/touch moved between the events. We then add that value to the existing top/left properties of the control.</p>
+
+<p>Let’s look at the configuration to adjust the top position of the view that has focus:</p>
+
+<pre><code>PropSet ( nameStr "withFloat"
+  part PropDynamicGet ( nameStr "top" part PropScopeGet ( nameStr "viewFocus") )
+  source Add (
+    left PropDynamicGet ( nameStr "top" part PropScopeGet ( nameStr "viewFocus") )
+    right Subtract (
+      left PropGet ( nameStr "y" part PropScopeGet ( nameStr "position") )
+      right PropGet ( nameStr "y" part PropScopeGet ( nameStr "positionPrior") )
+    )
+  )
+)
+</code></pre>
+
+<p>The Add Part has a left and right property which are the left and right side of the addition operator similar to:</p>
+
+<pre><code>left + right
+</code></pre>
+
+<p>The value of left is the dynamic property named ‘top’ of the view that has focus.
+The value of right is the result of the subtraction of the y property of the current position and the y property of the prior position.</p>
+
+<p>The result of this addition is placed into the top property of the view that has focus.</p>
+
+<p>Let’s look at how this might be implemented traditionally by coding out a function:</p>
+
+<pre><code>function void MoveWindow ( Control viewFocus, Pos position, Pos positionPrior ) {
+    viewFocus("top").withFloat = viewFocus("top").withFloat + ( position.y - positionPrior.y );
+}
+</code></pre>
+
+<h3 id="running-behavior-in-series">Running Behavior in Series</h3>
+
+<p>The last item of interest is causing behavior to happen in series. To do this, we can use an ArrayList setting callBehavior to true.</p>
+
+<pre><code>ArrayList ( callBehavior true
+  insert PropScopeSet ( nameStr "eventBegin" source PropScopeGet ( nameStr "eventCurrent" ) )
+  insert PropScopeSet ( nameStr "eventPrior" source PropScopeGet ( nameStr "eventCurrent" ) )
+  insert PropScopeSet ( nameStr "viewFocus" ... )
+)
+</code></pre>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Configuring conditions, logic and behavior within Interface Vision is both easy and consistent. The nasty bits that we usually need to worry about within frameworks are taken care of by the Vision Framework (you compose with Vision, you don’t code against it).</p>
+
+<p>Configurations are consistent throughout. The syntax to describe the creation of parts, declare variables, define behavior, define logic and define flow is the exact same!</p>
+
+<p>If you find our work interesting, please follow us <a href="http://www.twitter.com/interfaceVision">@interfaceVision</a> and/or <a href="http://www.twitter.com/erichosick">@erichosick</a>.</p>
+
+<h2 id="next-step">Next Step</h2>
+
+<p>The <a href="/design/example-shared-configuration">next step</a> allows us to ‘re-use’ parts of a configuration.</p>
+
+<p>The <a href="/design/example-events-basic">prior step</a> was to create a configurable event system.</p>
+
+<h2 id="footnotes">Footnotes</h2>
+
+<p>{#id-1} 1. The goal of Interface Vision is to be a Gui based visual development environment so, in the bigger picture, the number of lines of configuration required is not that important. It is probably more important to keep the number of parts manageable.</p>
+
+<p>{#id-2} 2. We intend on hiding the process of reading from and writing to properties. As such, within the visual development environment, the user will not be aware of parts like PropGet, PropSet, PropScopeGet, PropScopeSet, etc.</p>
+
+
+      <hr>
+      <div class="pagination pagination-centered">
+        <ul>
+        
+          <li class="prev"><a href="/design/example-events-basic" title="Configurable Event System">&larr; Previous</a></li>
+        
+          <li><a href="/archive.html">Archive</a></li>
+        
+          <li class="next"><a href="/design/example-shared-configuration" title="Configuration re-use">Next &rarr;</a></li>
+        
+        </ul>
+      </div>    
+      <hr>
+      <div>
+        
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_developer = 1;
+    var disqus_shortname = 'erichosickblog'; // required: replace example with your forum shortname
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+      </div>
+
+    </div>    
+  </div>
+</div>
+
+
+
+      <hr>
+      <footer>
+         <p>&copy; <a href="http://www.twitter.com/erichosick" target="_blank">Eric Hosick</a> 2012</p>
+       </footer>
+    </div>    
+    <!--
+
+    <script src="/assets/js/jquery.js"></script>
+    <script src="/assets/js/bootstrap-transition.js"></script>
+    <script src="/assets/js/bootstrap-alert.js"></script>
+    <script src="/assets/js/bootstrap-modal.js"></script>
+    <script src="/assets/js/bootstrap-dropdown.js"></script>
+    <script src="/assets/js/bootstrap-scrollspy.js"></script>
+    <script src="/assets/js/bootstrap-tab.js"></script>
+    <script src="/assets/js/bootstrap-tooltip.js"></script>
+    <script src="/assets/js/bootstrap-popover.js"></script>
+    <script src="/assets/js/bootstrap-button.js"></script>
+    <script src="/assets/js/bootstrap-collapse.js"></script>
+    <script src="/assets/js/bootstrap-carousel.js"></script>
+    <script src="/assets/js/bootstrap-typeahead.js"></script>
+    
+    -->
+
+    
+  </body>
+</html>
+

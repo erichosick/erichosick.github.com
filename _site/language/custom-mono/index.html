@@ -1,0 +1,269 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>MonoDevelop With A Custom Version of Mono on the Macintosh</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Eric Hosick">
+
+    <meta property="og:title" content="Eric Hosick" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="http://www.erichosick.com/assets/img/eric_hosick.jpg"/> 
+    <meta property="og:description" content="Eric Hosick's personal blog page and stuff."/>
+    <meta property="fb:admins" content="erichosick" />
+
+    <link href='//netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap-combined.min.css' rel='stylesheet'>    
+    <link href="/assets/themes/twitter/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <link href="http://fonts.googleapis.com/css?family=Pontano+Sans" rel="stylesheet" type="text/css">
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
+
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="http://www.erichosick.com"><img src="/assets/img/logoRuby.png"></img></a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li><a href="/index.html">Home</a></li>
+              <li><a href="/categories.html">Categories</a></li>
+              <li><a href="/pages.html">Pages</a></li>
+              <li><a href="/tags.html">Tags</a></li>
+            </ul>
+            <p class="pull-right">
+              <a class="nav-a-social" href="https://plus.google.com/101227313031284036080/posts" target="_blank"><i class="icon-google-color icon-social"></i></a>
+              <a class="nav-a-social" href="http://www.twitter.com/erichosick" target="_blank"><i class="icon-twitter-color icon-social"></i></a>
+              <a class="nav-a-social" href="mailto:erichosick@gmail.com"><i class="icon-mail-color icon-social"></i></a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>    
+
+    <div class="container-fluid container-main">
+      
+<div class="row-fluid">
+  <div class="span3">
+    <div class="well sidebar-nav">
+  <ul class="nav nav-list">
+    <li class="nav-header">About</li>
+    <li><img src="/assets/img/eric_hosick.jpg" class="img-rounded"></li>
+    <li> <a href="http://www.erichosick.com">Eric Hosick</a><p class="nav-about">Creator of Interface Vision, NoMethods, Agile enthusiast, entrepreneur, founder, BDD advocate, lecturer, technologist, developer, scrum master and book writer.</p></li>
+    <li><p><a href="http://twitter.com/erichosick" target="_blank">erichosick@gmail.com</a></p></li>
+  </ul>
+</div>
+
+    
+    <div class="well sidebar-nav">
+      <ul class="nav nav-list">
+        <li class="nav-header">Tags</li>
+        
+        
+
+
+  
+     
+    	<li><a href="/tags.html#C#-ref">C# <span>2</span></a></li>
+     
+    	<li><a href="/tags.html#computer language-ref">computer language <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#hacking-ref">hacking <span>2</span></a></li>
+     
+    	<li><a href="/tags.html#mono Runtime-ref">mono Runtime <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#monoDevelop-ref">monoDevelop <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#.NET runtimes-ref">.NET runtimes <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#Mono / .NET 3.5-ref">Mono / .NET 3.5 <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#Mono / .NET 4.0-ref">Mono / .NET 4.0 <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#Mono 2.8.1 (Default)-ref">Mono 2.8.1 (Default) <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#Runtime version-ref">Runtime version <span>1</span></a></li>
+    
+  
+
+
+
+      </ul>
+    </div><!--/.well -->
+      
+    
+  </div>
+  <div class="span9">
+    <div class="hero-unit">
+      <div class="page-header">
+        <h1>MonoDevelop With A Custom Version of Mono on the Macintosh</h1>
+        <div class="row-fluid">
+          <div class="span2">
+            <img src="/assets/img/eric_hosick.jpg" class="img-rounded">
+          </div>
+          <div class="span8">
+            <p>by <a href="http://twitter.com/erichosick" target="_blank">Eric Hosick</a> (erichosick@gmail.com)</p>
+            <h4>Published <small class="date">05 December 2010</small></h4>
+          </div>
+        </div>
+      </div>
+      
+<h2 id="introduction">Introduction</h2>
+
+<p>This blog post will tell you how to develop using MonoDevelop with your own custom version of C# Mono.</p>
+
+<h2 id="status-and-code-completion">Status and Code Completion</h2>
+
+<p>Currently, everything seems to work and I am able to compile programs using my own version of Mono in MonoDevelop. Code completion using a custom compiled Mono seems to be intermittent. I’ve seen code completion include new properties for the object class but many times it doesn’t.</p>
+
+<h2 id="what-you-will-need-to-run-monodevelop">What you Will Need to run MonoDevelop</h2>
+
+<p>You will need to install mono on your mac if you don’t already have it. Be sure to install the correct binary based on your mac. Intel, PowerPC or Universal. You can get mono here: <a href="http://www.go-mono.com/mono-downloads/download.html">http://www.go-mono.com/mono-downloads/download.html</a>.</p>
+
+<p>Of course, you need to install MonoDeveop. You can get MonoDevelop here: <a href="http://monodevelop.com/Download">http://monodevelop.com/Download</a>.</p>
+
+<h2 id="compile-your-own-version-of-mono">Compile Your Own Version of Mono</h2>
+
+<p>Follow the directions on getting mono to compile here <a href="http://www.mono-project.com/SourceCodeRepository">http://www.mono-project.com/SourceCodeRepository</a>. </p>
+
+<h2 id="setup-where-mono-will-compile-to">Setup Where Mono Will Compile To</h2>
+
+<p>Note: When I wrote this, Mono was still supported by Novell. The above process to compile mono may be better than what I’ve provided below.</p>
+
+<p>You can read here on how to compile mono for the Macintosh – <a href="http://www.mono-project.com/Compiling_Mono_on_OSX">http://www.mono-project.com/Compiling_Mono_on_OSX</a></p>
+
+<p>We will place our version of mono where MonoDevelop also looks for the unmodified version of Mono.</p>
+
+<p>Create a directory where your mono version will be installed:</p>
+
+<pre><code>$ sudo mkdir /Library/Frameworks/Mono.framework/Versions/2.8.1-mine
+</code></pre>
+
+<p>You will need to change the owner to get make install to work.</p>
+
+<pre><code>$ sudo chown monoUser /Library/Frameworks/Mono.framework/Versions/2.8.1-mine
+</code></pre>
+
+<p>We can now configure, make and install our own version of mono.</p>
+
+<pre><code>$ cd ~/projects/mono/mono-2.8.1
+$ ./configure –prefix=/Library/Frameworks/Mono.framework/Versions/2.8.1-mine/ –with-blib=embedded –enable-nls=no
+$ make
+$ make install
+</code></pre>
+
+<p>To verify, change to your new install:</p>
+
+<pre><code>$ cd /Library/Frameworks/Mono.framework/Versions/2.8.1-mine/bin
+$ ./mono -V
+</code></pre>
+
+<p>and you should see that your version of mono was compiled today:</p>
+
+<p>Mono JIT compiler version 2.8.1 (tarball Sun Dec  5 13:04:58 ICT 2010)
+Copyright (C) 2002-2010 Novell, Inc and Contributors. www.mono-project.com</p>
+
+<p>NOTE: The mono package comes with everything you need to make and install mono. Make sure you have the correct binary type (Intel, PowerPC or Universal). All libraries need to be compiled using the same binary type. The mono package has done this for you. If you use something like Macports you may end up with a library using the wrong binary type giving you the errors described on the bottom of <a href="http://www.mono-project.com/Compiling_Mono_on_OSX">http://www.mono-project.com/Compiling_Mono_on_OSX</a>.</p>
+
+<h2 id="using-your-version-of-mono">Using Your Version of Mono</h2>
+
+<p>Run MonoDevelop and go to MonoDevelop -&gt; Preferences. Select .NET Runtimes and your version will be there automatically! You just need to set it as the default library (this doesn’t seem to stick at the time of the writing of this document).</p>
+
+<p>If you have a project open you can go to Project -&gt; Active Runtime and see your version listed there. Select this version and you will be using your version of the .NET runtime.</p>
+
+<h2 id="what-next">What Next?</h2>
+
+<p>Well, go to ~/projects/mono/mono-2.8.1/mcs/class/ or /YOUROOT/projects/mono/mono-2.8.1/mcs/class/corlib/System if you want to start with Object.cs and start hacking!</p>
+
+<h1 id="amazement-and-awe">Amazement and Awe</h1>
+
+<p>I just want to say that after working with proprietary system for most of my life, I am totally inspired and awed by the ability to take something as big as Mono and simply hack at the root of the system (Object.cs). I really want to thank everyone who has spent their time adding to this amazing product! Thank you!</p>
+
+<p>Also special thanks to Michael Hutchinson for helping me with this.</p>
+
+      <hr>
+      <div class="pagination pagination-centered">
+        <ul>
+        
+          <li class="prev"><a href="/agile/product-owner" title="Being a Product Owner – The Achilles’ heel of Agile">&larr; Previous</a></li>
+        
+          <li><a href="/archive.html">Archive</a></li>
+        
+          <li class="next"><a href="/agile/bdd-value" title="How to use BDD to Discover Value-add for Your Startup">Next &rarr;</a></li>
+        
+        </ul>
+      </div>    
+      <hr>
+      <div>
+        
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_developer = 1;
+    var disqus_shortname = 'erichosickblog'; // required: replace example with your forum shortname
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+      </div>
+
+    </div>    
+  </div>
+</div>
+
+
+
+      <hr>
+      <footer>
+         <p>&copy; <a href="http://www.twitter.com/erichosick" target="_blank">Eric Hosick</a> 2012</p>
+       </footer>
+    </div>    
+    <!--
+
+    <script src="/assets/js/jquery.js"></script>
+    <script src="/assets/js/bootstrap-transition.js"></script>
+    <script src="/assets/js/bootstrap-alert.js"></script>
+    <script src="/assets/js/bootstrap-modal.js"></script>
+    <script src="/assets/js/bootstrap-dropdown.js"></script>
+    <script src="/assets/js/bootstrap-scrollspy.js"></script>
+    <script src="/assets/js/bootstrap-tab.js"></script>
+    <script src="/assets/js/bootstrap-tooltip.js"></script>
+    <script src="/assets/js/bootstrap-popover.js"></script>
+    <script src="/assets/js/bootstrap-button.js"></script>
+    <script src="/assets/js/bootstrap-collapse.js"></script>
+    <script src="/assets/js/bootstrap-carousel.js"></script>
+    <script src="/assets/js/bootstrap-typeahead.js"></script>
+    
+    -->
+
+    
+  </body>
+</html>
+

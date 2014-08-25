@@ -1,0 +1,356 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>A Programming Language Based on Composition</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A very simple programming language which uses composition exclusively.">
+    <meta name="author" content="Eric Hosick">
+
+    <meta property="og:title" content="Eric Hosick" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="http://www.erichosick.com/assets/img/eric_hosick.jpg"/> 
+    <meta property="og:description" content="Eric Hosick's personal blog page and stuff."/>
+    <meta property="fb:admins" content="erichosick" />
+
+    <link href='//netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap-combined.min.css' rel='stylesheet'>    
+    <link href="/assets/themes/twitter/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <link href="http://fonts.googleapis.com/css?family=Pontano+Sans" rel="stylesheet" type="text/css">
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
+
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="http://www.erichosick.com"><img src="/assets/img/logoRuby.png"></img></a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li><a href="/index.html">Home</a></li>
+              <li><a href="/categories.html">Categories</a></li>
+              <li><a href="/pages.html">Pages</a></li>
+              <li><a href="/tags.html">Tags</a></li>
+            </ul>
+            <p class="pull-right">
+              <a class="nav-a-social" href="https://plus.google.com/101227313031284036080/posts" target="_blank"><i class="icon-google-color icon-social"></i></a>
+              <a class="nav-a-social" href="http://www.twitter.com/erichosick" target="_blank"><i class="icon-twitter-color icon-social"></i></a>
+              <a class="nav-a-social" href="mailto:erichosick@gmail.com"><i class="icon-mail-color icon-social"></i></a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>    
+
+    <div class="container-fluid container-main">
+      
+<div class="row-fluid">
+  <div class="span3">
+    <div class="well sidebar-nav">
+  <ul class="nav nav-list">
+    <li class="nav-header">About</li>
+    <li><img src="/assets/img/eric_hosick.jpg" class="img-rounded"></li>
+    <li> <a href="http://www.erichosick.com">Eric Hosick</a><p class="nav-about">Creator of Interface Vision, NoMethods, Agile enthusiast, entrepreneur, founder, BDD advocate, lecturer, technologist, developer, scrum master and book writer.</p></li>
+    <li><p><a href="http://twitter.com/erichosick" target="_blank">erichosick@gmail.com</a></p></li>
+  </ul>
+</div>
+
+    
+    <div class="well sidebar-nav">
+      <ul class="nav nav-list">
+        <li class="nav-header">Tags</li>
+        
+        
+
+
+  
+     
+    	<li><a href="/tags.html#Language-ref">Language <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#Persistence-ref">Persistence <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#Scripting-ref">Scripting <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#Composition-ref">Composition <span>4</span></a></li>
+    
+  
+
+
+
+      </ul>
+    </div><!--/.well -->
+      
+    
+  </div>
+  <div class="span9">
+    <div class="hero-unit">
+      <div class="page-header">
+        <h1>A Programming Language Based on Composition</h1>
+        <div class="row-fluid">
+          <div class="span2">
+            <img src="/assets/img/eric_hosick.jpg" class="img-rounded">
+          </div>
+          <div class="span8">
+            <p>by <a href="http://twitter.com/erichosick" target="_blank">Eric Hosick</a> (erichosick@gmail.com)</p>
+            <h4>Published <small class="date">19 December 2013</small></h4>
+          </div>
+        </div>
+      </div>
+      <h2 id="introduction">Introduction</h2>
+
+<p>Interface Vision is a Gui based visual object language and fully composable framework created using Simple Interface Programming (SIP). Programming is done by hooking up parts: either visually or coding in C#.</p>
+
+<p>We’ve designed a language, SipCoffee, to simplify the syntax of describing the hooking up of Parts.</p>
+
+<p>It uses composition exclusively. There is no specific syntax to describe inheritance, for loops, if/else statements, variables, scope, methods, functions and so on.</p>
+
+<h2 id="examples">Examples</h2>
+
+<p>Hello world in SipCoffee:</p>
+
+<div id="id-s1-1-top">&nbsp;</div>
+<pre><code>Application (
+  using Library ( name "Vision.Console" )
+  action WriteLine ( text "Hello World" )
+)
+</code></pre>
+
+<h6 id="id-s1-1">Source-1.1: Hello World in SipCoffee.</h6>
+
+<p>Hello written 10 times</p>
+
+<div id="id-s1-2-top">&nbsp;</div>
+<pre><code>Application (
+  using Library ( name "Vision.Console" )
+  action BetweenInclusive (
+    start 1
+    end 20
+    incrementBy 2 
+    action WriteLine ( text "Hello" )
+  )
+)
+</code></pre>
+
+<h6 id="id-s1-2">Source-1.2: Hello written 10 times in SipCoffee.</h6>
+
+<p>The numbers 1, 2, 4, 8, 16 and 32 written on seperate lines</p>
+
+<div id="id-s1-3-top">&nbsp;</div>
+<pre><code>Application (
+  using Library ( name "Vision.Console" )
+  action ForEach (
+    items 1 2 4 8 16 32
+    action WriteLine ( text CurrentItem () )
+  )
+)
+</code></pre>
+
+<h6 id="id-s1-3">Source-1.3: A for each in SipCoffee.</h6>
+
+<p>Write out the first name of users Jane, Smith and Joe: each on a new line.</p>
+
+<div id="id-s1-4-top">&nbsp;</div>
+<pre><code>Application (
+  using Library ( name "Vision.Console" )
+  action ForEach (
+    items
+      Part ( properties
+        StringNamed ( name "firstName" value "Jane")
+        StringNamed ( name "lastName" value "First")
+      )
+      Part ( properties
+        StringNamed ( name "firstName" value "Smith")
+        StringNamed ( name "lastName" value "Between")
+      )
+      Part ( properties
+        StringNamed ( name "firstName" value "Joe")
+        StringNamed ( name "lastName" value "Last")
+      )
+    action WriteLine (
+      text Property ( name "firstName" part CurrentItem() )
+    )
+  )
+)
+</code></pre>
+
+<h6 id="id-s1-4">Source-1.4: A for each in SipCoffee against Parts.</h6>
+
+<p>Write out the first name of users with data coming from a database: each on a new line.</p>
+
+<div id="id-s1-4-top">&nbsp;</div>
+<pre><code>Application (
+  using Library ( name "Vision.Console" )
+  action ForEach (
+    items SqlConnect (
+      database "someDatabase"
+      command SqlQuery (
+        sql "SELECT firstName, lastName FROM users"
+      )
+    )
+    action WriteLine (
+      text Property ( name "firstName" part CurrentItem() )
+    )
+  )
+)
+</code></pre>
+
+<h6 id="id-s1-4">Source-1.4: A for each in SipCoffee against Parts.</h6>
+
+<p>Syntactically, the language is simple.</p>
+
+<p>Parts are upper case and properties are lower case.</p>
+
+<p>Each Part is a class <a href="#id-1">1</a> contained within a given framework.</p>
+
+<p>Methods/Functions are not part of the language (which greatly simplifies the syntax).</p>
+
+<h2 id="source-11-explained">Source-1.1 Explained</h2>
+
+<p><a href="#id-s1-1-top">Source-1.1</a> contains 3 parts named Application, Library and WriteLine. </p>
+
+<p>Application has two properties: using and action. The using property contains an instance of Library and the action property contains an instance of WriteLine.</p>
+
+<p>Library has a name property which is the name of the library to load. In this case, the name property is set to a string primitive type and contains the value “Vision.Console”.</p>
+
+<p>WriteLine has a text property, which is the text to write, and has the value “Hello”.</p>
+
+<h2 id="parsing-expression-grammar">Parsing Expression Grammar</h2>
+
+<p>A pseudo parsing expression grammar is as follows:</p>
+
+<div id="id-g1-1-top">&nbsp;</div>
+<pre><code>a) PROPERTY &lt;- property primitive+
+b) PROPERTY &lt;- property PART+
+c) PART &lt;- Part ( PROPERTY* )
+AND/OR c) PART &lt;- Part { PROPERTY* } // Cause maybe people prefer curley braces?
+</code></pre>
+
+<h6 id="id-g1-1">Grammar-1.1: Parsing expression grammar for SipCoffee.</h6>
+
+<h3 id="primitives">Primitives</h3>
+
+<p>A primitive is a string or numeric. Examples being:</p>
+
+<ul>
+  <li>Strings - “Hello”</li>
+  <li>Floats - 34.56f</li>
+  <li>Reals - 3.456</li>
+  <li>Integers - 34</li>
+  <li>Longs - 56l</li>
+</ul>
+
+<h3 id="collections">Collections</h3>
+
+<p>A collection is defined by simply listing the items in the array separated by white space.</p>
+
+<ul>
+  <li>array of strings - “Hello” “And” “GoodBye”</li>
+  <li>array of integers - 1 2 5 6 12 656</li>
+  <li>array of floats - 23.0f 345.4f 63.346f</li>
+  <li>array of Parts - User ( name “Jane” ) User ( name “Toan” ) User ( name “Frank” )</li>
+</ul>
+
+<h2 id="availability">Availability</h2>
+
+<p>SipCoffee works with the Interface Vision framework. We’ve created an initial persister that is able to save a program configured in Interface Vision as SipCoffee. The persister will itself be written in SipCoffee. When we get to that point, we will blog about it.</p>
+
+<p>In the mean time, please follow us <a href="http://www.twitter.com/interfaceVision">@interfaceVision</a> and/or <a href="http://www.twitter.com/erichosick">@erichosick</a>.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>That’s it. A very simple language based on composition.</p>
+
+<h2 id="next-step">Next Step</h2>
+
+<p>The <a href="/design/example-window-basic">next step</a> was to get a program to display a native window using SipCoffee.</p>
+
+<h2 id="footnotes">Footnotes</h2>
+
+<p>{#id-1} 1. Actually, a Part can be a class or a composition of other parts. But this isn’t relevant for the SipCoffee language.</p>
+
+
+      <hr>
+      <div class="pagination pagination-centered">
+        <ul>
+        
+          <li class="prev"><a href="/design/design-overloading-sip" title="Why We Don't Need Overloading">&larr; Previous</a></li>
+        
+          <li><a href="/archive.html">Archive</a></li>
+        
+          <li class="next"><a href="/design/example-window-basic" title="Example - Basic Windows">Next &rarr;</a></li>
+        
+        </ul>
+      </div>    
+      <hr>
+      <div>
+        
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_developer = 1;
+    var disqus_shortname = 'erichosickblog'; // required: replace example with your forum shortname
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+      </div>
+
+    </div>    
+  </div>
+</div>
+
+
+
+      <hr>
+      <footer>
+         <p>&copy; <a href="http://www.twitter.com/erichosick" target="_blank">Eric Hosick</a> 2012</p>
+       </footer>
+    </div>    
+    <!--
+
+    <script src="/assets/js/jquery.js"></script>
+    <script src="/assets/js/bootstrap-transition.js"></script>
+    <script src="/assets/js/bootstrap-alert.js"></script>
+    <script src="/assets/js/bootstrap-modal.js"></script>
+    <script src="/assets/js/bootstrap-dropdown.js"></script>
+    <script src="/assets/js/bootstrap-scrollspy.js"></script>
+    <script src="/assets/js/bootstrap-tab.js"></script>
+    <script src="/assets/js/bootstrap-tooltip.js"></script>
+    <script src="/assets/js/bootstrap-popover.js"></script>
+    <script src="/assets/js/bootstrap-button.js"></script>
+    <script src="/assets/js/bootstrap-collapse.js"></script>
+    <script src="/assets/js/bootstrap-carousel.js"></script>
+    <script src="/assets/js/bootstrap-typeahead.js"></script>
+    
+    -->
+
+    
+  </body>
+</html>
+

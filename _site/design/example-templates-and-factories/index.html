@@ -1,0 +1,494 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Templates and Factories for a Gui Based Language</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A composition of parts can be viewed as a template. A factory can copy a template letting us dynamically create a window.">
+    <meta name="author" content="Eric Hosick">
+
+    <meta property="og:title" content="Eric Hosick" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="http://www.erichosick.com/assets/img/eric_hosick.jpg"/> 
+    <meta property="og:description" content="Eric Hosick's personal blog page and stuff."/>
+    <meta property="fb:admins" content="erichosick" />
+
+    <link href='//netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap-combined.min.css' rel='stylesheet'>    
+    <link href="/assets/themes/twitter/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <link href="http://fonts.googleapis.com/css?family=Pontano+Sans" rel="stylesheet" type="text/css">
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
+
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="http://www.erichosick.com"><img src="/assets/img/logoRuby.png"></img></a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li><a href="/index.html">Home</a></li>
+              <li><a href="/categories.html">Categories</a></li>
+              <li><a href="/pages.html">Pages</a></li>
+              <li><a href="/tags.html">Tags</a></li>
+            </ul>
+            <p class="pull-right">
+              <a class="nav-a-social" href="https://plus.google.com/101227313031284036080/posts" target="_blank"><i class="icon-google-color icon-social"></i></a>
+              <a class="nav-a-social" href="http://www.twitter.com/erichosick" target="_blank"><i class="icon-twitter-color icon-social"></i></a>
+              <a class="nav-a-social" href="mailto:erichosick@gmail.com"><i class="icon-mail-color icon-social"></i></a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>    
+
+    <div class="container-fluid container-main">
+      
+<div class="row-fluid">
+  <div class="span3">
+    <div class="well sidebar-nav">
+  <ul class="nav nav-list">
+    <li class="nav-header">About</li>
+    <li><img src="/assets/img/eric_hosick.jpg" class="img-rounded"></li>
+    <li> <a href="http://www.erichosick.com">Eric Hosick</a><p class="nav-about">Creator of Interface Vision, NoMethods, Agile enthusiast, entrepreneur, founder, BDD advocate, lecturer, technologist, developer, scrum master and book writer.</p></li>
+    <li><p><a href="http://twitter.com/erichosick" target="_blank">erichosick@gmail.com</a></p></li>
+  </ul>
+</div>
+
+    
+    <div class="well sidebar-nav">
+      <ul class="nav nav-list">
+        <li class="nav-header">Tags</li>
+        
+        
+
+
+  
+     
+    	<li><a href="/tags.html#Code re-use-ref">Code re-use <span>4</span></a></li>
+     
+    	<li><a href="/tags.html#Interface Vision-ref">Interface Vision <span>12</span></a></li>
+     
+    	<li><a href="/tags.html#resize-ref">resize <span>5</span></a></li>
+    
+  
+
+
+
+      </ul>
+    </div><!--/.well -->
+      
+    
+  </div>
+  <div class="span9">
+    <div class="hero-unit">
+      <div class="page-header">
+        <h1>Templates and Factories for a Gui Based Language</h1>
+        <div class="row-fluid">
+          <div class="span2">
+            <img src="/assets/img/eric_hosick.jpg" class="img-rounded">
+          </div>
+          <div class="span8">
+            <p>by <a href="http://twitter.com/erichosick" target="_blank">Eric Hosick</a> (erichosick@gmail.com)</p>
+            <h4>Published <small class="date">28 January 2014</small></h4>
+          </div>
+        </div>
+      </div>
+      <h2 id="introduction">Introduction</h2>
+
+<p>In all our prior examples, our configuration had windows pre-defined within the ‘canvas’. Instead of configuring the windows within the canvas, we need a way to add to our configuration dynamically.</p>
+
+<p>To add to our configuration dynamically, we’re going to use factories which ‘build’ things from Templates.</p>
+
+<h3 id="the-results">The Results</h3>
+
+<iframe width="746" height="420" src="http://www.youtube.com/embed/3bs3ZU-TgsY?vq=hd1080" frameborder="0" allowfullscreen="allowfullscreen"> </iframe>
+
+<h2 id="templates">Templates</h2>
+
+<p>In computing we consider a template to be:</p>
+
+<blockquote>
+  <p>a preset format for a document or file, used so that the format does not have to be recreated each time it is used.</p>
+</blockquote>
+
+<p>Traditionally, software frameworks have to code out the Template functionality to add it to the framework.</p>
+
+<p>In Interface Vision, Templates are an emergent aspect of the framework. How so?</p>
+
+<p>Any composition of parts, even if that composition contains only one part, can be used as a Template.</p>
+
+<p>In prior examples, our <a href="/design/example-window-move/#complete-application">complete application</a> had the windows that showed up on our canvas composed within the canvas:</p>
+
+<pre><code>UxViewDrawNat ( keyString "canvas" styling ".canvasDoc"
+  properties HashTable (
+    insert StringKeyString ( keyString "Css"
+      withString "{ width: 4000px; height: 4000px; scale-width:100%, scale-height:100% }"
+    )
+  )
+  uxActions ArrayList ( callBehavior true
+    insert GesturePinchRecognizer ()
+  )
+  uxControls ArrayList ( callBehavior true
+    insert UxViewDrawNat ( keyString "window01" styling ".windowFrame"
+      properties HashTable (
+        insert StringKeyString ( keyString "Css"
+          withString "{ top: 50px; left: 50px; width: 200px; height: 200px; scale-width:100%, scale-height:100% }"
+        )
+      )
+      uxActions ArrayList ( callBehavior true
+        insert GesturePanRecognizerNat ( touchesMinNum 1 )
+      )
+      uxControls ArrayList ( callBehavior true
+        insert UxRectRoundNat ( keyString "winBtnMove" styling ".winBtnMove"
+          uxControls UxImageNat ( keyString "winBtnMoveImage"
+            properties HashTable ( insert StringKeyLong ( keyLong  "draggable" ) )
+            image ImageNat ( fileName Vision.Core.String ( withString "list.png" ) )
+          )
+        )
+        insert04 UxRectRoundNat ( keyString "winBtnResize" styling ".winBtnResize"
+          uxControls UxImageNat ( keyString "winBtnResizeImage" 
+            properties HashTable ( insert StringKeyLong ( keyLong "resizable" ) )
+            image ImageNat ( fileName Vision.Core.String ( withString "resize_0.png" ) )
+          )
+        )
+      )
+    )
+    insert UxViewDrawNat ( keyString "window02" styling ".windowFrame"
+      properties HashTable (
+        insert StringKeyString ( keyString "Css"
+          withString "{ top: 250px; left: 350px; width: 200px; height: 300px; scale-width:100%, scale-height:100% }"
+        )
+      )
+      uxActions ArrayList ( callBehavior true
+        insert GesturePanRecognizerNat ( touchesMinNum 1 )
+      )
+      uxControls ArrayList ( callBehavior true
+        insert UxRectRoundNat ( keyString "winBtnMove" styling ".winBtnMove"
+          uxControls UxImageNat ( keyString "winBtnMoveImage"
+            properties HashTable ( insert StringKeyLong ( keyLong  "draggable" ) )
+            image ImageNat ( fileName Vision.Core.String ( withString "list.png" ) )
+          )
+        )
+        insert04 UxRectRoundNat ( keyString "winBtnResize" styling ".winBtnResize"
+          uxControls UxImageNat ( keyString "winBtnResizeImage" 
+            properties HashTable ( insert StringKeyLong ( keyLong "resizable" ) )
+            image ImageNat ( fileName Vision.Core.String ( withString "resize_0.png" ) )
+          )
+        )
+      )
+    )
+  )
+)
+</code></pre>
+
+<p>As you can see, this is problematic because the configurations for window01 and window02 are the exact same (other than the top, left, width and height css values). What we want to do is make window configurations reusable.</p>
+
+<p>We make our configuration reusable by placing the configuration within a Factory. We don’t need to explicitly define the configuration as a template.</p>
+
+<h2 id="factories">Factories</h2>
+
+<p>A Factory is used to create new instances of parts during run time.</p>
+
+<h3 id="the-factoryinstance-part">The FactoryInstance Part</h3>
+
+<p>The FactoryInstance Part, when given a Template, will create an exact copy of the template. For example:</p>
+
+<pre><code>FactoryInstance (
+  part ConsoleWrite (
+    text String (
+      withString "Hello"
+    )
+  )
+)
+</code></pre>
+
+<p>This configuration does not cause “Hello” to be written to the console. Instead, the configuration returns a new ConsoleWrite part pre-configured with a String Part having “Hello” as the text to write. So, in this case, ConsoleWrite is being used as a template.</p>
+
+<h2 id="tap-gesture-creates-a-window">Tap Gesture Creates a Window</h2>
+
+<p>For this example, every time a user taps somewhere on the ‘canvas’, we will create a new window. This will replace our existing behavior (which is drawing two windows in known locations).</p>
+
+<h3 id="tap-gesture-event">Tap Gesture Event</h3>
+
+<p>The configuration for adding the Tap Gesture to the <a href="/design/example-events-basic">event system</a> is as follows:</p>
+
+<pre><code>EventManager (
+  properties HashTable (
+    // other configured events like pan and pinch
+    insert EventMonitor ( eventToMonitor GestureTap ( eventStep "finished" tapsRequiredNum 1 touchesRequiredNum 1 )
+      action PropScopeGet ( nameStr "behaviorTap" )
+    )
+  )
+)
+</code></pre>
+
+<p>In this configuration, if a user taps then the ‘behaviorTap’ configuration will run.</p>
+
+<h2 id="tap-gesture-behavior">Tap Gesture Behavior</h2>
+
+<p>When a user taps on the ‘canvas’, we want to create a window at the position the user tapped. This will require us to:</p>
+
+<ul>
+  <li>1) Create a new instance of the window</li>
+  <li>2) Set the new window’s top position to the y value of the tap position within the view</li>
+  <li>3) Set the new window’s left position to the x value of the tap position within the view</li>
+  <li>4) Add the newly created window to the view.</li>
+  <li>5) Notify the view that it’s contents have changed so it can redraw.</li>
+</ul>
+
+<h3 id="using-a-factory-to-create-a-window">Using a Factory to Create a Window</h3>
+
+<p>Let’s take the window01 (or window02) configuration and use the configuration as a Template by placing it in a FactoryInstance Part.</p>
+
+<pre><code>insert PropScopeSet ( nameStr "newWindow" 
+  source FactoryInstance (
+    part UxViewDrawNat ( styling ".windowFrame"
+      properties HashTable (
+        insert StringKeyString ( keyString "Css"
+          withString "{ top: 0px; left: 0px; width: 200px; height: 200px; scale-width:100%, scale-height:100% }"
+        )
+      )
+      uxActions ArrayList ( callBehavior true
+        insert GesturePanRecognizerNat ( touchesMinNum 1 )
+      )
+      uxControls ArrayList ( callBehavior true
+        insert UxRectRoundNat ( keyString "winBtnMove" styling ".winBtnMove"
+          uxControls UxImageNat ( keyString "winBtnMoveImage"
+            properties HashTable ( insert StringKeyLong ( keyLong  "draggable" ) )
+            image ImageNat ( fileName Vision.Core.String ( withString "list.png" ) )
+          )
+        )
+        insert UxRectRoundNat ( keyString "winBtnResize" styling ".winBtnResize"
+          uxControls UxImageNat ( keyString "winBtnResizeImage" 
+            properties HashTable ( insert StringKeyLong ( keyLong "resizable" ) )
+            image ImageNat ( fileName Vision.Core.String ( withString "resize_0.png" ) )
+          )
+        )
+      )
+    )
+  )
+)
+</code></pre>
+
+<p>The only changes to the initial Window configuration is that we set the top and left to 0px (because we will be overriding these anyway).</p>
+
+<p>We use the result of the Factory and place it in a Scope property named ‘newWindow’. You will see, in the next step, that we place the result of the factory in this scope property so we can update the top/left values before placing the window into the view.</p>
+
+<h3 id="updating-top-and-left">Updating Top and Left</h3>
+
+<p>We’ve created a copy of our window configuration and now we need to set the top and left values to the x,y position of the tap gesture.</p>
+
+<pre><code>insert PropSet ( nameStr "withFloat"
+  part PropDynamicGet ( nameStr "left"
+    part PartHold ( part PropScopeGet ( nameStr "newWindow" ) )
+  )
+  source PropGet ( nameStr "x" part PropScopeGet ( nameStr "position" ) )
+)
+insert PropSet ( nameStr "withFloat"
+  part PropDynamicGet ( nameStr "top"
+    part PartHold ( part PropScopeGet ( nameStr "newWindow" ) )
+  )
+  source PropGet ( nameStr "y" part PropScopeGet ( nameStr "position" ) )
+)
+</code></pre>
+
+<p>The most interesting part of this configuration is the usage of PartHold:</p>
+
+<pre><code>PartHold ( part PropScopeGet ( nameStr "newWindow" ) )
+</code></pre>
+
+<p>Part’s in our framework automatically run when used. The scope-property ‘newWindow’ contains our newly created window which is a UxViewDrawNat part. The behavior of this part is to add itself to the parent view. We don’t want to actually run the behavior of the part. We just want to get a reference to it so we can update it’s top and left position.</p>
+
+<p>This is where the PartHold Part comes in. The PartHold part puts a Part’s behavior “on hold” allowing you to access the part without running it.</p>
+
+<h3 id="add-the-newly-created-view">Add the Newly Created View</h3>
+
+<p>We’ve created the window and updated the windows top,left position. Now we need to place the part into the array of controls of the parent view.</p>
+
+<pre><code>insert PropSet ( nameStr "insert"
+  part PropGet ( nameStr "uxControls" part PropScopeGet ( nameStr "uxViewFocus" ) )
+  source PartHold ( part PropScopeGet ( nameStr "newWindow" ) )
+)
+</code></pre>
+
+<h2 id="complete-solution">Complete Solution</h2>
+
+<p>The complete configuration for the tap event is provided:</p>
+
+<pre><code>Scope (
+  properties HashTable (
+    // other parts within the global scope
+    insert PartNamedString ( keyString "behaviorTap"
+      part ArrayList ( callBehavior true
+        insert When (
+          condition IsEqString (
+            leftString "canvas" 
+            right WithKeyString ( part PropScopeGet ( nameStr "uxViewFocus" ) )
+          )
+          action Scope (
+            properties HashTable (
+              insert PartNamedString ( keyString "newWindow" )
+            )
+            part ArrayList ( callBehavior true
+              // 1. Create window
+              insert PropScopeSet ( nameStr "newWindow" 
+                source FactoryInstance (
+                  part UxViewDrawNat ( styling ".windowFrame"
+                    properties HashTable (
+                      insert StringKeyString ( keyString "Css"
+                        withString "{ top: 0px; left: 0px; width: 200px; height: 200px; scale-width:100%, scale-height:100% }"
+                      )
+  							  	)
+                    uxActions ArrayList ( callBehavior true
+                      insert GesturePanRecognizerNat ( touchesMinNum 1 )
+                    )
+                    uxControls ArrayList ( callBehavior true
+                      insert UxRectRoundNat ( keyString "winBtnMove" styling ".winBtnMove"
+                        uxControls UxImageNat ( keyString "winBtnMoveImage"
+                          properties HashTable ( insert StringKeyLong ( keyLong  "draggable" ) )
+                          image ImageNat ( fileName Vision.Core.String ( withString "list.png" ) )
+                        )
+                      )
+                      insert UxRectRoundNat ( keyString "winBtnResize" styling ".winBtnResize"
+                        uxControls UxImageNat ( keyString "winBtnResizeImage" 
+                          properties HashTable ( insert StringKeyLong ( keyLong "resizable" ) )
+                          image ImageNat ( fileName Vision.Core.String ( withString "resize_0.png" ) )
+                        )
+                      )
+                    )
+                  )
+                )
+              )
+
+              // 2. Update Left
+              insert PropSet ( nameStr "withFloat"
+                part PropDynamicGet ( nameStr "left"
+                  part PartHold ( part PropScopeGet ( nameStr "newWindow" ) )
+                )
+                source PropGet ( nameStr "x" part PropScopeGet ( nameStr "position" ) )
+              )
+
+              // 3. Update Top
+              insert PropSet ( nameStr "withFloat"
+                part PropDynamicGet ( nameStr "top"
+                  part PartHold ( part PropScopeGet ( nameStr "newWindow" ) )
+                )
+                source PropGet ( nameStr "y" part PropScopeGet ( nameStr "position" ) )
+              )
+
+              // 4. Add to control
+              insert PropSet ( nameStr "insert"
+                part PropGet ( nameStr "uxControls" part PropScopeGet ( nameStr "uxViewFocus" ) )
+                source PartHold ( part PropScopeGet ( nameStr "newWindow" ) )
+              )
+
+              // 5. Get the view to redraw
+              insert PropGet ( nameStr "redraw" part PropScopeGet ( nameStr "uxViewFocus" ) required false )
+            )
+          )
+        )
+      )
+    )
+  )
+)
+</code></pre>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Configurations within our framework can be used as Templates allowing us to duplicate any configuration we come up with. In our example, we used a Factory to create new windows that were then added to the ‘canvas’.</p>
+
+<p>If you find our work interesting, please follow us <a href="http://www.twitter.com/interfaceVision">@interfaceVision</a> and/or <a href="http://www.twitter.com/erichosick">@erichosick</a>.</p>
+
+<h2 id="next-step">Next Step</h2>
+
+<p>The <a href="/design/css-layout-engine">next step</a> in our goal of creating Interface Vision’s Gui based visual development environment is to create a view that can easily display collections (aggregates).</p>
+
+<p>The <a href="/design/example-zoom-in-out">prior step</a> in our goal of creating Interface Vision’s Gui based visual development environment was to allow us to zoom in and out of a view using the pinch gesture.</p>
+
+
+      <hr>
+      <div class="pagination pagination-centered">
+        <ul>
+        
+          <li class="prev"><a href="/design/example-zoom-in-out" title="Zooming And Scaling">&larr; Previous</a></li>
+        
+          <li><a href="/archive.html">Archive</a></li>
+        
+          <li class="next"><a href="/design/css-layout-engine" title="A Ux Layout Engine for a Gui Based Development Environment">Next &rarr;</a></li>
+        
+        </ul>
+      </div>    
+      <hr>
+      <div>
+        
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_developer = 1;
+    var disqus_shortname = 'erichosickblog'; // required: replace example with your forum shortname
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+      </div>
+
+    </div>    
+  </div>
+</div>
+
+
+
+      <hr>
+      <footer>
+         <p>&copy; <a href="http://www.twitter.com/erichosick" target="_blank">Eric Hosick</a> 2012</p>
+       </footer>
+    </div>    
+    <!--
+
+    <script src="/assets/js/jquery.js"></script>
+    <script src="/assets/js/bootstrap-transition.js"></script>
+    <script src="/assets/js/bootstrap-alert.js"></script>
+    <script src="/assets/js/bootstrap-modal.js"></script>
+    <script src="/assets/js/bootstrap-dropdown.js"></script>
+    <script src="/assets/js/bootstrap-scrollspy.js"></script>
+    <script src="/assets/js/bootstrap-tab.js"></script>
+    <script src="/assets/js/bootstrap-tooltip.js"></script>
+    <script src="/assets/js/bootstrap-popover.js"></script>
+    <script src="/assets/js/bootstrap-button.js"></script>
+    <script src="/assets/js/bootstrap-collapse.js"></script>
+    <script src="/assets/js/bootstrap-carousel.js"></script>
+    <script src="/assets/js/bootstrap-typeahead.js"></script>
+    
+    -->
+
+    
+  </body>
+</html>
+

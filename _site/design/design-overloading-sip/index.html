@@ -1,0 +1,397 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Why We Don't Need Overloading</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Overloading is not longer required because we use parts that can operate on all primitives.">
+    <meta name="author" content="Eric Hosick">
+
+    <meta property="og:title" content="Eric Hosick" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="http://www.erichosick.com/assets/img/eric_hosick.jpg"/> 
+    <meta property="og:description" content="Eric Hosick's personal blog page and stuff."/>
+    <meta property="fb:admins" content="erichosick" />
+
+    <link href='//netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap-combined.min.css' rel='stylesheet'>    
+    <link href="/assets/themes/twitter/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <link href="http://fonts.googleapis.com/css?family=Pontano+Sans" rel="stylesheet" type="text/css">
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
+
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="http://www.erichosick.com"><img src="/assets/img/logoRuby.png"></img></a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li><a href="/index.html">Home</a></li>
+              <li><a href="/categories.html">Categories</a></li>
+              <li><a href="/pages.html">Pages</a></li>
+              <li><a href="/tags.html">Tags</a></li>
+            </ul>
+            <p class="pull-right">
+              <a class="nav-a-social" href="https://plus.google.com/101227313031284036080/posts" target="_blank"><i class="icon-google-color icon-social"></i></a>
+              <a class="nav-a-social" href="http://www.twitter.com/erichosick" target="_blank"><i class="icon-twitter-color icon-social"></i></a>
+              <a class="nav-a-social" href="mailto:erichosick@gmail.com"><i class="icon-mail-color icon-social"></i></a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>    
+
+    <div class="container-fluid container-main">
+      
+<div class="row-fluid">
+  <div class="span3">
+    <div class="well sidebar-nav">
+  <ul class="nav nav-list">
+    <li class="nav-header">About</li>
+    <li><img src="/assets/img/eric_hosick.jpg" class="img-rounded"></li>
+    <li> <a href="http://www.erichosick.com">Eric Hosick</a><p class="nav-about">Creator of Interface Vision, NoMethods, Agile enthusiast, entrepreneur, founder, BDD advocate, lecturer, technologist, developer, scrum master and book writer.</p></li>
+    <li><p><a href="http://twitter.com/erichosick" target="_blank">erichosick@gmail.com</a></p></li>
+  </ul>
+</div>
+
+    
+    <div class="well sidebar-nav">
+      <ul class="nav nav-list">
+        <li class="nav-header">Tags</li>
+        
+        
+
+
+  
+     
+    	<li><a href="/tags.html#Overloading-ref">Overloading <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#Method Overloading-ref">Method Overloading <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#Primitive-ref">Primitive <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#subroutines-ref">subroutines <span>1</span></a></li>
+    
+  
+
+
+
+      </ul>
+    </div><!--/.well -->
+      
+    
+  </div>
+  <div class="span9">
+    <div class="hero-unit">
+      <div class="page-header">
+        <h1>Why We Don't Need Overloading</h1>
+        <div class="row-fluid">
+          <div class="span2">
+            <img src="/assets/img/eric_hosick.jpg" class="img-rounded">
+          </div>
+          <div class="span8">
+            <p>by <a href="http://twitter.com/erichosick" target="_blank">Eric Hosick</a> (erichosick@gmail.com)</p>
+            <h4>Published <small class="date">10 December 2013</small></h4>
+          </div>
+        </div>
+      </div>
+      <h1 id="why-we-dont-use-overloading">Why We Don’t Use Overloading</h1>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>We don’t use overloading because our framework has no subroutines to overload. This is because the rules of Simple Interface Programming (SIP) don’t allow subroutines with explicit parameters.</p>
+
+<p>Instead of overloading, we use Parts that are able to operate on all primitives. Currently, we have chosen Part (aka object), string, boolean, integer, long, float, double, byte array, int array, long array and float array as the primitives we support.</p>
+
+<h2 id="example-of-traditional-overloading">Example of Traditional Overloading</h2>
+
+<p>The following is how, traditionally, the function add would be defined:</p>
+
+<pre><code>...
+int add (int left, int right ) { return left + right }
+long add (long left, int right) { return left = right }
+long add (long left, long right) { return left + right }
+...
+</code></pre>
+
+<p>and so on. The left and right parameters for add vary based on the primitives we need to add.</p>
+
+<h2 id="the-with-properties">The “With” Properties</h2>
+
+<p>Our Part part use “with” Properties: each “with” property being of a different primitive data type. Here is the pseudo-code for our Part part (note we are only showing withPart, withLong and withFloat).</p>
+
+<pre><code>[Serializable] public class Part : IPart {
+  ...
+  [XmlIgnore] public virtual IPart   withPart { get; set; }
+  [XmlIgnore] public virtual int    withLong { get; set; }
+  [XmlIgnore] public virtual float   withFloat { get; set; }
+  ...
+}
+</code></pre>
+
+<p>By default, these properties do nothing for the set scope and return a “default value” for the get scope: usually 0, false, empty string, empty part and 0 length arrays.</p>
+
+<p>Every Part that inherits from the Part class can optionally implement a “with” property.</p>
+
+<p>Note: The Part class is our framework’s “object” from which everything inherits. At some point, we will update the C# object class to contain “with” properties.</p>
+
+<h2 id="example-primitive-parts">Example Primitive Parts</h2>
+
+<p>Let’s look at pseudo-code for the Float and Integer part. Our Float and Integer parts implements the “with” properties as follows:</p>
+
+<h3 id="float-part">Float Part</h3>
+
+<pre><code>namespace Vision.Core {
+
+  [Serializable] public class Float : Part {
+    protected float p_value = 0.0f;
+    [XmlElement("value")] public override float withFloat {
+      get { return p_value; }
+      set { p_value = value; }
+    }
+
+    [XmlIgnore] public override int withInt {
+      get { return (int)p_value; }
+      set { p_value = value; }
+    }
+  }
+}
+</code></pre>
+
+<p>Our Float Part is able to convert to different primitive types automatically (note this is pseudo-code and more validation occurs in the actual source code).</p>
+
+<p>Note: At some point we will update object of C# to contain with properties. The example Float part would be removed and the float type would be updated. This allows us to take advantage of boxing, etc.</p>
+
+<h3 id="integer-part">Integer Part</h3>
+
+<p>The Integer Part looks almost similar to the Float part.</p>
+
+<pre><code>namespace Vision.Core {
+  [Serializable] public class Integer : Part {
+
+    protected int p_value = 0;
+    [XmlElement("value")] public override int withInt {
+      get { return p_value; }
+      set { p_value = value; }
+    }
+
+    [XmlIgnore] public override float withFloat {
+      get { return (float)withInt; }
+      set { withInt = (int)value; }
+    }
+
+  }
+}
+</code></pre>
+
+<h2 id="operations">Operations</h2>
+
+<p>So, we have our primitives defined. Let’s look at how we bypass the need for Overloading by implementing an Add Part.</p>
+
+<h3 id="add-part">Add Part</h3>
+
+<pre><code>namespace Vision.Core {
+  [Serializable] public class Add : OpArgDual {
+
+    [XmlElement("argLeft")] public Part argLeft { get; set; }
+    [XmlElement("argRight")] public Part argRight { get; set; }
+
+    [XmlIgnore] public override int withInt {
+      get { return argLeft.withInt + argRight.withInt; }
+    }
+
+    [XmlIgnore] public override float withFloat {
+      get {
+        return argLeft.withFloat + argRight.withFloat;
+      }
+    }
+
+  }
+}
+</code></pre>
+
+<p>What is most interesting to note is that each “with” Property calls the associated “with” property of argLeft and argRight and then adds them. For example, withFloat is implemented as:</p>
+
+<pre><code>return argLeft.withFloat + argRight.withFloat;
+</code></pre>
+
+<h2 id="putting-it-all-together">Putting it All Together</h2>
+
+<p>Let’s see how we are able to use operations on different primitive types without Overloading. First, we will setup a few variables:</p>
+
+<pre><code>...
+IPart integerA = new Integer { withInt = 3 };
+IPart integerB = new Integer { withInt = 4 };
+IPart floatA = new Float { withFloat = 3.0f };
+IPart floatB = new Float { withFloat = 3.0f };
+
+IPart addTwoInts = new Add { argLeft = integerA, argRight = integerB };
+IPart addTwoFloats = new Add { argLeft = floatA, argRight = floatB };
+
+	IPart addTwoThings = new Add { argLeft = floatA, argRight = integerA };
+...
+</code></pre>
+
+<p>Adding two floats:</p>
+
+<pre><code>float floatResult = addTwoFloats.withFloat;
+</code></pre>
+
+<p>Adding two integers:</p>
+
+<pre><code>int integerResult = addTwoInts.withInt;
+</code></pre>
+
+<p>Adding a float and an integer and getting a float:</p>
+
+<pre><code>float floatResult = addTwoThings.withFloat;
+</code></pre>
+
+<p>Adding two integers and getting a float:</p>
+
+<pre><code>float floatResult = addTowInts.withFloat;
+</code></pre>
+
+<p>We are now able to support any combination of addition between the primitive data types of floats, strings, integers, arrays, and so on.</p>
+
+<h2 id="why-we-dont-use-overloading-1">Why We Don’t Use Overloading</h2>
+
+<p>Since SIP is supposed to be used with Interface Vision, we want to be able to visually represent operations without focusing on the primitives we are operating on.</p>
+
+<h3 id="visual-composition">Visual Composition</h3>
+
+<p>Let’s see how addition looks visually.</p>
+
+<p class="pagination-centered"><img class="featurette-image img-polaroid" src="/assets/img/doc-overloading-sip-visual-example.png" /> </p>
+
+<p>What is important to note is that the inputs and outputs to our addition configuration do not care about what primitive types we will be adding. By hooking up our Add, we are able to support <strong>all</strong> combinations of addition of primitive types. The actual primitive we operate in depends on which “with” property is accessed on the Add part.</p>
+
+<h2 id="why-not-use-conversion-inside-operations">Why Not Use Conversion Inside Operations?</h2>
+
+<p>We could have had a single withPart property and then provided conversion within operations.</p>
+
+<p>However, this would require our code to continually validate that the correct type of data was returned before applying an operation. For example, let’s say we wanted to implement adding integers and we only have withPart. We would need to do something as follows:</p>
+
+<pre><code>namespace Vision.Core {
+  [Serializable] public class AddInteger : OpArgDual {
+
+    [XmlElement("argLeft")] public object argLeft { get; set; }
+    [XmlElement("argRight")] public object argRight { get; set; }
+
+    [XmlIgnore] public override object withPart {
+      get {
+        int result = 0;
+        if (( argLeft is int ) &amp;&amp; ( argRight is int )) {
+          result = (int)argLeft + (int)argRight;
+        } else {
+          // Throw an Exception? Just return 0?
+        }
+        return result
+      }
+    }
+
+  }
+}
+</code></pre>
+
+<p>We felt this would greatly slow down execution time: especially in math libraries.</p>
+
+<p>Note: In this pseudo-code, we use object.</p>
+
+<h3 id="how-about-conversion-parts">How About Conversion Parts</h3>
+
+<p>We could have also created parts to do conversion such as a FloatToInt part. However, we would end up, again, with Part explosion. Also, with a visual integration environment, you would have to use a lot of conversion parts making the program look, visually, messy.</p>
+
+<h3 id="subroutine-explosion">Subroutine Explosion</h3>
+
+<p>In both examples, conversion within operations and conversion parts, we end up with part explosion: AddLong, AddFloat, AddString, AddFloatLong and so on. Really, if you think about it, overloading is not really the best way to define operations between primitive data types because of this subroutine explosion issue: a real problem in the programming industry.</p>
+
+<p>People do solve this problem to some extent by using things like Generics.</p>
+
+
+      <hr>
+      <div class="pagination pagination-centered">
+        <ul>
+        
+          <li class="prev"><a href="/design/design-our-technology" title="Interface Vision - The Technology">&larr; Previous</a></li>
+        
+          <li><a href="/archive.html">Archive</a></li>
+        
+          <li class="next"><a href="/design/design-composition-based-language" title="A Programming Language Based on Composition">Next &rarr;</a></li>
+        
+        </ul>
+      </div>    
+      <hr>
+      <div>
+        
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_developer = 1;
+    var disqus_shortname = 'erichosickblog'; // required: replace example with your forum shortname
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+      </div>
+
+    </div>    
+  </div>
+</div>
+
+
+
+      <hr>
+      <footer>
+         <p>&copy; <a href="http://www.twitter.com/erichosick" target="_blank">Eric Hosick</a> 2012</p>
+       </footer>
+    </div>    
+    <!--
+
+    <script src="/assets/js/jquery.js"></script>
+    <script src="/assets/js/bootstrap-transition.js"></script>
+    <script src="/assets/js/bootstrap-alert.js"></script>
+    <script src="/assets/js/bootstrap-modal.js"></script>
+    <script src="/assets/js/bootstrap-dropdown.js"></script>
+    <script src="/assets/js/bootstrap-scrollspy.js"></script>
+    <script src="/assets/js/bootstrap-tab.js"></script>
+    <script src="/assets/js/bootstrap-tooltip.js"></script>
+    <script src="/assets/js/bootstrap-popover.js"></script>
+    <script src="/assets/js/bootstrap-button.js"></script>
+    <script src="/assets/js/bootstrap-collapse.js"></script>
+    <script src="/assets/js/bootstrap-carousel.js"></script>
+    <script src="/assets/js/bootstrap-typeahead.js"></script>
+    
+    -->
+
+    
+  </body>
+</html>
+
