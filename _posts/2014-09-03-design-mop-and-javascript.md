@@ -254,5 +254,5 @@ And the code looks so clean. So pure.
 
 Javascript is a very versatile, and awesome, language that supports message-oriented programming. Using MOP, we are able to compose programs that can be manipulated as if they were data-structures.
 
-There is a lot more we can do with this to clean things up. For example, our msg() function could do boxing of primitive data types for us cleaning up our message configurations. We would place this in a library.
+There is a lot more we can do with this to clean things up. For example, our msg() function could do boxing of primitive data types for us making our message configurations easier to read. We would place this in a library.
 
