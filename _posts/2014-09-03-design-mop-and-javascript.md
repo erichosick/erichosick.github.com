@@ -93,7 +93,7 @@ You can also add data to the interface which will be shared for that message typ
 
 ### Data And Messages
 
-So, we have a way to define the behavior for all messages in our framework. However, how do we give the information required by a message to run the behavior?
+So, we have a way to define the behavior for all messages in our framework. However, how do we get information required by a message into that message to run the message's behavior? After all, we aren't using parameterized functions.
 
 What if we pass both behavior and data to create a message. Something like this:
 
