@@ -1,0 +1,449 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Message-Oriented Programming With Javascript</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="We show how to do message-oriented programming by taking advantage of Javascript's prototyping.">
+    <meta name="author" content="Eric Hosick">
+
+    <meta property="og:title" content="Eric Hosick" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="http://www.erichosick.com/assets/img/eric_hosick.jpg"/> 
+    <meta property="og:description" content="Eric Hosick's personal blog page and stuff."/>
+    <meta property="fb:admins" content="erichosick" />
+
+    <link href='//netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap-combined.min.css' rel='stylesheet'>    
+    <link href="/assets/themes/twitter/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <link href="http://fonts.googleapis.com/css?family=Pontano+Sans" rel="stylesheet" type="text/css">
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
+
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="http://www.erichosick.com"><img src="/assets/img/logoRuby.png"></img></a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li><a href="/index.html">Home</a></li>
+              <li><a href="/categories.html">Categories</a></li>
+              <li><a href="/pages.html">Pages</a></li>
+              <li><a href="/tags.html">Tags</a></li>
+            </ul>
+            <p class="pull-right">
+              <a class="nav-a-social" href="https://plus.google.com/101227313031284036080/posts" target="_blank"><i class="icon-google-color icon-social"></i></a>
+              <a class="nav-a-social" href="http://www.twitter.com/erichosick" target="_blank"><i class="icon-twitter-color icon-social"></i></a>
+              <a class="nav-a-social" href="mailto:erichosick@gmail.com"><i class="icon-mail-color icon-social"></i></a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>    
+
+    <div class="container-fluid container-main">
+      
+<div class="row-fluid">
+  <div class="span3">
+    <div class="well sidebar-nav">
+  <ul class="nav nav-list">
+    <li class="nav-header">About</li>
+    <li><img src="/assets/img/eric_hosick.jpg" class="img-rounded"></li>
+    <li> <a href="http://www.erichosick.com">Eric Hosick</a><p class="nav-about">Creator of Interface Vision, NoMethods, Agile enthusiast, entrepreneur, founder, BDD advocate, lecturer, technologist, developer, scrum master and book writer.</p></li>
+    <li><p><a href="http://twitter.com/erichosick" target="_blank">erichosick@gmail.com</a></p></li>
+  </ul>
+</div>
+
+    
+    <div class="well sidebar-nav">
+      <ul class="nav nav-list">
+        <li class="nav-header">Tags</li>
+        
+        
+
+
+  
+     
+    	<li><a href="/tags.html#Interface Vision-ref">Interface Vision <span>13</span></a></li>
+     
+    	<li><a href="/tags.html#javascript-ref">javascript <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#composition-ref">composition <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#message-oriented Programming-ref">message-oriented Programming <span>2</span></a></li>
+    
+  
+
+
+
+      </ul>
+    </div><!--/.well -->
+      
+    
+  </div>
+  <div class="span9">
+    <div class="hero-unit">
+      <div class="page-header">
+        <h1>Message-Oriented Programming With Javascript</h1>
+        <div class="row-fluid">
+          <div class="span2">
+            <img src="/assets/img/eric_hosick.jpg" class="img-rounded">
+          </div>
+          <div class="span8">
+            <p>by <a href="http://twitter.com/erichosick" target="_blank">Eric Hosick</a> (erichosick@gmail.com)</p>
+            <h4>Published <small class="date">03 September 2014</small></h4>
+          </div>
+        </div>
+      </div>
+      <h2 id="introduction">Introduction</h2>
+
+<p>We are going to talk about Javascript and message-oriented programming (MOP). Javascript is a beautiful language and is a perfect candidate for message-oriented programming.</p>
+
+<h2 id="why-message-oriented-programming">Why Message-Oriented Programming</h2>
+
+<p>The purpose of message-oriented programming is to standardize the behavioral interface of objects. This means, invoking the behavior of any object is the exact same: ill-relevant of the behavior we are trying to invoke.</p>
+
+<p>Invoking the addition of two numbers is the same as invoking the behavior to push data through a socket. As we will see below, this also means programming becomes the composition of data structures.</p>
+
+<p>Finally, we are able to fully disconnect mechanism (the framework) from the business behavior (using the framework).</p>
+
+<h2 id="what-is-message-oriented-programming">What is Message-Oriented Programming</h2>
+
+<p>We use abstractions when we program. The types of abstractions we use generally fall under different programming methodologies.</p>
+
+<p>In object-oriented programming, we use objects as the core abstraction along with attributes, methods, variables and parameters (to name a few).</p>
+
+<p>In functional programming, the core abstraction is functions along with parameters and variables (to name a few).</p>
+
+<p>In message-oriented programming (not to be confused with messaging systems and frameworks), messages and properties are the only abstractions. There are no methods, functions, parameters, variables and so on. A property of a message contains a single message or a composition of messages.</p>
+
+<p>A composition of messages is really a data structure. This means that our programs are actually data structures and, as such, can be manipulated just like you would any data structure. Want to duplicate and run part of a program in it’s own thread? Just copy the program from that point, as you would any data structure, and run it.</p>
+
+<p>Want to store part of your program? Just point at any part of your program and save it as you would any data structure.</p>
+
+<h2 id="why-abstractions-are-important">Why Abstractions Are Important</h2>
+
+<p>How we form mental models of the real world is shaped by the abstractions we use to describe the real world. An object-oriented mental model of a real world system will feel very different from a mental model formed by a functional approach to describing a real world system. The same can be said about different maths.</p>
+
+<p>Messages are, in our opinion, a great way of forming a mental model of real world systems because they are conceptually simpler than functions or objects and require fewer abstractions (no methods, functions, parameters, variables and so on.).</p>
+
+<h2 id="implementation">Implementation</h2>
+
+<h3 id="prototypal-inheritance">Prototypal Inheritance</h3>
+
+<p>We need to be able to create instances of messages and we are going to do this using <a href="http://javascript.crockford.com/prototypal.html">prototypal inheritance</a>.</p>
+
+<p>The general pattern for prototypal inheritance looks something like this:</p>
+
+<pre><code>function object(o) {
+  function F() {}
+  F.prototype = o;
+  return new F();
+};
+</code></pre>
+
+<p>However, the behavioral interface of messages is going to be the exact same so let’s be a little more descriptive of what it means to create a message.</p>
+
+<pre><code>function message(behavior) {
+  function Msg() {}
+  msg.prototype = behavior;
+  return new Msg();
+};
+</code></pre>
+
+<h3 id="common-behavior-for-all-messages">Common Behavior For All Messages</h3>
+
+<p>In our existing C# framework, we came up with a list of common behavior across all message. In this post, we’ll only provide a few of these common behaviors for brevity.</p>
+
+<p>For now, let’s consider go, asNum and asStr as our common behavior.</p>
+
+<ul>
+  <li>go - Accessing this property causes the message’s behavior to run.</li>
+  <li>asNum - Accessing this property causes the message’s behavior to run as a numeric message.</li>
+  <li>asStr - Accessing this property causes the message’s behavior to run as a string message.</li>
+</ul>
+
+<p>The behavioral interface for any message will look something like this:</p>
+
+<pre><code>var Message = {
+  get go() {
+    // code goes here
+    return something;
+  }
+  get asNum {
+    // code goes here
+    return numeric;
+  }
+  get asStr {
+    // code goes here
+    return string;
+  }
+};
+</code></pre>
+
+<p>You can also add data to the interface which will be shared for that message type.</p>
+
+<h3 id="data-and-messages">Data And Messages</h3>
+
+<p>So, we have a way to define the behavior for all messages in our framework. However, how do we give the information required by a message to run the behavior?</p>
+
+<p>What if we pass both behavior and data to create a message. Something like this:</p>
+
+<pre><code>function msg(behavior, data) {
+  var Msg = function() {}; 
+  Msg.prototype = behavior; // shared behavior and data (if any)
+  var msg = new Msg();
+  msg.data = data; // instance specific data
+  return msg;
+};
+</code></pre>
+
+<p>So, now within one of our behavior properties we could do something like this:</p>
+
+<pre><code>...
+get asNum {
+  return this.data.val; // where example data was { val: 5 }
+};
+</code></pre>
+
+<p>To create a new Numeric message we could do something like this:</p>
+
+<pre><code>var Num = {
+  get go() { return this.asNum; },
+  get asNum() { return this.data.val; },
+  get asStr() { return this.data.val.toString(); }
+};
+
+var newMessage = msg (Num, {val:4})
+
+newMessage.go; // returns 4
+newMessage.asNum; // returns 4
+newMessage.asStr; // returns "4"
+</code></pre>
+
+<p>Notice that any data required for a message is located neatly in one property.</p>
+
+<h3 id="describing-addition-using-messages">Describing Addition Using Messages</h3>
+
+<p>To build up an understanding of message-oriented programming, we’re going to add two numbers using messages.</p>
+
+<p>This will look like we aren’t gaining anything by using MOP to implement something as simple as addition but just stick with us.</p>
+
+<p>Programming in MOP is done through the composition of messages. It is very similar to creating a data structure.</p>
+
+<p>To add we will need two messages. A message that knows how to Add and a message that represents a Numerical data type.</p>
+
+<pre><code>// Behavior for a numerical value (same as above)
+var Num = {
+  get go() { return this.asNum; },
+  get asNum() { return this.data.val; },
+  get asStr() { return this.data.val.toString(); }
+};
+
+// Behavior for addition
+var Add = {
+  get go() { return this.asNum; },
+  get asNum() { return this.data.left.asNum + this.data.right.asNum; },
+  get asStr() { return this.data.left.asStr + this.data.right.asStr; }
+};
+</code></pre>
+
+<p>To compose addition we do the following:</p>
+
+<pre><code>var addMsg = msg( Add, {
+  left: msg (Num, {val:23} ),
+  right: msg( Num, {val:44} )
+});
+</code></pre>
+
+<p>Finally, to use the message we could do one of the following:</p>
+
+<pre><code>addMsg.go; // returns 67;
+addMsg.asNum; // returns 67;
+addMsg.asStr; // returns "2344"
+</code></pre>
+
+<p>What is really cool about this is that you can run the same message as different primitives. In this case, we are able to run the Add message as a string or a numeric.</p>
+
+<p>One more example.</p>
+
+<pre><code>var addMsg = msg( Add, {
+  left: msg( Sub, {
+    left: msg (Num, {val:0} ),
+    right: msg( Num, {val:44} )
+  }),
+  right: msg( Num, {val:44} )
+});
+</code></pre>
+
+<h3 id="adding-two-numbers-entered-into-a-form">Adding Two Numbers Entered Into a Form</h3>
+
+<p>Here is where we can start seeing some of the strengths of message-oriented programming.</p>
+
+<p>Let’s create some messages that are able to access HTML input elements:</p>
+
+<pre><code>// Access an HTML Input Element using JQuery
+var FormFieldGet = {
+  get go() { return this.asNum; },
+  get asNum() { return $(this.data.id).val(); },
+  get asStr() { return $(this.data.id).val().toString(); }
+};
+
+// Update an HTML Input Element using JQuery
+var FormFieldSet = {
+  get go() { return $(this.data.id).val(this.data.val.go); },
+};
+</code></pre>
+
+<p>Please note that these messages are part of a framework. We can look at them as mechanisms that we use to compose business behavior.</p>
+
+<p>We have html as follows:</p>
+
+<pre><code>&lt;form&gt;
+  &lt;input type="text" name="left"&gt; +
+  &lt;input type="text" name="right"&gt; =
+  &lt;input type="text" name="result"&gt;
+&lt;/form&gt;
+</code></pre>
+
+<p>When programming using MOP, we will take a different approach to solving problems than we would using traditional OOP or functional programming methodologies. We need to think about composition of behavior. Taking a bunch of small messages and hooking them up to get new types of behavior.</p>
+
+<p>In this specific case, we need to update a field on a form so we will be using a FormFieldSet message:</p>
+
+<pre><code>msg( FormFieldSet, {
+  id: "result",
+  val: ???
+}).go;
+</code></pre>
+
+<p>Calling go let’s us run the message immediately.</p>
+
+<p>But what do we put in place of val? What value are we trying to set? The value we want is the addition of two things.</p>
+
+<pre><code>msg( FormFieldSet, {
+  id: "result",
+  val: msg( Add, {
+    left: ????,
+    right: ????,
+  }),
+}).go;
+</code></pre>
+
+<p>The things we want to add are the other two form fields. So, let’s access them and get their values:</p>
+
+<pre><code>msg( FormFieldSet, {
+  id: "result",
+  val: msg( Add, {
+    left: msg( FormFieldGet, { id:"left" } ),
+    right: msg( FormFieldGet, { id:"right" } ),
+  }),
+}).go;
+</code></pre>
+
+<p>And we are done.</p>
+
+<p>Please note that what you are looking at is 100% business behavior. The structure of the code itself looks very different form the code we used to create the messages in the first place.</p>
+
+<p>There is a complete disconnect between how we describe business behavior and the mechanisms that do the work for us. We have 100% encapsulation and a 100% decoupled system (because all messages have the exact same behavioral interface). This is the holy grail of object-oriented programming promised so many decades ago.</p>
+
+<p>Take a moment to look at how clean that Javascript looks. Very consistent in look. Very dry.</p>
+
+<p>The javascript is also a data-structure that can be easily persisted or even traversed. During run time, we can alter the behavior of our program by changing the message composition (this is actually very different from code generation).</p>
+
+<p>We could dump that javascript in a key/value store for easy re-use.</p>
+
+<p>And the code looks so clean. So pure.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Javascript is a very versatile, and awesome, language that supports message-oriented programming. Using MOP, we are able to compose programs that can be manipulated as if it were a data-structure.</p>
+
+<p>There is a lot more we can do with this to clean things up. For example, our msg() function could do boxing of primitive data types for us cleaning up our message configurations. We would place this in a library.</p>
+
+
+      <hr>
+      <div class="pagination pagination-centered">
+        <ul>
+        
+          <li class="prev"><a href="/design/vision-minimal-webserver" title="A Simple Webserver That Could Some Day Challenge the Big Names">&larr; Previous</a></li>
+        
+          <li><a href="/archive.html">Archive</a></li>
+        
+          <li class="next disabled"><a>Next &rarr;</a>
+        
+        </ul>
+      </div>    
+      <hr>
+      <div>
+        
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_developer = 1;
+    var disqus_shortname = 'erichosickblog'; // required: replace example with your forum shortname
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+      </div>
+
+    </div>    
+  </div>
+</div>
+
+
+
+      <hr>
+      <footer>
+         <p>&copy; <a href="http://www.twitter.com/erichosick" target="_blank">Eric Hosick</a> 2012</p>
+       </footer>
+    </div>    
+    <!--
+
+    <script src="/assets/js/jquery.js"></script>
+    <script src="/assets/js/bootstrap-transition.js"></script>
+    <script src="/assets/js/bootstrap-alert.js"></script>
+    <script src="/assets/js/bootstrap-modal.js"></script>
+    <script src="/assets/js/bootstrap-dropdown.js"></script>
+    <script src="/assets/js/bootstrap-scrollspy.js"></script>
+    <script src="/assets/js/bootstrap-tab.js"></script>
+    <script src="/assets/js/bootstrap-tooltip.js"></script>
+    <script src="/assets/js/bootstrap-popover.js"></script>
+    <script src="/assets/js/bootstrap-button.js"></script>
+    <script src="/assets/js/bootstrap-collapse.js"></script>
+    <script src="/assets/js/bootstrap-carousel.js"></script>
+    <script src="/assets/js/bootstrap-typeahead.js"></script>
+    
+    -->
+
+    
+  </body>
+</html>
+

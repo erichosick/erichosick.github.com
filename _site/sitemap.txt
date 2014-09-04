@@ -7,6 +7,7 @@ http://erichosick.github.com/pages.html
 http://erichosick.github.com/sitemap.txt
 http://erichosick.github.com/tags.html
 
+http://erichosick.github.com/design/design-mop-and-javascript
 http://erichosick.github.com/design/vision-minimal-webserver
 http://erichosick.github.com/info/vpls-and-mental-models
 http://erichosick.github.com/info/the-visual-programming-group
