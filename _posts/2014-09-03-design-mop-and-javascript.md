@@ -14,7 +14,7 @@ We are going to talk about Javascript and message-oriented programming (MOP). Ja
 
 ## Why Message-Oriented Programming
 
-The purpose of message-oriented programming is to standardize the behavioral interface of objects. This means, invoking the behavior of any object is the exact same: ill-relevant of the behavior we are trying to invoke.
+The purpose of message-oriented programming is to standardize the behavioral interface of objects. This means, invoking the behavior of any object is the exact same: irrelevant of the behavior we are trying to invoke.
 
 Invoking the addition of two numbers is the same as invoking the behavior to push data through a socket. As we will see below, this also means programming becomes the composition of data structures.
 
@@ -236,15 +236,28 @@ The things we want to add are the other two form fields. So, let's access them a
       }),
     }).go;
 
+OR
+
+    // Using custom Prototyes for FormFieldSet, Add,
+    // FormFieldGet instead of the shared msg Prototye
+    
+    FormFieldSet ({
+      id: "result",
+      val: Add ({
+        left: FormFieldGet ({ id:"left" }),
+        right: FormFieldGet ({ id:"right" }),
+      }),
+    }).go;
+
 And we are done.
 
 Please note that what you are looking at is 100% business behavior. The structure of the code itself looks very different form the code we used to create the messages in the first place.
 
-There is a complete disconnect between how we describe business behavior and the mechanisms that do the work for us. We have 100% encapsulation and a 100% decoupled system (because all messages have the exact same behavioral interface). This is the holy grail of object-oriented programming promised so many decades ago.
+There is almost a complete disconnect between how we describe business behavior and the mechanisms that do the work for us. We have 100% encapsulation and a 100% decoupled system (because all messages have the exact same behavioral interface). This is the holy grail of object-oriented programming promised so many decades ago.
 
 Take a moment to look at how clean that Javascript looks. Very consistent in look. Very dry.
 
-The javascript is also a data-structure that can be easily persisted or even traversed. During run time, we can alter the behavior of our program by changing the message composition (this is actually very different from code generation).
+The javascript program itself is also a data-structure that can be easily persisted or even traversed. During run time, we can alter the behavior of our program by changing the message composition (this is actually very different from code generation).
 
 We could dump that javascript in a key/value store for easy re-use.
 
