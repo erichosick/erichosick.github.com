@@ -183,6 +183,6 @@ Although there is still [debate](http://c2.com/cgi/wiki?HomoiconicityClassificat
 
 Our programs are indeed data-structures both in code and when instantiated on the heap.
 
-Our code being a data-structure gives us the ability to manipulate code just like any data-structure. This means we can join, cut, copy, merge, delete, search, sort, load and save code.
+Our code being a data-structure gives us the ability to manipulate code just like any data-structure. This means we can join, cut, copy, merge, delete, search, sort, load and save code: even during runtime!
 
 
