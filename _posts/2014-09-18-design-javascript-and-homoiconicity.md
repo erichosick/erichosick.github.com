@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Javascript and Homoiconicity - Source-code That is a Data-Structure"
+title: "Javascript and Homoiconicity: Source-code that is a Data-Structure"
 description: "Homoiconicity should be a feature of programming languages and this is how to do it in Javascript."
 category: Design
 tags: [Javascript, composition, Homoiconicity, Homoiconic]
