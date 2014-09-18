@@ -3,9 +3,9 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>A Programming Language Based on Composition</title>
+    <title>A Programming Language Based on Composition of Messages</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="A very simple programming language which uses composition exclusively.">
+    <meta name="description" content="A very simple message-oriented programming language which uses composition of messages exclusively.">
     <meta name="author" content="Eric Hosick">
 
     <meta property="og:title" content="Eric Hosick" />
@@ -100,7 +100,7 @@
   <div class="span9">
     <div class="hero-unit">
       <div class="page-header">
-        <h1>A Programming Language Based on Composition</h1>
+        <h1>A Programming Language Based on Composition of Messages</h1>
         <div class="row-fluid">
           <div class="span2">
             <img src="/assets/img/eric_hosick.jpg" class="img-rounded">
@@ -113,156 +113,178 @@
       </div>
       <h2 id="introduction">Introduction</h2>
 
-<p>Interface Vision is a Gui based visual object language and fully composable framework created using Simple Interface Programming (SIP). Programming is done by hooking up parts: either visually or coding in C#.</p>
+<p>Interface Vision is a Gui based visual object language and fully composable framework created using Simple Interface Programming (SIP). Programming is done by hooking up messages (not to be confused with messaging frameworks): either visually or coding in C#.</p>
 
-<p>We’ve designed a language, SipCoffee, to simplify the syntax of describing the hooking up of Parts.</p>
+<p>However, the syntax in C# for hooking up messages looks funky.</p>
 
-<p>It uses composition exclusively. There is no specific syntax to describe inheritance, for loops, if/else statements, variables, scope, methods, functions and so on.</p>
+<p>So, we’ve designed a message-oriented language called SipCoffee.</p>
+
+<p>We uses composition exclusively. There is no specific syntax to describe inheritance, for loops, if/else statements, variables, scope, methods, functions and so on. All of these are replaced with messages.</p>
 
 <h2 id="examples">Examples</h2>
+
+<h3 id="hello-world">Hello World</h3>
 
 <p>Hello world in SipCoffee:</p>
 
 <div id="id-s1-1-top">&nbsp;</div>
-<pre><code>Application (
-  using Library ( name "Vision.Console" )
-  action WriteLine ( text "Hello World" )
-)
+<pre><code>Application {
+  do WriteLine { text "Hello World" }
+}
 </code></pre>
 
 <h6 id="id-s1-1">Source-1.1: Hello World in SipCoffee.</h6>
 
-<p>Hello written 10 times</p>
+<h3 id="hello-world-explained">Hello World Explained</h3>
+
+<p><a href="#id-s1-1-top">Source-1.1</a> contains two messages named Application and WriteLine. </p>
+
+<p>Application has the property do. The do property contains an instance of WriteLine.</p>
+
+<p>WriteLine has a text property, which is the text to write, and has the value “Hello World”.</p>
+
+<h3 id="hello-world-10-times">Hello World 10 Times</h3>
+
+<p>Hello World written 10 times on separate lines.</p>
 
 <div id="id-s1-2-top">&nbsp;</div>
-<pre><code>Application (
-  using Library ( name "Vision.Console" )
-  action BetweenInclusive (
-    start 1
-    end 20
-    incrementBy 2 
-    action WriteLine ( text "Hello" )
-  )
-)
+<pre><code>Application {
+  do For { start 1 end 20 by 2 
+    do WriteLine { text "Hello World" }
+  }
+}
 </code></pre>
 
 <h6 id="id-s1-2">Source-1.2: Hello written 10 times in SipCoffee.</h6>
 
-<p>The numbers 1, 2, 4, 8, 16 and 32 written on seperate lines</p>
+<h3 id="a-foreach">A ForEach</h3>
+
+<p>The numbers 1, 2, 4, 8, 16 and 32 written on separate lines.</p>
 
 <div id="id-s1-3-top">&nbsp;</div>
-<pre><code>Application (
-  using Library ( name "Vision.Console" )
-  action ForEach (
-    items 1 2 4 8 16 32
-    action WriteLine ( text CurrentItem () )
-  )
-)
+<pre><code>Application {
+  do ForEach {
+    item List [ 1 2 4 8 16 32 ]
+    do WriteLine { text CurrentItem {} }
+  }
+}
 </code></pre>
 
 <h6 id="id-s1-3">Source-1.3: A for each in SipCoffee.</h6>
 
+<h3 id="another-foreach">Another ForEach</h3>
+
 <p>Write out the first name of users Jane, Smith and Joe: each on a new line.</p>
 
 <div id="id-s1-4-top">&nbsp;</div>
-<pre><code>Application (
-  using Library ( name "Vision.Console" )
-  action ForEach (
-    items
-      Part ( properties
-        StringNamed ( name "firstName" value "Jane")
-        StringNamed ( name "lastName" value "First")
-      )
-      Part ( properties
-        StringNamed ( name "firstName" value "Smith")
-        StringNamed ( name "lastName" value "Between")
-      )
-      Part ( properties
-        StringNamed ( name "firstName" value "Joe")
-        StringNamed ( name "lastName" value "Last")
-      )
-    action WriteLine (
-      text Property ( name "firstName" part CurrentItem() )
-    )
-  )
-)
+<pre><code>Application {
+  do ForEach {
+    item List [
+      Hash [
+        KeyPair { key "firstName" value "Jane"}
+        KeyPair { key "lastName" value "First"}
+      ]
+      Hash [
+        KeyPair { key "firstName" value "Smith"}
+        KeyPair { key "lastName" value "Between"}
+      ]
+      Hash [
+        KeyPair { key "firstName" value "Joe"}
+        KeyPair { key "lastName" value "Last"}
+      ]
+    ]
+    do WriteLine {
+      text HashRead { hash CurrentItem{} key "firstName" }
+    }
+  }
+}
 </code></pre>
 
-<h6 id="id-s1-4">Source-1.4: A for each in SipCoffee against Parts.</h6>
+<h6 id="id-s1-4">Source-1.4: A for each in SipCoffee.</h6>
+
+<h3 id="foreach-using-sql">ForEach Using Sql</h3>
 
 <p>Write out the first name of users with data coming from a database: each on a new line.</p>
 
 <div id="id-s1-4-top">&nbsp;</div>
-<pre><code>Application (
-  using Library ( name "Vision.Console" )
-  action ForEach (
-    items SqlConnect (
+<pre><code>Application {
+  do ForEach {
+    item SqlConnect {
       database "someDatabase"
-      command SqlQuery (
+      command SqlQuery {
         sql "SELECT firstName, lastName FROM users"
-      )
-    )
-    action WriteLine (
-      text Property ( name "firstName" part CurrentItem() )
-    )
-  )
-)
+      }
+    }
+    do WriteLine {
+      text HashRead { hash CurrentItem{} key "firstName" }
+    }
+  }
+}
 </code></pre>
 
-<h6 id="id-s1-4">Source-1.4: A for each in SipCoffee against Parts.</h6>
+<h6 id="id-s1-4">Source-1.4: A for each in SipCoffee.</h6>
+
+<h3 id="foreach-using-sql-explained">ForEach Using Sql Explained</h3>
+
+<p>A ForEach message contains an item property. The item property contains a SqlConnect message configured with a database (named “someDatabase”) and a command (a SqlQuery message with sql “SELECT firstName, lastName FROM users”).</p>
+
+<p>The ForEach message invokes the SqlConnect message. The SqlConnect message connects to the database and invokes the message located in the command property. This causes SqlQuery to invoke which runs the sql and returns a list of records to SqlConnect. Each record is a hash table with a key/value pair for each field.</p>
+
+<p>SqlConnect passes that list back up to the ForEach message. The ForEach message is now able to iterate through the list of records.</p>
+
+<p>The ForEach message, internally, stores the current item in the list. It then invokes the message located in the do property. In this case, ForEach invokes the WriteLine message.</p>
+
+<p>We want to write out the first name of each user. This means we need to access that field within the current item (which happens to be a HashTable message).</p>
+
+<p>This means we use the HashRead message in the text property of WriteLine. What hash table are we reading from? Well, the CurrentItem message is able to retrieve the current item from the ForEach message. This then becomes the hash table that the HashRead message uses. The key is then used to locate an entry in the hash table: in this case “firstName”.</p>
+
+<p>HashRead passes up to WriteLine the result of reading from the hash table (in this case a string) and the WriteLine message writes the final value of text to the console.</p>
+
+<h2 id="the-syntax">The Syntax</h2>
 
 <p>Syntactically, the language is simple.</p>
 
-<p>Parts are upper case and properties are lower case.</p>
+<p>Messages are upper case and properties of messages are lower case. A property contains a message or composition of messages.</p>
 
-<p>Each Part is a class <a href="#id-1">1</a> contained within a given framework.</p>
-
-<p>Methods/Functions are not part of the language (which greatly simplifies the syntax).</p>
-
-<h2 id="source-11-explained">Source-1.1 Explained</h2>
-
-<p><a href="#id-s1-1-top">Source-1.1</a> contains 3 parts named Application, Library and WriteLine. </p>
-
-<p>Application has two properties: using and action. The using property contains an instance of Library and the action property contains an instance of WriteLine.</p>
-
-<p>Library has a name property which is the name of the library to load. In this case, the name property is set to a string primitive type and contains the value “Vision.Console”.</p>
-
-<p>WriteLine has a text property, which is the text to write, and has the value “Hello”.</p>
+<p>We use {} to define the contents of a message. We use [] to define special messages which manage collections of data (Hash, List and Array are examples of just such a Message).</p>
 
 <h2 id="parsing-expression-grammar">Parsing Expression Grammar</h2>
 
 <p>A pseudo parsing expression grammar is as follows:</p>
 
 <div id="id-g1-1-top">&nbsp;</div>
-<pre><code>a) PROPERTY &lt;- property primitive+
-b) PROPERTY &lt;- property PART+
-c) PART &lt;- Part ( PROPERTY* )
-AND/OR c) PART &lt;- Part { PROPERTY* } // Cause maybe people prefer curley braces?
+<pre><code>a} PROPERTY &lt;- property primitive+
+b} PROPERTY &lt;- property MESSAGE+
+c} MESSAGE &lt;- Message { PROPERTY* } // Could also be () if people prefered that.
+d} MESSAGE &lt;- Message [ MESSAGE ]
 </code></pre>
 
 <h6 id="id-g1-1">Grammar-1.1: Parsing expression grammar for SipCoffee.</h6>
 
-<h3 id="primitives">Primitives</h3>
+<h3 id="primitives-are-messages">Primitives are Messages</h3>
 
-<p>A primitive is a string or numeric. Examples being:</p>
+<p>Primitives are things like string, numbers and dates (to name a few). Primitives are actually messages.</p>
+
+<p>Examples being:</p>
 
 <ul>
-  <li>Strings - “Hello”</li>
-  <li>Floats - 34.56f</li>
-  <li>Reals - 3.456</li>
-  <li>Integers - 34</li>
-  <li>Longs - 56l</li>
+  <li>Strings - “Hello” (String message)</li>
+  <li>Floats - 34.56f (Float message)</li>
+  <li>Reals - 3.456 (Real message)</li>
+  <li>Integers - 34 (Int message)</li>
+  <li>Longs - 56l (Long message)</li>
+  <li>Dates - 1994-11-05T08:15:30-05:00 (Date message - Considering only allowing UTC dates to be stored)</li>
 </ul>
 
 <h3 id="collections">Collections</h3>
 
-<p>A collection is defined by simply listing the items in the array separated by white space.</p>
+<p>A collection is defined by simply listing the item in the array separated by white space (we could also separate items using commas).</p>
 
 <ul>
-  <li>array of strings - “Hello” “And” “GoodBye”</li>
-  <li>array of integers - 1 2 5 6 12 656</li>
-  <li>array of floats - 23.0f 345.4f 63.346f</li>
-  <li>array of Parts - User ( name “Jane” ) User ( name “Toan” ) User ( name “Frank” )</li>
+  <li>array of strings - [ “Hello” “And” “GoodBye” ]</li>
+  <li>array of integers - [ 1 2 5 6 12 656 ]</li>
+  <li>array of floats - [ 23.0f 345.4f 63.346f ]</li>
+  <li>array of Messages - [ User { name “Jane” } User { name “Toan” } User { name “Frank” } ]</li>
 </ul>
 
 <h2 id="availability">Availability</h2>
@@ -273,15 +295,11 @@ AND/OR c) PART &lt;- Part { PROPERTY* } // Cause maybe people prefer curley brac
 
 <h2 id="conclusion">Conclusion</h2>
 
-<p>That’s it. A very simple language based on composition.</p>
+<p>That’s it. A very simple message-oriented language based on composition.</p>
 
 <h2 id="next-step">Next Step</h2>
 
 <p>The <a href="/design/example-window-basic">next step</a> was to get a program to display a native window using SipCoffee.</p>
-
-<h2 id="footnotes">Footnotes</h2>
-
-<p>{#id-1} 1. Actually, a Part can be a class or a composition of other parts. But this isn’t relevant for the SipCoffee language.</p>
 
 
       <hr>

@@ -84,7 +84,7 @@
      
     	<li><a href="/tags.html#javascript-ref">javascript <span>1</span></a></li>
      
-    	<li><a href="/tags.html#composition-ref">composition <span>1</span></a></li>
+    	<li><a href="/tags.html#composition-ref">composition <span>2</span></a></li>
      
     	<li><a href="/tags.html#message-oriented Programming-ref">message-oriented Programming <span>2</span></a></li>
     
@@ -117,7 +117,7 @@
 
 <h2 id="why-message-oriented-programming">Why Message-Oriented Programming</h2>
 
-<p>The purpose of message-oriented programming is to standardize the behavioral interface of objects. This means, invoking the behavior of any object is the exact same: ill-relevant of the behavior we are trying to invoke.</p>
+<p>The purpose of message-oriented programming is to standardize the behavioral interface of objects. This means, invoking the behavior of any object is the exact same: irrelevant of the behavior we are trying to invoke.</p>
 
 <p>Invoking the addition of two numbers is the same as invoking the behavior to push data through a socket. As we will see below, this also means programming becomes the composition of data structures.</p>
 
@@ -356,15 +356,29 @@ var FormFieldSet = {
 }).go;
 </code></pre>
 
+<p>OR</p>
+
+<pre><code>// Using custom Prototyes for FormFieldSet, Add,
+// FormFieldGet instead of the shared msg Prototye
+
+FormFieldSet ({
+  id: "result",
+  val: Add ({
+    left: FormFieldGet ({ id:"left" }),
+    right: FormFieldGet ({ id:"right" }),
+  }),
+}).go;
+</code></pre>
+
 <p>And we are done.</p>
 
 <p>Please note that what you are looking at is 100% business behavior. The structure of the code itself looks very different form the code we used to create the messages in the first place.</p>
 
-<p>There is a complete disconnect between how we describe business behavior and the mechanisms that do the work for us. We have 100% encapsulation and a 100% decoupled system (because all messages have the exact same behavioral interface). This is the holy grail of object-oriented programming promised so many decades ago.</p>
+<p>There is almost a complete disconnect between how we describe business behavior and the mechanisms that do the work for us. We have 100% encapsulation and a 100% decoupled system (because all messages have the exact same behavioral interface). This is the holy grail of object-oriented programming promised so many decades ago.</p>
 
 <p>Take a moment to look at how clean that Javascript looks. Very consistent in look. Very dry.</p>
 
-<p>The javascript is also a data-structure that can be easily persisted or even traversed. During run time, we can alter the behavior of our program by changing the message composition (this is actually very different from code generation).</p>
+<p>The javascript program itself is also a data-structure that can be easily persisted or even traversed. During run time, we can alter the behavior of our program by changing the message composition (this is actually very different from code generation).</p>
 
 <p>We could dump that javascript in a key/value store for easy re-use.</p>
 
@@ -385,7 +399,7 @@ var FormFieldSet = {
         
           <li><a href="/archive.html">Archive</a></li>
         
-          <li class="next disabled"><a>Next &rarr;</a>
+          <li class="next"><a href="/design/design-javascript-and-homoiconicity" title="Javascript and Homoiconicity">Next &rarr;</a></li>
         
         </ul>
       </div>    
