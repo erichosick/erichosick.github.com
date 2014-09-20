@@ -6,7 +6,7 @@ category: Design
 tags: [Javascript, composition, Homoiconicity, Homoiconic]
 author: Eric Hosick
 author_twitter: erichosick
----
+---mechanism
 
 ## Introduction
 
@@ -14,7 +14,7 @@ You can mess around with a demo project in [github](https://github.com/erichosic
 
 [Homoiconicity](https://en.wikipedia.org/wiki/Homoiconicity) is a feature of a language where the language's "program code is represented as the language's fundamental data type" (also see [Homoiconic Languages](http://c2.com/cgi/wiki?HomoiconicLanguages) on c2).
 
-Javascript is a loosely typed language whose fundamental datatypes are primitives (strings, floats, etc.) and functions (lambdas) with properties (meaning functions can also be used as objects). From these fundamental data-types, we will create a single fundamental data type for Javascript (called a message).
+Javascript is a loosely typed language whose fundamental datatypes are primitives (strings, floats, etc.) and functions (lambdas) with properties (meaning functions can also be used as objects). From these fundamental data-types, we will create a single fundamental data type for Javascript (called a mechanism).
 
 Homoiconic source-code is a data-structure in and of itself. Programming becomes the composition of this single fundamental datatype which results in the new algorithm (the program) and data-structure at the same time.
 
@@ -69,7 +69,7 @@ I think I know why it is hard to find languages that are really Homoiconic. Howe
 
 If you are creating a language, and remove parameterized sub-routines as the core abstraction for communication of data between sub-routines, you end up with a Homoiconic language.
 
-The fundamental datatypes (messages) take the place of parameterized sub-routines and passing of information between messages becomes an inherent part of the data-structure you create when programming.
+The fundamental datatypes (mechanisms) take the place of parameterized sub-routines and passing of information between mechanisms becomes an inherent part of the data-structure you create when programming.
 
 ## Javascript and Homoiconicity
 
@@ -132,11 +132,11 @@ How a bout we inject behavior to write a message to the console when the file_ty
 
     persistIt3.go; // invoke the program
 
-That's kinda cool. When the persister-message runs go on the writeToCon-message placed in the fileType property, writeToCon runs the message in the text property.
+That's kinda cool. When the persister-mechanism runs go on the writeToCon-mechanism placed in the fileType property, writeToCon runs the mechanism in the text property.
 
-That eventually causes the text in the form field to propagate up to the writeToCon-message which then writes that text to the console.
+That eventually causes the text in the form field to propagate up to the writeToCon-mechanism which then writes that text to the console.
 
-The writeToCon-message then propagates the text up to the persist-message which uses the text to determine the file type.
+The writeToCon-mechanism then propagates the text up to the persist-mechanism which uses the text to determine the file type.
 
 If you look back, you will notice that no matter how complex the program, the interface to it is the exact same. To invoke the behavior of **any program** you simply call go on that program.
 
@@ -146,7 +146,7 @@ Standardization of behavioral interface is an emergent property of any Homoiconi
 
 Exactly!
 
-In a Homoiconic language, there is no way to distinguish the language itself from the software frameworks built in the language because **everything** is a fundamental datatype (a message): even **scope** (see Difficult to Read below).
+In a Homoiconic language, there is no way to distinguish the language itself from the software frameworks built in the language because **everything** is a fundamental datatype (a mechanism): even **scope** is implemented as a mechanism.
 
 In my opinion, separation of language and framework is a red-flag that we are doing something wrong.
 
@@ -179,7 +179,7 @@ Perhaps, some day, we will end up with visual programming languages that, behind
 
 ## Conclusion
 
-Although there is still [debate](http://c2.com/cgi/wiki?HomoiconicityClassification) as to what makes a language Homoiconic, I think we have shown that it is indeed possible to program in Javascript using only a fundamental datatype (a message).
+Although there is still [debate](http://c2.com/cgi/wiki?HomoiconicityClassification) as to what makes a language Homoiconic, I think we have shown that it is indeed possible to program in Javascript using only a fundamental datatype (a mechanism).
 
 Our programs are indeed data-structures both in code and when instantiated on the heap.
 
