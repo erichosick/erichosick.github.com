@@ -7,6 +7,7 @@ http://erichosick.github.com/pages.html
 http://erichosick.github.com/sitemap.txt
 http://erichosick.github.com/tags.html
 
+http://erichosick.github.com/design/design-charp-and-homoiconicity
 http://erichosick.github.com/design/design-javascript-and-homoiconicity
 http://erichosick.github.com/design/design-mop-and-javascript
 http://erichosick.github.com/design/vision-minimal-webserver

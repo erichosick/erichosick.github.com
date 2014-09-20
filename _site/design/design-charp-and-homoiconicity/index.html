@@ -3,9 +3,9 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Javascript and Homoiconicity: Source-code that is a Data-Structure</title>
+    <title>C# and Homoiconicity: Source-code that is a Data-Structure</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Homoiconicity should be a feature of programming languages and this is how to do it in Javascript.">
+    <meta name="description" content="Homoiconicity should be a feature of programming languages and this is how to do it in C#.">
     <meta name="author" content="Eric Hosick">
 
     <meta property="og:title" content="Eric Hosick" />
@@ -80,7 +80,9 @@
 
   
      
-    	<li><a href="/tags.html#Javascript-ref">Javascript <span>1</span></a></li>
+    	<li><a href="/tags.html#C#-ref">C# <span>3</span></a></li>
+     
+    	<li><a href="/tags.html#chspar-ref">chspar <span>1</span></a></li>
      
     	<li><a href="/tags.html#composition-ref">composition <span>3</span></a></li>
      
@@ -100,24 +102,24 @@
   <div class="span9">
     <div class="hero-unit">
       <div class="page-header">
-        <h1>Javascript and Homoiconicity: Source-code that is a Data-Structure</h1>
+        <h1>C# and Homoiconicity: Source-code that is a Data-Structure</h1>
         <div class="row-fluid">
           <div class="span2">
             <img src="/assets/img/eric_hosick.jpg" class="img-rounded">
           </div>
           <div class="span8">
             <p>by <a href="http://twitter.com/erichosick" target="_blank">Eric Hosick</a> (erichosick@gmail.com)</p>
-            <h4>Published <small class="date">18 September 2014</small></h4>
+            <h4>Published <small class="date">21 September 2014</small></h4>
           </div>
         </div>
       </div>
       <h2 id="introduction">Introduction</h2>
 
-<p>You can mess around with a demo project in <a href="https://github.com/erichosick/jscriptVision">github</a>.</p>
+<p>You can mess around with a C# demo project in <a href="https://github.com/erichosick/csVision">csVision github</a> and Javascript demo project <a href="https://github.com/erichosick/jscriptVision">jsVision github</a>.</p>
 
 <p><a href="https://en.wikipedia.org/wiki/Homoiconicity">Homoiconicity</a> is a feature of a language where the language’s “program code is represented as the language’s fundamental data type” (also see <a href="http://c2.com/cgi/wiki?HomoiconicLanguages">Homoiconic Languages</a> on c2).</p>
 
-<p>Javascript is a loosely typed language whose fundamental datatypes are primitives (strings, floats, etc.) and functions (lambdas) with properties (meaning functions can also be used as objects). From these fundamental data-types, we will create a single fundamental data type for Javascript (called a message).</p>
+<p>C# is a strongly typed language whose fundamental datatypes are primitives (strings, floats, int, longs, etc.) and classes with properties. From these fundamental data-types, we will create a single fundamental data type for C# (called a mechanism).</p>
 
 <p>Homoiconic source-code is a data-structure in and of itself. Programming becomes the composition of this single fundamental datatype which results in the new algorithm (the program) and data-structure at the same time.</p>
 
@@ -166,7 +168,7 @@
 
 <p>Just like you can display and edit trees in many <a href="https://www.google.com/search?q=tree+structure&amp;tbm=isch">different visual formats</a>, you can display and edit source code visually. You can have multiple visual representations of the same program: each one tailored towards the reader of your program!</p>
 
-<p>And all of this is possible without writing custom code (emergent behavior) because there is no need to convert your program from source-code to a data-structure.</p>
+<p>And all of this is possible without writing custom code because there is no need to convert your program from source-code to a data-structure (custom code is often necessary to persist traditional object instances in OOP langauges).</p>
 
 <p>It really surprises me that we have gone this far without Homoiconicity going main stream.</p>
 
@@ -180,103 +182,114 @@
 
 <p>If you are creating a language, and remove parameterized sub-routines as the core abstraction for communication of data between sub-routines, you end up with a Homoiconic language.</p>
 
-<p>The fundamental datatypes (messages) take the place of parameterized sub-routines and passing of information between messages becomes an inherent part of the data-structure you create when programming.</p>
+<p>The fundamental datatypes (mechanisms) take the place of parameterized sub-routines and passing of information between mechanism becomes an inherent part of the data-structure you create when programming.</p>
 
-<h2 id="javascript-and-homoiconicity">Javascript and Homoiconicity</h2>
+<h2 id="c-and-homoiconicity">C# and Homoiconicity</h2>
 
-<p>Here is Javascript code that is also a data-structure (both the code and the instances on the heap are a data-structure):</p>
+<p>Here is C# code that is also a data-structure (both the code and the instances on the heap are a data-structure):</p>
 
-<pre><code>// Write the addition of ((3 + -1) + -1) to the console.
-var msgWrite = writeToCon ({
-  text: add({
-     left: add({
-       left: num(3),
-       right: num(-1)
-     }),
-     right: num(-1)
-  })
-});
+<p>The fundamental datatype mechanism interface:</p>
 
-msgWrite.go; // invoke the program
+<pre><code>public interface iMech {
+  iMech go { get; }
+  float asNum { get; }
+  string asStr { get; }
+}
+</code></pre>
+
+<p>Let’s write the addition of ((3 + -1) + -1) to the console and the addition result of 1.</p>
+
+<pre><code>iMech mechWrite = new writeToCon {
+  text = new add {
+    left = new add {
+      left = new num { val = 3 },
+      right = new num { val = -1 }
+    },
+    right = new num { val = -1 }
+  },
+};
+
+mechWrite.go; // invoke the program
+mechWrite.asNum; // invoke the program =&gt; output is 1
 </code></pre>
 
 <p>How about we persist it:</p>
 
-<pre><code>var persistIt = persist ({
-  fileName: "/somefile",
-  fileType: "json",
-  program: msgWrite
-});
+<pre><code>iMech persistIt = new persist {
+  fileName = "/somefile",
+  fileType = "json",
+  program = mechWrite
+};
 
 persistIt.go; // invoke the program
 </code></pre>
 
 <p>How about we persist it using a file name and file type entered by a user on a form:</p>
 
-<pre><code>var persistIt2 = persist ({
-  fileName: formFieldGet ({
-    formName: "persist_form",
-    formField: "file_name"
-  }),
-  fileType: formFieldGet ({
-    formName: "persist_form",
-    formField: "file_type"
-  }),
-  program: msgWrite
-});
+<pre><code>iMech persistIt2 = new persist {
+  fileName = new formFieldGet {
+    formName = "persist_form",
+    formField = "file_name"
+  },
+  fileType = new formFieldGet {
+    formName = "persist_form",
+    formField = "file_type"
+  },
+  program = mechWrite
+};
 
 persistIt2.go; // invoke the program
 </code></pre>
 
-<p>How a bout we inject behavior to write a message to the console when the file_type form field is accessed:</p>
+<p>How about we inject behavior to write a message to the console when the file_type form field is accessed:</p>
 
-<pre><code>var persistIt3 = persist ({
-  fileName: formFieldGet ({
-    formName: "persist_form",
-    formField: "file_name"
-  }),
-  fileType: writeToCon ({
-    text: formFieldGet ({
-      formName: "persist_form",
-      formField: "file_type"
-    }),
-  }),
-  program: msgWrite
-});
+<pre><code>iMech persistIt3 = new persist {
+  fileName = new formFieldGet {
+    formName = "persist_form",
+    formField = "file_name"
+  },
+  fileType = new writeToCon {
+    text = new formFieldGet {
+      formName = "persist_form",
+      formField = "file_type"
+    },
+  },
+  program = mechWrite
+};
 
 persistIt3.go; // invoke the program
 </code></pre>
 
-<p>That’s kinda cool. When the persister-message runs go on the writeToCon-message placed in the fileType property, writeToCon runs the message in the text property.</p>
+<p>That’s kinda cool. When the persister-mechanism runs go on the writeToCon-mechanism placed in the fileType property, writeToCon runs the mechanism in the text property.</p>
 
-<p>That eventually causes the text in the form field to propagate up to the writeToCon-message which then writes that text to the console.</p>
+<p>That eventually causes the text in the form field to propagate up to the writeToCon-mechanism which then writes that text to the console.</p>
 
-<p>The writeToCon-message then propagates the text up to the persist-message which uses the text to determine the file type.</p>
+<p>The writeToCon-mechanism then propagates the text up to the persist-mechanism which uses the text to determine the file type.</p>
 
 <p>If you look back, you will notice that no matter how complex the program, the interface to it is the exact same. To invoke the behavior of <strong>any program</strong> you simply call go on that program.</p>
 
-<p>Standardization of behavioral interface is an emergent property of any Homoiconic language and may be a good litmus test to determine if a language is Homoiconic.</p>
+<p>Standardization of behavioral interface (notice everything is an iMech interface: even primitive datatypes) is an emergent property of any Homoiconic language and may be a good litmus test to determine if a language is Homoiconic.</p>
 
 <h2 id="but-this-looks-more-like-a-framework-than-a-language">But This Looks More Like a Framework Than a Language</h2>
 
 <p>Exactly!</p>
 
-<p>In a Homoiconic language, there is no way to distinguish the language itself from the software frameworks built in the language because <strong>everything</strong> is a fundamental datatype (a message): even <strong>scope</strong> (see Difficult to Read below).</p>
+<p>In a Homoiconic language, there is no way to distinguish the language itself from the software frameworks built in the language because <strong>everything</strong> is a fundamental datatype (a mechanism): even <strong>scope</strong> is implemented as a mechanism.</p>
 
 <p>In my opinion, separation of language and framework is a red-flag that we are doing something wrong.</p>
 
 <p>Fundamental parts of the language are key words (loop, between, forEach, withEach, doWhile, etc.) but the structure of the code does not give any hint as to what those key words are.</p>
 
-<pre><code>var msgLoop = between {
-  from: num(2),
-  to: num(8),
-  by: num(2)
-  do: writeToCon({
-    text: str("Hello world!")
-  })
-}
+<pre><code>iMech mechLoop = between {
+  from = new num {val = 2},
+  to = new num {val = 8},
+  by = new num {val = 2},
+  do = new writeToCon {
+    text: str { val = "Hello world!" },
+  },
+};
 
-msgLoop.go; // invoke the program
+mechLoop.go; // invoke the program
 </code></pre>
 
 <p>Traditional code would give us a hint as to what the keywords are:</p>
@@ -296,7 +309,7 @@ msgLoop.go; // invoke the program
 
 <h2 id="conclusion">Conclusion</h2>
 
-<p>Although there is still <a href="http://c2.com/cgi/wiki?HomoiconicityClassification">debate</a> as to what makes a language Homoiconic, I think we have shown that it is indeed possible to program in Javascript using only a fundamental datatype (a message).</p>
+<p>Although there is still <a href="http://c2.com/cgi/wiki?HomoiconicityClassification">debate</a> as to what makes a language Homoiconic, I think we have shown that it is indeed possible to program in C# using only a fundamental datatype (a mechanism).</p>
 
 <p>Our programs are indeed data-structures both in code and when instantiated on the heap.</p>
 
@@ -308,11 +321,11 @@ msgLoop.go; // invoke the program
       <div class="pagination pagination-centered">
         <ul>
         
-          <li class="prev"><a href="/design/design-mop-and-javascript" title="Message-Oriented Programming With Javascript">&larr; Previous</a></li>
+          <li class="prev"><a href="/design/design-javascript-and-homoiconicity" title="Javascript and Homoiconicity: Source-code that is a Data-Structure">&larr; Previous</a></li>
         
           <li><a href="/archive.html">Archive</a></li>
         
-          <li class="next"><a href="/design/design-charp-and-homoiconicity" title="C# and Homoiconicity: Source-code that is a Data-Structure">Next &rarr;</a></li>
+          <li class="next disabled"><a>Next &rarr;</a>
         
         </ul>
       </div>    
