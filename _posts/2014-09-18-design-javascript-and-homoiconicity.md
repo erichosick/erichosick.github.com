@@ -6,7 +6,7 @@ category: Design
 tags: [Javascript, composition, Homoiconicity, Homoiconic]
 author: Eric Hosick
 author_twitter: erichosick
----mechanism
+---
 
 ## Introduction
 
