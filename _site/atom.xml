@@ -4,13 +4,235 @@
  <title>Eric Hosick</title>
  <link href="http://erichosick.github.com/atom.xml" rel="self"/>
  <link href="http://erichosick.github.com"/>
- <updated>2014-09-20T16:47:11-07:00</updated>
+ <updated>2014-09-22T22:57:42-07:00</updated>
  <id>http://erichosick.github.com</id>
  <author>
    <name>Eric Hosick</name>
    <email>erichosick@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Mechanisms as a Programming Paradigm</title>
+   <link href="http://erichosick.github.com/design/design-mechanisms-and-policies"/>
+   <updated>2014-09-24T00:00:00-07:00</updated>
+   <id>http://erichosick.github.com/design/design-mechanisms-and-policies</id>
+   <content type="html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+
+&lt;p&gt;Software engineers strive to separate the what (policy) from the how (mechanism) for reasons like &lt;a href=&quot;https://en.wikipedia.org/wiki/Code_reuse&quot;&gt;code re-use&lt;/a&gt;, &lt;a href=&quot;https://en.wikipedia.org/wiki/Maintainability&quot;&gt;maintainability&lt;/a&gt;, &lt;a href=&quot;https://en.wikipedia.org/wiki/Modular_programming&quot;&gt;modularity&lt;/a&gt; and &lt;a href=&quot;https://en.wikipedia.org/wiki/Separation_of_concerns&quot;&gt;separation of concerns&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;The design decisions on when to use policies instead of mechanisms is often ambiguous. We propose a mechanism centric &lt;a href=&quot;https://en.wikipedia.org/wiki/Programming_paradigm&quot;&gt;programming paradigm&lt;/a&gt; to provide a clear distinction of when to use mechanism and when to use policy.&lt;/p&gt;
+
+&lt;h2 id=&quot;what-are-mechanisms&quot;&gt;What are Mechanisms&lt;/h2&gt;
+
+&lt;p&gt;A mechanism is “the how” and covers everything from language syntax to operating system features like:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Syntax_%28programming_languages%29&quot;&gt;language syntax&lt;/a&gt; mechanisms
+    &lt;ul&gt;
+      &lt;li&gt;loops (while, doWhile, for, forEach, etc.)&lt;/li&gt;
+      &lt;li&gt;conditionals (==, &amp;lt;, &amp;gt;, &amp;lt;=, etc.)&lt;/li&gt;
+      &lt;li&gt;primitive data types (int, float, var, array[], etc.)&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Scope_%28computer_science%29&quot;&gt;scope&lt;/a&gt; ( {}, (), closures, parameterized sub-routines, blocks, etc.)&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Programming_paradigm&quot;&gt;programming paradigm&lt;/a&gt; mechanisms
+    &lt;ul&gt;
+      &lt;li&gt;behaviors, signals, switching, events, etc. (&lt;a href=&quot;https://en.wikipedia.org/wiki/Functional_reactive_programming&quot;&gt;functional reactive programming&lt;/a&gt;)&lt;/li&gt;
+      &lt;li&gt;entities, ports, buffers, etc. (&lt;a href=&quot;https://en.wikipedia.org/wiki/Flow-based_programming&quot;&gt;flow based programming&lt;/a&gt;)&lt;/li&gt;
+      &lt;li&gt;connectors, primitive constraints, quantities, constraint networks, probes (&lt;a href=&quot;https://mitpress.mit.edu/sicp/full-text/book/book-Z-H-22.html#%_sec_3.3.5&quot;&gt;constraint systems programming&lt;/a&gt;)&lt;/li&gt;
+      &lt;li&gt;ourselves (mechanisms)&lt;/li&gt;
+      &lt;li&gt;etc.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Operating_system&quot;&gt;operating system&lt;/a&gt; mechanisms
+    &lt;ul&gt;
+      &lt;li&gt;persistence (files, memory)&lt;/li&gt;
+      &lt;li&gt;communication (sockets, ports, pipes)&lt;/li&gt;
+      &lt;li&gt;ui/ux (windows, buttons)&lt;/li&gt;
+      &lt;li&gt;databases (sql, key/value stores, map reduce)&lt;/li&gt;
+      &lt;li&gt;devices (display, keyboard, mouse, trackpad)&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;math mechanisms
+    &lt;ul&gt;
+      &lt;li&gt;addition, subtraction, vectors, matrices, etc.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;etc.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Mechanisms are tightly coupled to the programming language by-which they were implemented.&lt;/p&gt;
+
+&lt;h3 id=&quot;defining-mechanisms&quot;&gt;Defining Mechanisms&lt;/h3&gt;
+
+&lt;p&gt;A mechanism can be viewed as a fundamental data-type that also contains an algorithm:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;an algorithm&lt;/strong&gt; - The source-code that implements the mechanism’s algorithm.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;data&lt;/strong&gt; - The data required by the mechanism to run the algorithm.
+    &lt;ul&gt;
+      &lt;li&gt;Since a mechanism &lt;strong&gt;is&lt;/strong&gt; the only fundamental data-type, the data is also a mechanism.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;an invocation point&lt;/strong&gt; - “go”, “makeItSo#1”, “run”
+    &lt;ul&gt;
+      &lt;li&gt;For performance purposes, invocation points can be defined for each primitive data-type in any given language: especially strongly typed languages (see C# add mechanism below).&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;A single invocation point means the behavioral interface to a mechanism is the same for all mechanisms. You can think of it as playing a game of &lt;a href=&quot;https://en.wikipedia.org/wiki/Dominoes&quot;&gt;dominoes&lt;/a&gt; where every tile has the exact same number of spots.&lt;/p&gt;
+
+&lt;p class=&quot;featurette pagination-centered&quot;&gt;
+    &lt;img class=&quot;featurette-image img-polaroid&quot; src=&quot;/assets/img/posts/mechanisms_domino_interface.png&quot; /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;This makes it really easy to use mechanisms.&lt;/p&gt;
+
+&lt;p&gt;An example add mechanism in Javascript:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var ArrF = function() {};
+ArrF.prototype = {
+  get val() { return this.d; },
+  get go() { return this.d; },
+  get asNum() { return this.d[0]; },
+  get asArr() { return this.d; },
+  get asStr() { return &quot;[&quot; + this.d.toString() +&quot;]&quot;; }
+};
+function arr(d) { var f = new ArrF(); f.d = d; return f; };
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;in C#:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;public class add : iMech {
+  public iMech left { get; set; }
+  public iMech right { get; set; }
+  public iMech go {
+  	get { return new num { val = asNum }; }
+  }
+  public float asNum {
+  	get { return left.go.asNum + right.go.asNum; }
+  }
+  public string asStr {
+  	get { return string.Format (&quot;({0} + {1})&quot;, left.asStr, right.asStr); }
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;what-are-policies&quot;&gt;What are Policies&lt;/h2&gt;
+
+&lt;p&gt;A policy is “the what” defined by using mechanisms. A policy is your program or application. Policies are fully decoupled from mechanism implementation.&lt;/p&gt;
+
+&lt;h3 id=&quot;defining-policies&quot;&gt;Defining Policies&lt;/h3&gt;
+
+&lt;p&gt;An example policy using an addition and number mechanism&lt;/p&gt;
+
+&lt;p&gt;in Javascript:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var mech = add({
+  left: num(4),
+  right: num(8)
+});
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;in &lt;a href=&quot;/design/design-composition-based-language&quot;&gt;SipCoffee&lt;/a&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;add (
+  left 4
+  right 8
+)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;in C#:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var mech = new add {
+  left = new num { val = 4 },
+  right = new num { val = 8 }
+};
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;further-reading&quot;&gt;Further Reading&lt;/h2&gt;
+
+&lt;p&gt;Some readings on separation of mechanism and policy:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://stackoverflow.com/questions/4784500/policy-and-mechanism&quot;&gt;Stackoverflow - Policy and Mechanisms&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Separation_of_mechanism_and_policy&quot;&gt;Wikipedia - Separation of Mechanism and Policy&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://sites.google.com/site/mylokesh/policyvsmechanism&quot;&gt;Policy-vs-Mechanism&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;mechanisms--vs--parameterized-sub-routines&quot;&gt;Mechanisms -vs- Parameterized Sub-Routines&lt;/h2&gt;
+
+&lt;p&gt;Traditionally, sub-routines have data “pushed” into them via parameters (though sub-routines can “pull” from scoped data) and then run the algorithm contained in the sub-routine.&lt;/p&gt;
+
+&lt;p&gt;Mechanisms never have data (mechanisms) “pushed” to them. Instead, mechanisms use internal data (mechanisms) to “pull” information to the algorithm.&lt;/p&gt;
+
+&lt;p&gt;Consider an add sub-routine with an addition algorithm:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;int add ( int left, int right ) {
+  return left + right;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;We “push” into add values contained in the left and right parameters.&lt;/p&gt;
+
+&lt;p&gt;Consider an add mechanism (pseudo-code):&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mechanism add {
+  mechanism left;
+  mechanism right;
+  
+  mechanism go {
+    return left.go + right.go;
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In this case, data is “pulled” from the left and right mechanisms by invoking those mechanism (go) on left and right.&lt;/p&gt;
+
+&lt;p&gt;Further examples using real languages are provided in the post &lt;a href=&quot;/design/design-csharp-and-homoiconicity&quot;&gt;C# and Homoiconicity&lt;/a&gt; and &lt;a href=&quot;/design/design-javascript-and-homoiconicity&quot;&gt;Javascript and Homoiconicity&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;When we use the traditional add in a program, we need to know where the value of left and right come from before we can call add’s algorithm:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;int x = 5;
+int y = 8;
+int result = add (x, y); // can&#39;t get around it. We must push something to add here.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;We can’t get around it. At some point, when we call add while programming, we have to pass parameters to add.&lt;/p&gt;
+
+&lt;p&gt;When we use add as a mechanism, we don’t need to know where the values of left and right come from before we call add’s algorithm:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// addMech defined anywhere in the program.
+// perhaps during initiation
+
+mechanism result = addMech.go;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In fact, we don’t even need to know what data is required by the add algorithm when we use add in our policy. The internal workings of add are &lt;strong&gt;fully&lt;/strong&gt; encapsulated and hidden from the policy.&lt;/p&gt;
+
+&lt;h3 id=&quot;defining-mechanisms-using-functional-programming&quot;&gt;Defining Mechanisms Using Functional Programming&lt;/h3&gt;
+
+&lt;p&gt;So far, we’ve discussed how to create mechanisms using objects. It should also be possible to create mechanisms using functional programming which we will discuss in another post.&lt;/p&gt;
+
+&lt;h2 id=&quot;scope-scopeget-and-scopeset-mechanisms&quot;&gt;Scope, scopeGet and scopeSet Mechanisms&lt;/h2&gt;
+
+&lt;p&gt;I’m thinking about perhaps implementing a few of the mechanisms required for constraint systems. Any ideas?&lt;/p&gt;
+
+&lt;p&gt;Either that, or implement Scope as a mechanism.&lt;/p&gt;
+
+&lt;p&gt;Let’s choose something that is very core to a language and maybe a little difficult to implement: &lt;a href=&quot;https://en.wikipedia.org/wiki/Scope_%28computer_science%29&quot;&gt;scoping&lt;/a&gt;. This is just one, of many ways, to implement the scope mechanism in C#. Remember, you can roll your own scope mechanism.&lt;/p&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;Mechanisms and policies are a great way of assuring separation of the how we do something from the why. Our software frameworks only contain the how (mechanisms) and &lt;strong&gt;never&lt;/strong&gt; the why (policies).&lt;/p&gt;
+
+&lt;p&gt;This means our programs, the policies, are 100% decoupled from the framework. This makes it a lot easier to port our policies to different programming languages, operating systems and future languages. Imagine if programs had always been written using policies as opposed to mixing the how and why in the framework.&lt;/p&gt;
+
+&lt;p&gt;If you find our work on mechanisms interesting, please follow us &lt;a href=&quot;http://www.twitter.com/interfaceVision&quot;&gt;@interfaceVision&lt;/a&gt; and/or &lt;a href=&quot;http://www.twitter.com/erichosick&quot;&gt;@erichosick&lt;/a&gt;.&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>C# and Homoiconicity: Source-code that is a Data-Structure</title>
@@ -71,8 +293,6 @@
 &lt;/blockquote&gt;
 
 &lt;p&gt;Just like you can display and edit trees in many &lt;a href=&quot;https://www.google.com/search?q=tree+structure&amp;amp;tbm=isch&quot;&gt;different visual formats&lt;/a&gt;, you can display and edit source code visually. You can have multiple visual representations of the same program: each one tailored towards the reader of your program!&lt;/p&gt;
-
-&lt;p&gt;And all of this is possible without writing custom code because there is no need to convert your program from source-code to a data-structure (custom code is often necessary to persist traditional object instances in OOP langauges).&lt;/p&gt;
 
 &lt;p&gt;It really surprises me that we have gone this far without Homoiconicity going main stream.&lt;/p&gt;
 
@@ -189,7 +409,7 @@ persistIt3.go; // invoke the program
   to = new num {val = 8},
   by = new num {val = 2},
   do = new writeToCon {
-    text: str { val = &quot;Hello world!&quot; },
+    text = str { val = &quot;Hello world!&quot; },
   },
 };
 
@@ -234,7 +454,7 @@ mechLoop.go; // invoke the program
 
 &lt;p&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Homoiconicity&quot;&gt;Homoiconicity&lt;/a&gt; is a feature of a language where the language’s “program code is represented as the language’s fundamental data type” (also see &lt;a href=&quot;http://c2.com/cgi/wiki?HomoiconicLanguages&quot;&gt;Homoiconic Languages&lt;/a&gt; on c2).&lt;/p&gt;
 
-&lt;p&gt;Javascript is a loosely typed language whose fundamental datatypes are primitives (strings, floats, etc.) and functions (lambdas) with properties (meaning functions can also be used as objects). From these fundamental data-types, we will create a single fundamental data type for Javascript (called a message).&lt;/p&gt;
+&lt;p&gt;Javascript is a loosely typed language whose fundamental datatypes are primitives (strings, floats, etc.) and functions (lambdas) with properties (meaning functions can also be used as objects). From these fundamental data-types, we will create a single fundamental data type for Javascript (called a mechanism).&lt;/p&gt;
 
 &lt;p&gt;Homoiconic source-code is a data-structure in and of itself. Programming becomes the composition of this single fundamental datatype which results in the new algorithm (the program) and data-structure at the same time.&lt;/p&gt;
 
@@ -283,8 +503,6 @@ mechLoop.go; // invoke the program
 
 &lt;p&gt;Just like you can display and edit trees in many &lt;a href=&quot;https://www.google.com/search?q=tree+structure&amp;amp;tbm=isch&quot;&gt;different visual formats&lt;/a&gt;, you can display and edit source code visually. You can have multiple visual representations of the same program: each one tailored towards the reader of your program!&lt;/p&gt;
 
-&lt;p&gt;And all of this is possible without writing custom code (emergent behavior) because there is no need to convert your program from source-code to a data-structure.&lt;/p&gt;
-
 &lt;p&gt;It really surprises me that we have gone this far without Homoiconicity going main stream.&lt;/p&gt;
 
 &lt;h2 id=&quot;why-is-homoiconicity-hard-to-do-in-languages&quot;&gt;Why is Homoiconicity Hard To Do in Languages?&lt;/h2&gt;
@@ -297,7 +515,7 @@ mechLoop.go; // invoke the program
 
 &lt;p&gt;If you are creating a language, and remove parameterized sub-routines as the core abstraction for communication of data between sub-routines, you end up with a Homoiconic language.&lt;/p&gt;
 
-&lt;p&gt;The fundamental datatypes (messages) take the place of parameterized sub-routines and passing of information between messages becomes an inherent part of the data-structure you create when programming.&lt;/p&gt;
+&lt;p&gt;The fundamental datatypes (mechanisms) take the place of parameterized sub-routines and passing of information between mechanisms becomes an inherent part of the data-structure you create when programming.&lt;/p&gt;
 
 &lt;h2 id=&quot;javascript-and-homoiconicity&quot;&gt;Javascript and Homoiconicity&lt;/h2&gt;
 
@@ -345,7 +563,7 @@ persistIt.go; // invoke the program
 persistIt2.go; // invoke the program
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;How a bout we inject behavior to write a message to the console when the file_type form field is accessed:&lt;/p&gt;
+&lt;p&gt;How about we inject behavior to write a message to the console when the file_type form field is accessed:&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;var persistIt3 = persist ({
   fileName: formFieldGet ({
@@ -364,11 +582,11 @@ persistIt2.go; // invoke the program
 persistIt3.go; // invoke the program
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;That’s kinda cool. When the persister-message runs go on the writeToCon-message placed in the fileType property, writeToCon runs the message in the text property.&lt;/p&gt;
+&lt;p&gt;That’s kinda cool. When the persister-mechanism runs go on the writeToCon-mechanism placed in the fileType property, writeToCon runs the mechanism in the text property.&lt;/p&gt;
 
-&lt;p&gt;That eventually causes the text in the form field to propagate up to the writeToCon-message which then writes that text to the console.&lt;/p&gt;
+&lt;p&gt;That eventually causes the text in the form field to propagate up to the writeToCon-mechanism which then writes that text to the console.&lt;/p&gt;
 
-&lt;p&gt;The writeToCon-message then propagates the text up to the persist-message which uses the text to determine the file type.&lt;/p&gt;
+&lt;p&gt;The writeToCon-mechanism then propagates the text up to the persist-mechanism which uses the text to determine the file type.&lt;/p&gt;
 
 &lt;p&gt;If you look back, you will notice that no matter how complex the program, the interface to it is the exact same. To invoke the behavior of &lt;strong&gt;any program&lt;/strong&gt; you simply call go on that program.&lt;/p&gt;
 
@@ -378,7 +596,7 @@ persistIt3.go; // invoke the program
 
 &lt;p&gt;Exactly!&lt;/p&gt;
 
-&lt;p&gt;In a Homoiconic language, there is no way to distinguish the language itself from the software frameworks built in the language because &lt;strong&gt;everything&lt;/strong&gt; is a fundamental datatype (a message): even &lt;strong&gt;scope&lt;/strong&gt; (see Difficult to Read below).&lt;/p&gt;
+&lt;p&gt;In a Homoiconic language, there is no way to distinguish the language itself from the software frameworks built in the language because &lt;strong&gt;everything&lt;/strong&gt; is a fundamental datatype (a mechanism): even &lt;strong&gt;scope&lt;/strong&gt; is implemented as a mechanism.&lt;/p&gt;
 
 &lt;p&gt;In my opinion, separation of language and framework is a red-flag that we are doing something wrong.&lt;/p&gt;
 
@@ -413,7 +631,7 @@ msgLoop.go; // invoke the program
 
 &lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
 
-&lt;p&gt;Although there is still &lt;a href=&quot;http://c2.com/cgi/wiki?HomoiconicityClassification&quot;&gt;debate&lt;/a&gt; as to what makes a language Homoiconic, I think we have shown that it is indeed possible to program in Javascript using only a fundamental datatype (a message).&lt;/p&gt;
+&lt;p&gt;Although there is still &lt;a href=&quot;http://c2.com/cgi/wiki?HomoiconicityClassification&quot;&gt;debate&lt;/a&gt; as to what makes a language Homoiconic, I think we have shown that it is indeed possible to program in Javascript using only a fundamental datatype (a mechanism).&lt;/p&gt;
 
 &lt;p&gt;Our programs are indeed data-structures both in code and when instantiated on the heap.&lt;/p&gt;
 
@@ -430,7 +648,9 @@ msgLoop.go; // invoke the program
    <id>http://erichosick.github.com/design/design-mop-and-javascript</id>
    <content type="html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
 
-&lt;p&gt;We are going to talk about Javascript and message-oriented programming (MOP). Javascript is a beautiful language and is a perfect candidate for message-oriented programming.&lt;/p&gt;
+&lt;p&gt;Note: This did not ring to well with Javascript developers. Messages were a bad way to convey our ideas (since people think of messaging frameworks when they hear the word message). Please see our post on &lt;a href=&quot;/design/design-mechanisms-and-policies&quot;&gt;mechanisms and policies&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;We are going to talk about Javascript and message-oriented programming (MOP). Javascript is a beautiful language in it’s malleability and is a perfect candidate for message-oriented programming.&lt;/p&gt;
 
 &lt;h2 id=&quot;why-message-oriented-programming&quot;&gt;Why Message-Oriented Programming&lt;/h2&gt;
 
@@ -718,7 +938,7 @@ FormFieldSet ({
    <id>http://erichosick.github.com/design/vision-minimal-webserver</id>
    <content type="html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
 
-&lt;p&gt;One question we’ve been asked is how fast is the Vision framework? To answer that, we’ve created parts (aka messages) that can be used to configure a web server from scratch. The results are shown below.&lt;/p&gt;
+&lt;p&gt;One question we’ve been asked is how fast is the Vision framework? To answer that, we’ve created &lt;a href=&quot;/design/design-mechanisms-and-policies&quot;&gt;mechanisms&lt;/a&gt; that can be used to configure a web server from scratch. The results are shown below.&lt;/p&gt;
 
 &lt;h3 id=&quot;the-results&quot;&gt;The Results&lt;/h3&gt;
 
@@ -763,23 +983,25 @@ Shortest transaction:     0.00
   &lt;p&gt;We realize the comparison is &lt;strong&gt;not&lt;/strong&gt; apples to apples but we wanted to have something we can start comparing to.&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;p&gt;Let’s look at the &lt;a href=&quot;/design/design-composition-based-language&quot;&gt;SipCoffee&lt;/a&gt; message-configuration that gave us these results.&lt;/p&gt;
+&lt;p&gt;Let’s look at the policy defined using &lt;a href=&quot;/design/design-composition-based-language&quot;&gt;SipCoffee&lt;/a&gt; that gave us these results.&lt;/p&gt;
 
 &lt;h2 id=&quot;quick-introduction-to-sipcoffee&quot;&gt;Quick Introduction to SipCoffee&lt;/h2&gt;
 
-&lt;p&gt;SipCoffee is a message-oriented programming language. By that, we mean that all parts within the language are considered messages. A message contains some specific behavior and an aggregate of named-message (a class (message) with computed properties (named-messages)).&lt;/p&gt;
+&lt;p&gt;SipCoffee is a programming language that creates policies defined by the composition of &lt;a href=&quot;/design/design-mechanisms-and-policies&quot;&gt;mechanisms&lt;/a&gt;. A mechanism contains some specific behavior (an algorithm) and properties which contain one or more mechanisms.&lt;/p&gt;
 
-&lt;p&gt;A program is created by composing messages. This can also be viewed as creating a data structure which contains both data and behavior (behavior and data-structures are inseparable: as they should be).&lt;/p&gt;
+&lt;p&gt;A program is a policy that is created by composing mechanisms. This can also be viewed as creating a data structure which contains both data and behavior (behavior and data-structures are inseparable: see &lt;a href=&quot;https://en.wikipedia.org/wiki/Homoiconicity&quot;&gt;homoiconicity&lt;/a&gt;).&lt;/p&gt;
 
-&lt;p&gt;When a message is activated, the behavior composed within the message is executed. This may cause named-message (those computed properties of the message) to also active.&lt;/p&gt;
+&lt;p&gt;When a mechanism is activated, the behavior contained within the mechanism is executed. This may cause one or more properties, which contain mechanisms, to also active.&lt;/p&gt;
 
-&lt;p&gt;We call SipCoffee programs message-configurations because we’ve completely separated mechanisms from the business domain. Any changes you make in a program are directly related to the business domain.&lt;/p&gt;
+&lt;p&gt;SipCoffee programs are called policies because we’ve completely separated mechanisms from policy. Any changes you make in a program are directly related to the policy.&lt;/p&gt;
 
-&lt;p&gt;In the message-configuration below, you can twiddle with the Web Server at any level. You can change queue sizes, time out periods, the server port and uri, the number of parts in a part pool, and even the cache size of the socket reader.&lt;/p&gt;
+&lt;p&gt;In the policy below, you can twiddle with the Web Server at any level. You can change queue sizes, time out periods, the server port and uri, the number of parts in a part pool, and even the cache size of the socket reader.&lt;/p&gt;
 
-&lt;h2 id=&quot;building-a-web-server-from-scratch&quot;&gt;Building A Web Server From Scratch&lt;/h2&gt;
+&lt;p&gt;You can’t change the mechanisms themselves. If you want the File mechanism to act differently, you will need to go into the code that describes that mechanism and edit it there.&lt;/p&gt;
 
-&lt;p&gt;The following is the message-configuration of a very very simple, but complete, WebServer in only &lt;strong&gt;50 lines&lt;/strong&gt; of SipCoffee.&lt;/p&gt;
+&lt;h2 id=&quot;a-web-server-policy-from-scratch&quot;&gt;A Web Server Policy From Scratch&lt;/h2&gt;
+
+&lt;p&gt;The following policy is a very very simple, but complete, WebServer in only &lt;strong&gt;50 lines&lt;/strong&gt; of SipCoffee.&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;Scope ( scopeId -2
   ins (
@@ -828,27 +1050,27 @@ Shortest transaction:     0.00
                     streamSource ScopeGet ( withName &quot;socket&quot; )
                     data ScopeGet ( withName &quot;respBody&quot; )
                   )
-                  NamedMessageGet ( withName &quot;close&quot; 
+                  NamedMechanismGet ( withName &quot;close&quot; 
                     part ScopeGet ( withName &quot;socket&quot; callBehavior false )
                   ) ) ) ) ) ) ) ) ) )
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;Example messages are &lt;strong&gt;Scope&lt;/strong&gt;, &lt;strong&gt;File&lt;/strong&gt;, &lt;strong&gt;ArrayByteBuilder&lt;/strong&gt;, &lt;strong&gt;ArrayByte&lt;/strong&gt; and &lt;strong&gt;Socket&lt;/strong&gt; (all implemented as classes). Example named-messages are &lt;em&gt;ins&lt;/em&gt;, &lt;em&gt;named&lt;/em&gt;, &lt;em&gt;sizeGrowBy&lt;/em&gt; and &lt;em&gt;withName&lt;/em&gt; (all implemented as computed properties).&lt;/p&gt;
+&lt;p&gt;Example mechanisms are &lt;strong&gt;Scope&lt;/strong&gt;, &lt;strong&gt;File&lt;/strong&gt;, &lt;strong&gt;ArrayByteBuilder&lt;/strong&gt;, &lt;strong&gt;ArrayByte&lt;/strong&gt; and &lt;strong&gt;Socket&lt;/strong&gt; (all implemented using C# classes). Example properties are &lt;em&gt;ins&lt;/em&gt;, &lt;em&gt;named&lt;/em&gt;, &lt;em&gt;sizeGrowBy&lt;/em&gt; and &lt;em&gt;withName&lt;/em&gt; (all implemented using C# computed properties).&lt;/p&gt;
 
-&lt;p&gt;Let’s break the message-configuration down into smaller parts we can easily explain.&lt;/p&gt;
+&lt;p&gt;Let’s break the policy down into smaller parts we can easily explain.&lt;/p&gt;
 
-&lt;h3 id=&quot;the-socketrouter-message&quot;&gt;The SocketRouter Message&lt;/h3&gt;
+&lt;h3 id=&quot;the-socketrouter-mechanism&quot;&gt;The SocketRouter Mechanism&lt;/h3&gt;
 
-&lt;p&gt;The &lt;strong&gt;SocketRouter&lt;/strong&gt; message, when activated, listens to a data stream on a given port. Any new connections on that data stream are forwarded to another data stream for handling.&lt;/p&gt;
+&lt;p&gt;The &lt;strong&gt;SocketRouter&lt;/strong&gt; mechanism, when activated, listens to a data stream on a given port. Any new connections on that data stream are forwarded to another data stream for handling.&lt;/p&gt;
 
-&lt;p&gt;The &lt;strong&gt;SocketRouter&lt;/strong&gt; has two named-messages:&lt;/p&gt;
+&lt;p&gt;The &lt;strong&gt;SocketRouter&lt;/strong&gt; has two properties:&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;streamSource - The source of all data streams.&lt;/li&gt;
-  &lt;li&gt;socketFactory - The message-configuration that handles reading from and writing to of any incoming data streams.&lt;/li&gt;
+  &lt;li&gt;socketFactory - The policy that handles reading from and writing to any incoming data streams.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;The message-configuration for the &lt;em&gt;streamSource&lt;/em&gt; named-message is very simple. &lt;/p&gt;
+&lt;p&gt;The policy for the &lt;em&gt;streamSource&lt;/em&gt; property is very simple. &lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;streamSource SocketListener ( backlogQueueSize 2000 
   ipEndPoint IPEndPoint ( port 3050 
@@ -857,21 +1079,21 @@ Shortest transaction:     0.00
 )
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;The &lt;em&gt;streamSource&lt;/em&gt; named-message is a &lt;strong&gt;SocketListener&lt;/strong&gt; message with a &lt;em&gt;backlogQueueSize&lt;/em&gt; named-message of a &lt;strong&gt;2000&lt;/strong&gt; message (Yep! 2000 is also a message) and a configured &lt;em&gt;ipEndPoint&lt;/em&gt; which is easy to figure out.&lt;/p&gt;
+&lt;p&gt;The &lt;em&gt;streamSource&lt;/em&gt; property is a &lt;strong&gt;SocketListener&lt;/strong&gt; mechanism with a &lt;em&gt;backlogQueueSize&lt;/em&gt; property of a &lt;strong&gt;2000&lt;/strong&gt; mechanism (Yep! 2000 is also a mechanism) and a configured &lt;em&gt;ipEndPoint&lt;/em&gt; which is easy to figure out.&lt;/p&gt;
 
-&lt;p&gt;The &lt;em&gt;socketFactory&lt;/em&gt; named-message is a bit more complicated. We could configure our Web Server to handle one request at a time. However, that isn’t very practical and scales worth shit. We need a way to allow messages to run on multiple threads at the same time.&lt;/p&gt;
+&lt;p&gt;The &lt;em&gt;socketFactory&lt;/em&gt; property is a bit more complicated. We could define a policy for our Web Server to handle one request at a time. However, that isn’t very practical and scales worth shit. We need a way to allow mechanisms to run on multiple threads at the same time.&lt;/p&gt;
 
 &lt;p&gt;To do this, we can use factories and part pools.&lt;/p&gt;
 
-&lt;h3 id=&quot;the-factoryinstance-partpool-and-partpooldecorator-messages&quot;&gt;The FactoryInstance, PartPool and PartPoolDecorator Messages&lt;/h3&gt;
+&lt;h3 id=&quot;the-factoryinstance-partpool-and-partpooldecorator-mechanisms&quot;&gt;The FactoryInstance, PartPool and PartPoolDecorator Mechanisms&lt;/h3&gt;
 
-&lt;p&gt;A &lt;strong&gt;FactoryInstance&lt;/strong&gt; message, when activated, will return a copy of the message-configuration located in the &lt;em&gt;part&lt;/em&gt; named-message.&lt;/p&gt;
+&lt;p&gt;A &lt;strong&gt;FactoryInstance&lt;/strong&gt; mechanism, when activated, will return a copy of the policy located in the &lt;em&gt;part&lt;/em&gt; property.&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;part - The message-configuration we’ll make a copy of.&lt;/li&gt;
+  &lt;li&gt;part - The policy we’ll make a copy of.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;Our message-configuration is as follows:&lt;/p&gt;
+&lt;p&gt;Our policy is as follows:&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;FactoryInstance (
   part PartPoolDecorator (
@@ -880,28 +1102,28 @@ Shortest transaction:     0.00
 )
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;In the above message-configuration, the &lt;strong&gt;FactoryInstance&lt;/strong&gt; message creates a copy of a &lt;strong&gt;PartPoolDecorator&lt;/strong&gt; and all messages configured in the &lt;strong&gt;PartPoolDecorator&lt;/strong&gt; message. This is one of the advantages of programming using data structures as opposed to parameterized functions. Want to create a copy of a program? Just duplicate it (Functions are great at manipulating data structures but don’t make for very good data-structures in and of themselves).&lt;/p&gt;
+&lt;p&gt;In the above policy, the &lt;strong&gt;FactoryInstance&lt;/strong&gt; mechanism creates a copy of a &lt;strong&gt;PartPoolDecorator&lt;/strong&gt; and all mechanisms configured in the &lt;strong&gt;PartPoolDecorator&lt;/strong&gt; mechanism. This is one of the advantages of programming using data structures as opposed to parameterized functions. Want to create a copy of a program? Just duplicate it (Functions are great at manipulating data structures but don’t make for very good data-structures in and of themselves).&lt;/p&gt;
 
-&lt;p&gt;We could implement our Web Server using only the &lt;strong&gt;FactoryInstance&lt;/strong&gt; message-configuration. Each time a request comes in, a copy of the message-configuration to handle the request is made and ran in it’s own thread (more on that below). However, why keep making copies of our message-configuration for every request by a client? Allocating and freeing memory are expensive operations. We should be able to re-use our copied message-configurations. This is where the &lt;strong&gt;PartPool&lt;/strong&gt; and &lt;strong&gt;PartPoolDecorator&lt;/strong&gt; messages come into play.&lt;/p&gt;
+&lt;p&gt;We could implement our Web Server using only the &lt;strong&gt;FactoryInstance&lt;/strong&gt; policy. Each time a request comes in, a copy of the policy to handle the request is made and ran in it’s own thread (more on that below). However, why keep making copies of our policy for every request by a client? Allocating and freeing memory are expensive operations. We should be able to re-use our copied policys. This is where the &lt;strong&gt;PartPool&lt;/strong&gt; and &lt;strong&gt;PartPoolDecorator&lt;/strong&gt; mechanisms come into play.&lt;/p&gt;
 
-&lt;p&gt;The messages &lt;strong&gt;PartPool&lt;/strong&gt; and &lt;strong&gt;PartPoolDecorator&lt;/strong&gt;, together, allow any message-configuration to be re-used multiple times throughout the execution of a program.&lt;/p&gt;
+&lt;p&gt;The mechanisms &lt;strong&gt;PartPool&lt;/strong&gt; and &lt;strong&gt;PartPoolDecorator&lt;/strong&gt;, together, allow any policy to be re-used multiple times throughout the execution of a program.&lt;/p&gt;
 
-&lt;p&gt;The &lt;strong&gt;PartPool&lt;/strong&gt; message is simple:&lt;/p&gt;
+&lt;p&gt;The &lt;strong&gt;PartPool&lt;/strong&gt; mechanism is simple:&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;initialSize - The initial number of parts in the pool. If all the parts in the pool are in use, a new item is created and added to the part pool.&lt;/li&gt;
-  &lt;li&gt;item - The message-configuration that is pooled by the &lt;strong&gt;PartPool&lt;/strong&gt; message. This is always configured with some kind of factory. The item’s message-configuration is activated initialSize number of times and the result pooled inside the &lt;strong&gt;PartPool&lt;/strong&gt; message.&lt;/li&gt;
+  &lt;li&gt;item - The policy that is pooled by the &lt;strong&gt;PartPool&lt;/strong&gt; mechanism. This is always configured with some kind of factory. The item’s policy is activated initialSize number of times and the result pooled inside the &lt;strong&gt;PartPool&lt;/strong&gt; mechanism.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;The &lt;strong&gt;PartPoolDecorator&lt;/strong&gt; message, when activated, activates the message contained in the &lt;em&gt;part&lt;/em&gt; named-message. When the configured-message in &lt;em&gt;part&lt;/em&gt; finishes, the &lt;strong&gt;PartPoolDecorator&lt;/strong&gt; message automatically returns itself to it’s part pool.&lt;/p&gt;
+&lt;p&gt;The &lt;strong&gt;PartPoolDecorator&lt;/strong&gt; mechanism, when activated, activates the mechanism contained in the &lt;em&gt;part&lt;/em&gt; property. When the configured-mechanism in &lt;em&gt;part&lt;/em&gt; finishes, the &lt;strong&gt;PartPoolDecorator&lt;/strong&gt; mechanism automatically returns itself to it’s part pool.&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;part - The configured message to activate. When the message is finished, the &lt;strong&gt;PartPoolDecorator&lt;/strong&gt; places itself back into the &lt;strong&gt;PartPool&lt;/strong&gt;.&lt;/li&gt;
+  &lt;li&gt;part - The configured mechanism to activate. When the mechanism is finished, the &lt;strong&gt;PartPoolDecorator&lt;/strong&gt; places itself back into the &lt;strong&gt;PartPool&lt;/strong&gt;.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;Using these two messages in conjunction with a factory, we can take &lt;strong&gt;any&lt;/strong&gt; message-configuration and make it re-usable. This allows us to configure very scalable message-configurations.&lt;/p&gt;
+&lt;p&gt;Using these two mechanisms in conjunction with a factory, we can take &lt;strong&gt;any&lt;/strong&gt; policy and make it re-usable. This allows us to configure very scalable policys.&lt;/p&gt;
 
-&lt;p&gt;Our specific message-configuration is as follows:&lt;/p&gt;
+&lt;p&gt;Our specific policy is as follows:&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;PartPool ( initialSize 500
   item FactoryInstance (
@@ -911,32 +1133,32 @@ Shortest transaction:     0.00
       ) ) ) )
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;The &lt;strong&gt;PartPool&lt;/strong&gt; message starts out with an initialSize named-message of &lt;strong&gt;500&lt;/strong&gt;. When the PartPool is first activated, the &lt;strong&gt;FactoryInstance&lt;/strong&gt; message is activated 500 times (on as many threads as we can) and the results are placed in the &lt;strong&gt;PartPool&lt;/strong&gt; message. The &lt;strong&gt;PartPool&lt;/strong&gt; pulls a single message from it’s pool and activates it.&lt;/p&gt;
+&lt;p&gt;The &lt;strong&gt;PartPool&lt;/strong&gt; mechanism starts out with an initialSize property of &lt;strong&gt;500&lt;/strong&gt;. When the PartPool is first activated, the &lt;strong&gt;FactoryInstance&lt;/strong&gt; mechanism is activated 500 times (on as many threads as we can) and the results are placed in the &lt;strong&gt;PartPool&lt;/strong&gt; mechanism. The &lt;strong&gt;PartPool&lt;/strong&gt; pulls a single mechanism from it’s pool and activates it.&lt;/p&gt;
 
-&lt;p&gt;In this case, the &lt;strong&gt;PartPoolDecorator&lt;/strong&gt; is configured to contain a &lt;strong&gt;RunWorkerWithTimeOut&lt;/strong&gt; message. This means the &lt;strong&gt;PartPoolDecorator&lt;/strong&gt; is actually activated in a new thread meaning the &lt;strong&gt;PartPool&lt;/strong&gt; returns control, almost immediately, to it’s parent message: the &lt;strong&gt;SocketRouter&lt;/strong&gt; message. The &lt;strong&gt;SocketRouter&lt;/strong&gt; message is now ready to handle the next incoming request.&lt;/p&gt;
+&lt;p&gt;In this case, the &lt;strong&gt;PartPoolDecorator&lt;/strong&gt; is configured to contain a &lt;strong&gt;RunWorkerWithTimeOut&lt;/strong&gt; mechanism. This means the &lt;strong&gt;PartPoolDecorator&lt;/strong&gt; is actually activated in a new thread meaning the &lt;strong&gt;PartPool&lt;/strong&gt; returns control, almost immediately, to it’s parent mechanism: the &lt;strong&gt;SocketRouter&lt;/strong&gt; mechanism. The &lt;strong&gt;SocketRouter&lt;/strong&gt; mechanism is now ready to handle the next incoming request.&lt;/p&gt;
 
-&lt;h3 id=&quot;the-runworkerwithtimeout-message&quot;&gt;The RunWorkerWithTimeOut Message&lt;/h3&gt;
+&lt;h3 id=&quot;the-runworkerwithtimeout-mechanism&quot;&gt;The RunWorkerWithTimeOut Mechanism&lt;/h3&gt;
 
-&lt;p&gt;Here are where things get even cooler. The &lt;strong&gt;RunWorkerWithTimeOut&lt;/strong&gt; message is able to run &lt;strong&gt;any&lt;/strong&gt; message-configuration in a thread. Yep. Multi-threaded programming in SipCoffee is just that simple.&lt;/p&gt;
+&lt;p&gt;Here are where things get even cooler. The &lt;strong&gt;RunWorkerWithTimeOut&lt;/strong&gt; mechanism is able to run &lt;strong&gt;any&lt;/strong&gt; policy in a thread. Yep. Multi-threaded programming in SipCoffee is just that simple.&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;waitTime - The time in milliseconds before the worker thread times out.&lt;/li&gt;
-  &lt;li&gt;part - The message-configuration to run within the worker thread.&lt;/li&gt;
+  &lt;li&gt;part - The policy to run within the worker thread.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h3 id=&quot;the-scope-and-scopeget-messages&quot;&gt;The Scope and ScopeGet Messages&lt;/h3&gt;
+&lt;h3 id=&quot;the-scope-and-scopeget-mechanisms&quot;&gt;The Scope and ScopeGet Mechanisms&lt;/h3&gt;
 
-&lt;p&gt;Take a quick look at the original message-configuration. What you will notice is that there are no functions, parameters or variables. In message-oriented programming, &lt;strong&gt;everything is a message&lt;/strong&gt;. Even the context/scope that a message is activated in, usually defined with a language using { and } (Defining context in a language isn’t very data-structure friendly), is a message.&lt;/p&gt;
+&lt;p&gt;Take a quick look at the original policy. What you will notice is that there are no functions, parameters or variables. In mechanism-oriented programming, &lt;strong&gt;everything is a mechanism&lt;/strong&gt;. Even the context/scope that a mechanism is activated in, usually defined with a language using { and } (Defining context in a language isn’t very data-structure friendly), is a mechanism.&lt;/p&gt;
 
-&lt;p&gt;To support context, we have a &lt;strong&gt;Scope&lt;/strong&gt; message to define the context a message-configuration runs in.&lt;/p&gt;
+&lt;p&gt;To support context, we have a &lt;strong&gt;Scope&lt;/strong&gt; mechanism to define the context a policy runs in.&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;part - The configured-message to activate within the context.&lt;/li&gt;
-  &lt;li&gt;ins - One or more configured-messages contained within the context of the scope. These can also be viewed as Variables.&lt;/li&gt;
-  &lt;li&gt;scopeId - When configured with a negative numeric message, the scope is “global” in nature. When not configured, the scopeId is based on the managed thread id a message-configuration is ran in (this is really powerful and explained below in detail)&lt;/li&gt;
+  &lt;li&gt;part - The configured-mechanism to activate within the context.&lt;/li&gt;
+  &lt;li&gt;ins - One or more configured-mechanisms contained within the context of the scope. These can also be viewed as Variables.&lt;/li&gt;
+  &lt;li&gt;scopeId - When configured with a negative numeric mechanism, the scope is “global” in nature. When not configured, the scopeId is based on the managed thread id a policy is ran in (this is really powerful and explained below in detail)&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;In our message-configuration we have the following &lt;strong&gt;Scope&lt;/strong&gt; message configured:&lt;/p&gt;
+&lt;p&gt;In our policy we have the following &lt;strong&gt;Scope&lt;/strong&gt; mechanism configured:&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;part Scope (
   ins (
@@ -950,26 +1172,26 @@ Shortest transaction:     0.00
 )
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;The &lt;em&gt;part&lt;/em&gt; named-message contains an &lt;strong&gt;Array&lt;/strong&gt; message (more on that later). The &lt;em&gt;ins&lt;/em&gt; named-message contains 5 messages, something like variables, each with a unique name within that Scope’s context:&lt;/p&gt;
+&lt;p&gt;The &lt;em&gt;part&lt;/em&gt; property contains an &lt;strong&gt;Array&lt;/strong&gt; mechanism (more on that later). The &lt;em&gt;ins&lt;/em&gt; property contains 5 mechanisms, something like variables, each with a unique name within that Scope’s context:&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;A Socket message named “socket” - The socket we use to read and write to the stream within the current thread.&lt;/li&gt;
-  &lt;li&gt;An ArrayByteBuffered message named “requestBody” - The buffer where the body of the request from the client is placed.&lt;/li&gt;
-  &lt;li&gt;A ScopeGet message named “respHead” - The header that will be sent to the client.&lt;/li&gt;
-  &lt;li&gt;Another ScopeGet message named “respBody” - The message body that will be sent to the client.&lt;/li&gt;
-  &lt;li&gt;An HttpHeader message named “httpHeader” - The http header received from the client.&lt;/li&gt;
+  &lt;li&gt;A Socket mechanism named “socket” - The socket we use to read and write to the stream within the current thread.&lt;/li&gt;
+  &lt;li&gt;An ArrayByteBuffered mechanism named “requestBody” - The buffer where the body of the request from the client is placed.&lt;/li&gt;
+  &lt;li&gt;A ScopeGet mechanism named “respHead” - The header that will be sent to the client.&lt;/li&gt;
+  &lt;li&gt;Another ScopeGet mechanism named “respBody” - The mechanism body that will be sent to the client.&lt;/li&gt;
+  &lt;li&gt;An HttpHeader mechanism named “httpHeader” - The http header received from the client.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;Here comes some programming power! A “variable” can be a single message like &lt;strong&gt;Socket&lt;/strong&gt; or it can be another configured message! Yep! Just think of the power you have as a programmer. Variables are actually configured-messages!&lt;/p&gt;
+&lt;p&gt;Here comes some programming power! A “variable” can be a single mechanism like &lt;strong&gt;Socket&lt;/strong&gt; or it can be another configured mechanism! Yep! Just think of the power you have as a programmer. Variables are actually configured-mechanisms!&lt;/p&gt;
 
-&lt;p&gt;Notice that, for this &lt;strong&gt;Scope&lt;/strong&gt; message, the &lt;em&gt;scopeId&lt;/em&gt; named-message is not defined. This means, the context of the Scope will be based on the current named thread. Yep! Even more &lt;strong&gt;POWER&lt;/strong&gt;! We can run this message-configuration in as many threads as we want and there is no chance of the “variables” being accessed from multiple threads. You no longer need to worry about re-entrance or things being thread safe within this &lt;strong&gt;Scope&lt;/strong&gt; (this isn’t the case when a &lt;strong&gt;Scope&lt;/strong&gt; message is configured to be global).&lt;/p&gt;
+&lt;p&gt;Notice that, for this &lt;strong&gt;Scope&lt;/strong&gt; mechanism, the &lt;em&gt;scopeId&lt;/em&gt; property is not defined. This means, the context of the Scope will be based on the current named thread. Yep! Even more &lt;strong&gt;POWER&lt;/strong&gt;! We can run this policy in as many threads as we want and there is no chance of the “variables” being accessed from multiple threads. You no longer need to worry about re-entrance or things being thread safe within this &lt;strong&gt;Scope&lt;/strong&gt; (this isn’t the case when a &lt;strong&gt;Scope&lt;/strong&gt; mechanism is configured to be global).&lt;/p&gt;
 
-&lt;p&gt;In message-oriented programming, accessing a “Variable” is also done using messages. SipCoffee has no equals (=) operator. To access a “Variable” within the current scope, you use the &lt;strong&gt;ScopeGet&lt;/strong&gt; message.&lt;/p&gt;
+&lt;p&gt;In mechanism-oriented programming, accessing a “Variable” is also done using mechanisms. SipCoffee has no equals (=) operator. To access a “Variable” within the current scope, you use the &lt;strong&gt;ScopeGet&lt;/strong&gt; mechanism.&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;withName - The name of the “Variable”.&lt;/li&gt;
-  &lt;li&gt;named - The unique name of the ScopeGet message (so we can access a ScopeGet message from another ScopeGet message if we like).&lt;/li&gt;
-  &lt;li&gt;scopeId - When configured with a negative numeric message, the scope is “global” in nature. When not configured, the scopeId is based on the managed thread id a message-configuration is ran in (this is really powerful and explained below in detail).&lt;/li&gt;
+  &lt;li&gt;named - The unique name of the ScopeGet mechanism (so we can access a ScopeGet mechanism from another ScopeGet mechanism if we like).&lt;/li&gt;
+  &lt;li&gt;scopeId - When configured with a negative numeric mechanism, the scope is “global” in nature. When not configured, the scopeId is based on the managed thread id a policy is ran in (this is really powerful and explained below in detail).&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;In this example:&lt;/p&gt;
@@ -977,7 +1199,7 @@ Shortest transaction:     0.00
 &lt;pre&gt;&lt;code&gt;ScopeGet ( named &quot;respHead&quot; scopeId -2 withName &quot;Http200.Body.Html&quot; )
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;The &lt;strong&gt;ScopeGet&lt;/strong&gt; message locates and activates a message &lt;em&gt;named&lt;/em&gt; “respHead” in a &lt;em&gt;scopeId&lt;/em&gt; of -2. This is configured as follows:&lt;/p&gt;
+&lt;p&gt;The &lt;strong&gt;ScopeGet&lt;/strong&gt; mechanism locates and activates a mechanism &lt;em&gt;named&lt;/em&gt; “respHead” in a &lt;em&gt;scopeId&lt;/em&gt; of -2. This is configured as follows:&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;Scope ( scopeId -2
   ins (
@@ -995,7 +1217,7 @@ Shortest transaction:     0.00
 )  
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;the &lt;em&gt;streamSource&lt;/em&gt; named-message of the &lt;strong&gt;SocketReaderHeaderBody&lt;/strong&gt; is a &lt;strong&gt;ScopeGet&lt;/strong&gt; message. That message is configured to locate a message named “socket” configured as follows:&lt;/p&gt;
+&lt;p&gt;the &lt;em&gt;streamSource&lt;/em&gt; property of the &lt;strong&gt;SocketReaderHeaderBody&lt;/strong&gt; is a &lt;strong&gt;ScopeGet&lt;/strong&gt; mechanism. That mechanism is configured to locate a mechanism named “socket” configured as follows:&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;part Scope (
   ins (
@@ -1008,18 +1230,18 @@ Shortest transaction:     0.00
 
 &lt;h2 id=&quot;reading-from-and-writing-to-the-stream&quot;&gt;Reading from and Writing to the Stream&lt;/h2&gt;
 
-&lt;p&gt;To activate messages in a given order, we can use an &lt;em&gt;Array&lt;/em&gt; message setting the &lt;em&gt;run&lt;/em&gt; named-message to a &lt;strong&gt;true&lt;/strong&gt; message (Yep, even true is a message).&lt;/p&gt;
+&lt;p&gt;To activate mechanisms in a given order, we can use an &lt;em&gt;Array&lt;/em&gt; mechanism setting the &lt;em&gt;run&lt;/em&gt; property to a &lt;strong&gt;true&lt;/strong&gt; mechanism (Yep, even true is a mechanism).&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;Array ( run true
   ins ( ... )
 )
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;Any messages in the &lt;em&gt;ins&lt;/em&gt; named-message of the &lt;em&gt;Array&lt;/em&gt; message are activated in the order they were inserted.&lt;/p&gt;
+&lt;p&gt;Any mechanisms in the &lt;em&gt;ins&lt;/em&gt; property of the &lt;em&gt;Array&lt;/em&gt; mechanism are activated in the order they were inserted.&lt;/p&gt;
 
-&lt;p&gt;Let’s look at how the message-configuration works.&lt;/p&gt;
+&lt;p&gt;Let’s look at how the policy works.&lt;/p&gt;
 
-&lt;p&gt;First, we activate a &lt;strong&gt;SocketReaderHeaderBody&lt;/strong&gt; message:&lt;/p&gt;
+&lt;p&gt;First, we activate a &lt;strong&gt;SocketReaderHeaderBody&lt;/strong&gt; mechanism:&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;SocketReaderHeaderBody ( autoOpen true
   streamSource ScopeGet ( withName &quot;socket&quot; )
@@ -1034,11 +1256,11 @@ Shortest transaction:     0.00
 &lt;ul&gt;
   &lt;li&gt;autoOpen true - Automatically open the stream source.&lt;/li&gt;
   &lt;li&gt;streamSource ScopeGet ( withName “socket” ) - the source of the stream is located in a Scoped “Variable” named ‘socket’&lt;/li&gt;
-  &lt;li&gt;data ArrayByteBuffered ( sizeGrowBy 1024 sizeInitial 1024 ) - The header data of the message is an ArrayByteBuffered with an initial size of 1024 bytes and grows by 1024 bytes to place the header data in.&lt;/li&gt;
+  &lt;li&gt;data ArrayByteBuffered ( sizeGrowBy 1024 sizeInitial 1024 ) - The header data of the mechanism is an ArrayByteBuffered with an initial size of 1024 bytes and grows by 1024 bytes to place the header data in.&lt;/li&gt;
   &lt;li&gt;body ScopeGet ( withName “requestBody” ) - The body buffer is located in a Scoped “Variable” named ‘requestBody’&lt;/li&gt;
-  &lt;li&gt;headerEncoder ScopeGet ( withName “httpHeader” ) - The message to encode and decode the header is located in a Scoped “Variable” named “httpHeader”&lt;/li&gt;
+  &lt;li&gt;headerEncoder ScopeGet ( withName “httpHeader” ) - The mechanism to encode and decode the header is located in a Scoped “Variable” named “httpHeader”&lt;/li&gt;
   &lt;li&gt;buffer ArrayByteBuffered ( sizeInitial 1024 sizeGrowBy 1024 ) - The buffer used directly by the socket is an ArrayByteBuffered with an initial size of 1024 bytes and grows by 1024 bytes to place the header data in.&lt;/li&gt;
-  &lt;li&gt;terminator ArrayByte ( withArrayByte byte ( 13 10 13 10 ) ) - The terminator between a message header and body is this ArraByte of 13 10 13 10 which happens to be the terminator between the header and body of html.&lt;/li&gt;
+  &lt;li&gt;terminator ArrayByte ( withArrayByte byte ( 13 10 13 10 ) ) - The terminator between a mechanism header and body is this ArraByte of 13 10 13 10 which happens to be the terminator between the header and body of html.&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;Second, we write to the socket the response header:&lt;/p&gt;
@@ -1052,7 +1274,7 @@ Shortest transaction:     0.00
 &lt;ul&gt;
   &lt;li&gt;autoOpen false - Don’t auto open the data stream because we did that with the read above.&lt;/li&gt;
   &lt;li&gt;streamSource ScopeGet ( withName “socket” ) - the source of the stream is located in a Scoped “Variable” named ‘socket’. Yep. The same streamSource as above.&lt;/li&gt;
-  &lt;li&gt;data ScopeGet ( withName “respHead” ) - Oh man! Awesome. We are accessing a Variable named “respHead” which is a ScopeGet message which accesses a “Variable” named “Http200.Header”. Of course, in future message-configurations, the response header to write could change.&lt;/li&gt;
+  &lt;li&gt;data ScopeGet ( withName “respHead” ) - Oh man! Awesome. We are accessing a Variable named “respHead” which is a ScopeGet mechanism which accesses a “Variable” named “Http200.Header”. Of course, in future policys, the response header to write could change.&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;Third, we write to the socket the response body:&lt;/p&gt;
@@ -1066,27 +1288,27 @@ Shortest transaction:     0.00
 &lt;ul&gt;
   &lt;li&gt;autoOpen false - Yep! Still don’t auto open the data stream because we did that with the read above.&lt;/li&gt;
   &lt;li&gt;streamSource ScopeGet ( withName “socket” ) - the source of the stream is located in a Scoped “Variable” named ‘socket’. Yep. The same streamSource as above.&lt;/li&gt;
-  &lt;li&gt;data ScopeGet ( withName “respBody” ) - Oh man! Awesome. We are accessing a Variable named “respBody” which is a ScopeGet message which accesses a “Variable” named “Http200.Body.Html”. We are writing to our socket the information located in a file.&lt;/li&gt;
+  &lt;li&gt;data ScopeGet ( withName “respBody” ) - Oh man! Awesome. We are accessing a Variable named “respBody” which is a ScopeGet mechanism which accesses a “Variable” named “Http200.Body.Html”. We are writing to our socket the information located in a file.&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;Finally, we close the socket:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;NamedMessageGet ( withName &quot;close&quot; 
+&lt;pre&gt;&lt;code&gt;NamedMechanismGet ( withName &quot;close&quot; 
   part ScopeGet ( withName &quot;socket&quot; callBehavior false )
 )
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;The &lt;strong&gt;NamedMessageGet&lt;/strong&gt; message causes a named message to activate. In this case, the named-message &lt;em&gt;close&lt;/em&gt; (implementation is a calculated property accessed using reflection) of that same socket is activated.&lt;/p&gt;
+&lt;p&gt;The &lt;strong&gt;NamedMechanismGet&lt;/strong&gt; mechanism causes a named mechanism to activate. In this case, the property &lt;em&gt;close&lt;/em&gt; (implementation is a calculated property accessed using reflection) of that same socket is activated.&lt;/p&gt;
 
-&lt;p&gt;And, once all of that runs we “fall-up” the message-configuration and the &lt;strong&gt;PartPoolDecorator&lt;/strong&gt; message returns us to the PartPool to be used again!&lt;/p&gt;
+&lt;p&gt;And, once all of that runs we “fall-up” the policy and the &lt;strong&gt;PartPoolDecorator&lt;/strong&gt; mechanism returns us to the PartPool to be used again!&lt;/p&gt;
 
 &lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
 
-&lt;p&gt;Message-oriented programming kicks ass. In 50 lines of code, we are able to create a scalable web server that is able to keep up with the big names. We haven’t even started to optimize our underlying technology and it was written in C#. Imagine if it was implemented in something like &lt;a href=&quot;http://www.rust-lang.org/&quot;&gt;Rust&lt;/a&gt; (aww please add calculated properties rust people!).&lt;/p&gt;
+&lt;p&gt;Mechanism-oriented programming kicks ass. In 50 lines of code, we are able to create a scalable web server that is able to keep up with the big names. We haven’t even started to optimize our underlying technology and it was written in C#. Imagine if it was implemented in something like &lt;a href=&quot;http://www.rust-lang.org/&quot;&gt;Rust&lt;/a&gt; (aww please add calculated properties rust people!).&lt;/p&gt;
 
-&lt;p&gt;We have a data-structure of messages that is also the behavior of the program. That makes the message-configuration very easily re-used in a multi-threaded environment. We aren’t allocating memory all the time and we are able to activate message-configurations without the overhead of locking and worrying about re-entrance. We get the speed of “single threaded” programming in a multi-threaded environment. Woo hoo!&lt;/p&gt;
+&lt;p&gt;We have a data-structure of mechanisms that is also the behavior of the program. That makes the policy very easily re-used in a multi-threaded environment. We aren’t allocating memory all the time and we are able to activate policys without the overhead of locking and worrying about re-entrance. We get the speed of “single threaded” programming in a multi-threaded environment. Woo hoo!&lt;/p&gt;
 
-&lt;p&gt;If you find our work on message-oriented programming interesting, please follow us &lt;a href=&quot;http://www.twitter.com/interfaceVision&quot;&gt;@interfaceVision&lt;/a&gt; and/or &lt;a href=&quot;http://www.twitter.com/erichosick&quot;&gt;@erichosick&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;If you find our work on mechanism-oriented programming interesting, please follow us &lt;a href=&quot;http://www.twitter.com/interfaceVision&quot;&gt;@interfaceVision&lt;/a&gt; and/or &lt;a href=&quot;http://www.twitter.com/erichosick&quot;&gt;@erichosick&lt;/a&gt;.&lt;/p&gt;
 </content>
  </entry>
  
@@ -3725,45 +3947,53 @@ The [prior step] (/design/example-window-basic) was to get a program to display 
  </entry>
  
  <entry>
-   <title>A Programming Language Based on Composition of Messages</title>
+   <title>A Programming Language Based on Composition of Mechanisms</title>
    <link href="http://erichosick.github.com/design/design-composition-based-language"/>
    <updated>2013-12-19T00:00:00-08:00</updated>
    <id>http://erichosick.github.com/design/design-composition-based-language</id>
    <content type="html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
 
-&lt;p&gt;Interface Vision is a Gui based visual object language and fully composable framework created using Simple Interface Programming (SIP). Programming is done by hooking up messages (not to be confused with messaging frameworks): either visually or coding in C#.&lt;/p&gt;
+&lt;p&gt;Interface Vision is a Gui based visual object language and framework. Programming is done by hooking up &lt;a href=&quot;/design/design-mechanisms-and-policies&quot;&gt;mechanisms&lt;/a&gt;: either visually or by coding in C#.&lt;/p&gt;
 
-&lt;p&gt;However, the syntax in C# for hooking up messages looks funky.&lt;/p&gt;
+&lt;p&gt;The composition of mechanisms results in a policy (what is done) and looks very different from defining a mechanism (see &lt;a href=&quot;/design/design-mechanisms-and-policies&quot;&gt;mechanisms&lt;/a&gt;).&lt;/p&gt;
 
-&lt;p&gt;So, we’ve designed a message-oriented language called SipCoffee.&lt;/p&gt;
+&lt;p&gt;The syntax in C# for defining policies looks funky so we’ve designed a language called SipCoffee.&lt;/p&gt;
 
-&lt;p&gt;We uses composition exclusively. There is no specific syntax to describe inheritance, for loops, if/else statements, variables, scope, methods, functions and so on. All of these are replaced with messages.&lt;/p&gt;
+&lt;p&gt;We focus on the creation of policy through the composition of existing mechanisms. There is no language syntax to describe &lt;a href=&quot;/design/design-mechanisms-and-policies&quot;&gt;mechanisms&lt;/a&gt;.&lt;/p&gt;
 
 &lt;h2 id=&quot;examples&quot;&gt;Examples&lt;/h2&gt;
 
-&lt;h3 id=&quot;hello-world&quot;&gt;Hello World&lt;/h3&gt;
+&lt;h3 id=&quot;hello-world-policy&quot;&gt;Hello World Policy&lt;/h3&gt;
 
-&lt;p&gt;Hello world in SipCoffee:&lt;/p&gt;
+&lt;p&gt;The Hello world policy in SipCoffee:&lt;/p&gt;
 
 &lt;div id=&quot;id-s1-1-top&quot;&gt;&amp;nbsp;&lt;/div&gt;
 &lt;pre&gt;&lt;code&gt;Application {
   do WriteLine { text &quot;Hello World&quot; }
 }
+
+// with property ordering
+
+Application {
+  WriteLine { &quot;Hello World&quot; }
+}
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h6 id=&quot;id-s1-1&quot;&gt;Source-1.1: Hello World in SipCoffee.&lt;/h6&gt;
+&lt;h6 id=&quot;id-s1-1&quot;&gt;Policy-1.1: Hello World in SipCoffee.&lt;/h6&gt;
 
 &lt;h3 id=&quot;hello-world-explained&quot;&gt;Hello World Explained&lt;/h3&gt;
 
-&lt;p&gt;&lt;a href=&quot;#id-s1-1-top&quot;&gt;Source-1.1&lt;/a&gt; contains two messages named Application and WriteLine. &lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;#id-s1-1-top&quot;&gt;Policy-1.1&lt;/a&gt; contains two mechanisms named Application and WriteLine (mechanisms written in C#). &lt;/p&gt;
 
 &lt;p&gt;Application has the property do. The do property contains an instance of WriteLine.&lt;/p&gt;
 
 &lt;p&gt;WriteLine has a text property, which is the text to write, and has the value “Hello World”.&lt;/p&gt;
 
+&lt;p&gt;We can also define our policy by assuming an order for properties. This does lead to readability problems so you may want to use it sparingly.&lt;/p&gt;
+
 &lt;h3 id=&quot;hello-world-10-times&quot;&gt;Hello World 10 Times&lt;/h3&gt;
 
-&lt;p&gt;Hello World written 10 times on separate lines.&lt;/p&gt;
+&lt;p&gt;A policy to write Hello World 10 times on separate lines.&lt;/p&gt;
 
 &lt;div id=&quot;id-s1-2-top&quot;&gt;&amp;nbsp;&lt;/div&gt;
 &lt;pre&gt;&lt;code&gt;Application {
@@ -3771,13 +4001,21 @@ The [prior step] (/design/example-window-basic) was to get a program to display 
     do WriteLine { text &quot;Hello World&quot; }
   }
 }
+
+// with property ordering
+
+Application {
+  For { 1 20 2 
+    WriteLine { &quot;Hello World&quot; }
+  }
+}
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h6 id=&quot;id-s1-2&quot;&gt;Source-1.2: Hello written 10 times in SipCoffee.&lt;/h6&gt;
+&lt;h6 id=&quot;id-s1-2&quot;&gt;Policy-1.2: Hello written 10 times in SipCoffee.&lt;/h6&gt;
 
 &lt;h3 id=&quot;a-foreach&quot;&gt;A ForEach&lt;/h3&gt;
 
-&lt;p&gt;The numbers 1, 2, 4, 8, 16 and 32 written on separate lines.&lt;/p&gt;
+&lt;p&gt;A policy to write the numbers 1, 2, 4, 8, 16 and 32 on separate lines.&lt;/p&gt;
 
 &lt;div id=&quot;id-s1-3-top&quot;&gt;&amp;nbsp;&lt;/div&gt;
 &lt;pre&gt;&lt;code&gt;Application {
@@ -3788,11 +4026,11 @@ The [prior step] (/design/example-window-basic) was to get a program to display 
 }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h6 id=&quot;id-s1-3&quot;&gt;Source-1.3: A for each in SipCoffee.&lt;/h6&gt;
+&lt;h6 id=&quot;id-s1-3&quot;&gt;Policy-1.3: A for each in SipCoffee.&lt;/h6&gt;
 
 &lt;h3 id=&quot;another-foreach&quot;&gt;Another ForEach&lt;/h3&gt;
 
-&lt;p&gt;Write out the first name of users Jane, Smith and Joe: each on a new line.&lt;/p&gt;
+&lt;p&gt;A policy to write out the first name of users Jane, Smith and Joe: each on a new line.&lt;/p&gt;
 
 &lt;div id=&quot;id-s1-4-top&quot;&gt;&amp;nbsp;&lt;/div&gt;
 &lt;pre&gt;&lt;code&gt;Application {
@@ -3818,11 +4056,11 @@ The [prior step] (/design/example-window-basic) was to get a program to display 
 }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h6 id=&quot;id-s1-4&quot;&gt;Source-1.4: A for each in SipCoffee.&lt;/h6&gt;
+&lt;h6 id=&quot;id-s1-4&quot;&gt;Policy-1.4: A for each in SipCoffee.&lt;/h6&gt;
 
 &lt;h3 id=&quot;foreach-using-sql&quot;&gt;ForEach Using Sql&lt;/h3&gt;
 
-&lt;p&gt;Write out the first name of users with data coming from a database: each on a new line.&lt;/p&gt;
+&lt;p&gt;A policy to write out the first name of users with data coming from a database: each on a new line.&lt;/p&gt;
 
 &lt;div id=&quot;id-s1-4-top&quot;&gt;&amp;nbsp;&lt;/div&gt;
 &lt;pre&gt;&lt;code&gt;Application {
@@ -3840,31 +4078,31 @@ The [prior step] (/design/example-window-basic) was to get a program to display 
 }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h6 id=&quot;id-s1-4&quot;&gt;Source-1.4: A for each in SipCoffee.&lt;/h6&gt;
+&lt;h6 id=&quot;id-s1-4&quot;&gt;Policy-1.4: A for each in SipCoffee.&lt;/h6&gt;
 
 &lt;h3 id=&quot;foreach-using-sql-explained&quot;&gt;ForEach Using Sql Explained&lt;/h3&gt;
 
-&lt;p&gt;A ForEach message contains an item property. The item property contains a SqlConnect message configured with a database (named “someDatabase”) and a command (a SqlQuery message with sql “SELECT firstName, lastName FROM users”).&lt;/p&gt;
+&lt;p&gt;A ForEach mechanism contains an item property. The item property contains a SqlConnect mechanism configured with a database (named “someDatabase”) and a command (a SqlQuery mechanism with sql “SELECT firstName, lastName FROM users”).&lt;/p&gt;
 
-&lt;p&gt;The ForEach message invokes the SqlConnect message. The SqlConnect message connects to the database and invokes the message located in the command property. This causes SqlQuery to invoke which runs the sql and returns a list of records to SqlConnect. Each record is a hash table with a key/value pair for each field.&lt;/p&gt;
+&lt;p&gt;The ForEach mechanism invokes the SqlConnect mechanism. The SqlConnect mechanism connects to the database and invokes the mechanism located in the command property. This causes SqlQuery to invoke which runs the sql and returns a list of records to SqlConnect. Each record is a hash table with a key/value pair for each field.&lt;/p&gt;
 
-&lt;p&gt;SqlConnect passes that list back up to the ForEach message. The ForEach message is now able to iterate through the list of records.&lt;/p&gt;
+&lt;p&gt;SqlConnect passes that list back up to the ForEach mechanism. The ForEach mechanism is now able to iterate through the list of records.&lt;/p&gt;
 
-&lt;p&gt;The ForEach message, internally, stores the current item in the list. It then invokes the message located in the do property. In this case, ForEach invokes the WriteLine message.&lt;/p&gt;
+&lt;p&gt;The ForEach mechanism, internally, stores the current item in the list. It then invokes the mechanism located in the do property. In this case, ForEach invokes the WriteLine mechanism.&lt;/p&gt;
 
-&lt;p&gt;We want to write out the first name of each user. This means we need to access that field within the current item (which happens to be a HashTable message).&lt;/p&gt;
+&lt;p&gt;We want to write out the first name of each user. This means we need to access that field within the current item (which happens to be a HashTable mechanism).&lt;/p&gt;
 
-&lt;p&gt;This means we use the HashRead message in the text property of WriteLine. What hash table are we reading from? Well, the CurrentItem message is able to retrieve the current item from the ForEach message. This then becomes the hash table that the HashRead message uses. The key is then used to locate an entry in the hash table: in this case “firstName”.&lt;/p&gt;
+&lt;p&gt;This means we use the HashRead mechanism in the text property of WriteLine. What hash table are we reading from? Well, the CurrentItem mechanism is able to retrieve the current item from the ForEach mechanism. This then becomes the hash table that the HashRead mechanism uses. The key is then used to locate an entry in the hash table: in this case “firstName”.&lt;/p&gt;
 
-&lt;p&gt;HashRead passes up to WriteLine the result of reading from the hash table (in this case a string) and the WriteLine message writes the final value of text to the console.&lt;/p&gt;
+&lt;p&gt;HashRead passes up to WriteLine the result of reading from the hash table (in this case a string) and the WriteLine mechanism writes the final value of text to the console.&lt;/p&gt;
 
 &lt;h2 id=&quot;the-syntax&quot;&gt;The Syntax&lt;/h2&gt;
 
 &lt;p&gt;Syntactically, the language is simple.&lt;/p&gt;
 
-&lt;p&gt;Messages are upper case and properties of messages are lower case. A property contains a message or composition of messages.&lt;/p&gt;
+&lt;p&gt;Mechanisms are upper/lower case and properties are lower case. A property contains a mechanism or composition of mechanisms.&lt;/p&gt;
 
-&lt;p&gt;We use {} to define the contents of a message. We use [] to define special messages which manage collections of data (Hash, List and Array are examples of just such a Message).&lt;/p&gt;
+&lt;p&gt;We use {} to define the contents of a mechanism. We use [] to define special mechanisms which manage collections of data (Hash, List and Array are examples of just such a mechanism).&lt;/p&gt;
 
 &lt;h2 id=&quot;parsing-expression-grammar&quot;&gt;Parsing Expression Grammar&lt;/h2&gt;
 
@@ -3872,26 +4110,26 @@ The [prior step] (/design/example-window-basic) was to get a program to display 
 
 &lt;div id=&quot;id-g1-1-top&quot;&gt;&amp;nbsp;&lt;/div&gt;
 &lt;pre&gt;&lt;code&gt;a} PROPERTY &amp;lt;- property primitive+
-b} PROPERTY &amp;lt;- property MESSAGE+
-c} MESSAGE &amp;lt;- Message { PROPERTY* } // Could also be () if people prefered that.
-d} MESSAGE &amp;lt;- Message [ MESSAGE ]
+b} PROPERTY &amp;lt;- property MECHANISM+
+c} MECHANISM &amp;lt;- Mechanism { PROPERTY* } // Could also be () if people prefered that.
+d} MECHANISM &amp;lt;- Mechanism [ MECHANISM ]
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;h6 id=&quot;id-g1-1&quot;&gt;Grammar-1.1: Parsing expression grammar for SipCoffee.&lt;/h6&gt;
 
-&lt;h3 id=&quot;primitives-are-messages&quot;&gt;Primitives are Messages&lt;/h3&gt;
+&lt;h3 id=&quot;primitives-are-mechanisms&quot;&gt;Primitives are Mechanisms&lt;/h3&gt;
 
-&lt;p&gt;Primitives are things like string, numbers and dates (to name a few). Primitives are actually messages.&lt;/p&gt;
+&lt;p&gt;Primitives are things like string, numbers and dates (to name a few). Primitives are actually mechanisms.&lt;/p&gt;
 
 &lt;p&gt;Examples being:&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;Strings - “Hello” (String message)&lt;/li&gt;
-  &lt;li&gt;Floats - 34.56f (Float message)&lt;/li&gt;
-  &lt;li&gt;Reals - 3.456 (Real message)&lt;/li&gt;
-  &lt;li&gt;Integers - 34 (Int message)&lt;/li&gt;
-  &lt;li&gt;Longs - 56l (Long message)&lt;/li&gt;
-  &lt;li&gt;Dates - 1994-11-05T08:15:30-05:00 (Date message - Considering only allowing UTC dates to be stored)&lt;/li&gt;
+  &lt;li&gt;Strings - “Hello” (String mechanism)&lt;/li&gt;
+  &lt;li&gt;Floats - 34.56f (Float mechanism)&lt;/li&gt;
+  &lt;li&gt;Reals - 3.456 (Real mechanism)&lt;/li&gt;
+  &lt;li&gt;Integers - 34 (Int mechanism)&lt;/li&gt;
+  &lt;li&gt;Longs - 56l (Long mechanism)&lt;/li&gt;
+  &lt;li&gt;Dates - 1994-11-05T08:15:30-05:00 (Date mechanism - Considering only allowing UTC dates to be stored)&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;h3 id=&quot;collections&quot;&gt;Collections&lt;/h3&gt;
@@ -3902,18 +4140,91 @@ d} MESSAGE &amp;lt;- Message [ MESSAGE ]
   &lt;li&gt;array of strings - [ “Hello” “And” “GoodBye” ]&lt;/li&gt;
   &lt;li&gt;array of integers - [ 1 2 5 6 12 656 ]&lt;/li&gt;
   &lt;li&gt;array of floats - [ 23.0f 345.4f 63.346f ]&lt;/li&gt;
-  &lt;li&gt;array of Messages - [ User { name “Jane” } User { name “Toan” } User { name “Frank” } ]&lt;/li&gt;
+  &lt;li&gt;array of Mechanisms - [ User { name “Jane” } User { name “Toan” } User { name “Frank” } ]&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;h2 id=&quot;availability&quot;&gt;Availability&lt;/h2&gt;
 
-&lt;p&gt;SipCoffee works with the Interface Vision framework. We’ve created an initial persister that is able to save a program configured in Interface Vision as SipCoffee. The persister will itself be written in SipCoffee. When we get to that point, we will blog about it.&lt;/p&gt;
+&lt;p&gt;SipCoffee works with mechanisms defined in C#. We’ve created an initial persister that is able to save a program configured in Interface Vision as SipCoffee. The persister will itself be written in SipCoffee. When we get to that point, we will blog about it.&lt;/p&gt;
 
 &lt;p&gt;In the mean time, please follow us &lt;a href=&quot;http://www.twitter.com/interfaceVision&quot;&gt;@interfaceVision&lt;/a&gt; and/or &lt;a href=&quot;http://www.twitter.com/erichosick&quot;&gt;@erichosick&lt;/a&gt;.&lt;/p&gt;
 
+&lt;h2 id=&quot;other-possible-syntax&quot;&gt;Other Possible Syntax&lt;/h2&gt;
+
+&lt;p&gt;We could also use spacing to associate mechanisms with properties removing the need for {} or ()&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Application
+  do ForEach
+    item List [ 1 2 4 8 16 32 ]
+    do WriteLine
+      text CurrentItem
+
+// another example
+
+Application
+  do ForEach
+    item SqlConnect
+      database &quot;someDatabase&quot;
+      command SqlQuery
+        sql &quot;SELECT firstName, lastName FROM users&quot;
+    do WriteLine
+      text HashRead
+        hash CurrentItem
+        key &quot;firstName&quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;and with property ordering&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Application
+  ForEach
+    List [ 1 2 4 8 16 32 ]
+    WriteLine
+      CurrentItem
+
+// another example
+
+Application
+  ForEach
+    SqlConnect
+      &quot;someDatabase&quot;
+      SqlQuery
+        &quot;SELECT firstName, lastName FROM users&quot;
+    WriteLine
+      HashRead
+        CurrentItem
+        &quot;firstName&quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Though readability is getting tricky and knowledge of each mechanism’s property ordering is required.&lt;/p&gt;
+
+&lt;p&gt;Something that looks a lot like functional programming (it could even be functional programming)&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Application (
+  ForEach (
+    List ([ 1 2 4 8 16 32 ]),
+    WriteLine (
+      CurrentItem
+    )
+  )
+)
+
+// another example
+
+Application (
+  ForEach (
+    SqlConnect ( &quot;someDatabase&quot;,
+      SqlQuery ( &quot;SELECT firstName, lastName FROM users&quot; )
+    ),
+    WriteLine (
+      HashRead ( CurrentItem, &quot;firstName&quot; )
+    )
+  )
+)
+&lt;/code&gt;&lt;/pre&gt;
+
 &lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
 
-&lt;p&gt;That’s it. A very simple message-oriented language based on composition.&lt;/p&gt;
+&lt;p&gt;That’s it. A very simple language based on composition of mechanisms called policies. Policies are your program or application.&lt;/p&gt;
 
 &lt;h2 id=&quot;next-step&quot;&gt;Next Step&lt;/h2&gt;
 

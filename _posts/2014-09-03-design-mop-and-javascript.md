@@ -10,7 +10,9 @@ author_twitter: erichosick
 
 ## Introduction
 
-We are going to talk about Javascript and message-oriented programming (MOP). Javascript is a beautiful language and is a perfect candidate for message-oriented programming.
+Note: This did not ring to well with Javascript developers. Messages were a bad way to convey our ideas (since people think of messaging frameworks when they hear the word message). Please see our post on [mechanisms and policies]({% post_url 2014-09-24-design-mechanisms-and-policies %}).
+
+We are going to talk about Javascript and message-oriented programming (MOP). Javascript is a beautiful language in it's malleability and is a perfect candidate for message-oriented programming.
 
 ## Why Message-Oriented Programming
 

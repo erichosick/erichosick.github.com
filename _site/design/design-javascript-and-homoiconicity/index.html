@@ -82,7 +82,7 @@
      
     	<li><a href="/tags.html#Javascript-ref">Javascript <span>1</span></a></li>
      
-    	<li><a href="/tags.html#composition-ref">composition <span>3</span></a></li>
+    	<li><a href="/tags.html#composition-ref">composition <span>4</span></a></li>
      
     	<li><a href="/tags.html#Homoiconicity-ref">Homoiconicity <span>2</span></a></li>
      
@@ -117,7 +117,7 @@
 
 <p><a href="https://en.wikipedia.org/wiki/Homoiconicity">Homoiconicity</a> is a feature of a language where the language’s “program code is represented as the language’s fundamental data type” (also see <a href="http://c2.com/cgi/wiki?HomoiconicLanguages">Homoiconic Languages</a> on c2).</p>
 
-<p>Javascript is a loosely typed language whose fundamental datatypes are primitives (strings, floats, etc.) and functions (lambdas) with properties (meaning functions can also be used as objects). From these fundamental data-types, we will create a single fundamental data type for Javascript (called a message).</p>
+<p>Javascript is a loosely typed language whose fundamental datatypes are primitives (strings, floats, etc.) and functions (lambdas) with properties (meaning functions can also be used as objects). From these fundamental data-types, we will create a single fundamental data type for Javascript (called a mechanism).</p>
 
 <p>Homoiconic source-code is a data-structure in and of itself. Programming becomes the composition of this single fundamental datatype which results in the new algorithm (the program) and data-structure at the same time.</p>
 
@@ -166,8 +166,6 @@
 
 <p>Just like you can display and edit trees in many <a href="https://www.google.com/search?q=tree+structure&amp;tbm=isch">different visual formats</a>, you can display and edit source code visually. You can have multiple visual representations of the same program: each one tailored towards the reader of your program!</p>
 
-<p>And all of this is possible without writing custom code (emergent behavior) because there is no need to convert your program from source-code to a data-structure.</p>
-
 <p>It really surprises me that we have gone this far without Homoiconicity going main stream.</p>
 
 <h2 id="why-is-homoiconicity-hard-to-do-in-languages">Why is Homoiconicity Hard To Do in Languages?</h2>
@@ -180,7 +178,7 @@
 
 <p>If you are creating a language, and remove parameterized sub-routines as the core abstraction for communication of data between sub-routines, you end up with a Homoiconic language.</p>
 
-<p>The fundamental datatypes (messages) take the place of parameterized sub-routines and passing of information between messages becomes an inherent part of the data-structure you create when programming.</p>
+<p>The fundamental datatypes (mechanisms) take the place of parameterized sub-routines and passing of information between mechanisms becomes an inherent part of the data-structure you create when programming.</p>
 
 <h2 id="javascript-and-homoiconicity">Javascript and Homoiconicity</h2>
 
@@ -228,7 +226,7 @@ persistIt.go; // invoke the program
 persistIt2.go; // invoke the program
 </code></pre>
 
-<p>How a bout we inject behavior to write a message to the console when the file_type form field is accessed:</p>
+<p>How about we inject behavior to write a message to the console when the file_type form field is accessed:</p>
 
 <pre><code>var persistIt3 = persist ({
   fileName: formFieldGet ({
@@ -247,11 +245,11 @@ persistIt2.go; // invoke the program
 persistIt3.go; // invoke the program
 </code></pre>
 
-<p>That’s kinda cool. When the persister-message runs go on the writeToCon-message placed in the fileType property, writeToCon runs the message in the text property.</p>
+<p>That’s kinda cool. When the persister-mechanism runs go on the writeToCon-mechanism placed in the fileType property, writeToCon runs the mechanism in the text property.</p>
 
-<p>That eventually causes the text in the form field to propagate up to the writeToCon-message which then writes that text to the console.</p>
+<p>That eventually causes the text in the form field to propagate up to the writeToCon-mechanism which then writes that text to the console.</p>
 
-<p>The writeToCon-message then propagates the text up to the persist-message which uses the text to determine the file type.</p>
+<p>The writeToCon-mechanism then propagates the text up to the persist-mechanism which uses the text to determine the file type.</p>
 
 <p>If you look back, you will notice that no matter how complex the program, the interface to it is the exact same. To invoke the behavior of <strong>any program</strong> you simply call go on that program.</p>
 
@@ -261,7 +259,7 @@ persistIt3.go; // invoke the program
 
 <p>Exactly!</p>
 
-<p>In a Homoiconic language, there is no way to distinguish the language itself from the software frameworks built in the language because <strong>everything</strong> is a fundamental datatype (a message): even <strong>scope</strong> (see Difficult to Read below).</p>
+<p>In a Homoiconic language, there is no way to distinguish the language itself from the software frameworks built in the language because <strong>everything</strong> is a fundamental datatype (a mechanism): even <strong>scope</strong> is implemented as a mechanism.</p>
 
 <p>In my opinion, separation of language and framework is a red-flag that we are doing something wrong.</p>
 
@@ -296,7 +294,7 @@ msgLoop.go; // invoke the program
 
 <h2 id="conclusion">Conclusion</h2>
 
-<p>Although there is still <a href="http://c2.com/cgi/wiki?HomoiconicityClassification">debate</a> as to what makes a language Homoiconic, I think we have shown that it is indeed possible to program in Javascript using only a fundamental datatype (a message).</p>
+<p>Although there is still <a href="http://c2.com/cgi/wiki?HomoiconicityClassification">debate</a> as to what makes a language Homoiconic, I think we have shown that it is indeed possible to program in Javascript using only a fundamental datatype (a mechanism).</p>
 
 <p>Our programs are indeed data-structures both in code and when instantiated on the heap.</p>
 

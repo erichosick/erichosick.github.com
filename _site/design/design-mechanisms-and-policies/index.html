@@ -1,0 +1,404 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Mechanisms as a Programming Paradigm</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Mechanisms - Blurring the Distinction Between Languages, Operating Systems and Frameworks">
+    <meta name="author" content="Eric Hosick">
+
+    <meta property="og:title" content="Eric Hosick" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="http://www.erichosick.com/assets/img/eric_hosick.jpg"/> 
+    <meta property="og:description" content="Eric Hosick's personal blog page and stuff."/>
+    <meta property="fb:admins" content="erichosick" />
+
+    <link href='//netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap-combined.min.css' rel='stylesheet'>    
+    <link href="/assets/themes/twitter/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <link href="http://fonts.googleapis.com/css?family=Pontano+Sans" rel="stylesheet" type="text/css">
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
+
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="http://www.erichosick.com"><img src="/assets/img/logoRuby.png"></img></a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li><a href="/index.html">Home</a></li>
+              <li><a href="/categories.html">Categories</a></li>
+              <li><a href="/pages.html">Pages</a></li>
+              <li><a href="/tags.html">Tags</a></li>
+            </ul>
+            <p class="pull-right">
+              <a class="nav-a-social" href="https://plus.google.com/101227313031284036080/posts" target="_blank"><i class="icon-google-color icon-social"></i></a>
+              <a class="nav-a-social" href="http://www.twitter.com/erichosick" target="_blank"><i class="icon-twitter-color icon-social"></i></a>
+              <a class="nav-a-social" href="mailto:erichosick@gmail.com"><i class="icon-mail-color icon-social"></i></a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>    
+
+    <div class="container-fluid container-main">
+      
+<div class="row-fluid">
+  <div class="span3">
+    <div class="well sidebar-nav">
+  <ul class="nav nav-list">
+    <li class="nav-header">About</li>
+    <li><img src="/assets/img/eric_hosick.jpg" class="img-rounded"></li>
+    <li> <a href="http://www.erichosick.com">Eric Hosick</a><p class="nav-about">Creator of Interface Vision, NoMethods, Agile enthusiast, entrepreneur, founder, BDD advocate, lecturer, technologist, developer, scrum master and book writer.</p></li>
+    <li><p><a href="http://twitter.com/erichosick" target="_blank">erichosick@gmail.com</a></p></li>
+  </ul>
+</div>
+
+    
+    <div class="well sidebar-nav">
+      <ul class="nav nav-list">
+        <li class="nav-header">Tags</li>
+        
+        
+
+
+  
+     
+    	<li><a href="/tags.html#C#-ref">C# <span>4</span></a></li>
+     
+    	<li><a href="/tags.html#csharp-ref">csharp <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#composition-ref">composition <span>4</span></a></li>
+     
+    	<li><a href="/tags.html#mechanisms-ref">mechanisms <span>2</span></a></li>
+     
+    	<li><a href="/tags.html#policy-ref">policy <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#frameworks-ref">frameworks <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#programming languages-ref">programming languages <span>1</span></a></li>
+    
+  
+
+
+
+      </ul>
+    </div><!--/.well -->
+      
+    
+  </div>
+  <div class="span9">
+    <div class="hero-unit">
+      <div class="page-header">
+        <h1>Mechanisms as a Programming Paradigm</h1>
+        <div class="row-fluid">
+          <div class="span2">
+            <img src="/assets/img/eric_hosick.jpg" class="img-rounded">
+          </div>
+          <div class="span8">
+            <p>by <a href="http://twitter.com/erichosick" target="_blank">Eric Hosick</a> (erichosick@gmail.com)</p>
+            <h4>Published <small class="date">24 September 2014</small></h4>
+          </div>
+        </div>
+      </div>
+      <h2 id="introduction">Introduction</h2>
+
+<p>Software engineers strive to separate the what (policy) from the how (mechanism) for reasons like <a href="https://en.wikipedia.org/wiki/Code_reuse">code re-use</a>, <a href="https://en.wikipedia.org/wiki/Maintainability">maintainability</a>, <a href="https://en.wikipedia.org/wiki/Modular_programming">modularity</a> and <a href="https://en.wikipedia.org/wiki/Separation_of_concerns">separation of concerns</a>.</p>
+
+<p>The design decisions on when to use policies instead of mechanisms is often ambiguous. We propose a mechanism centric <a href="https://en.wikipedia.org/wiki/Programming_paradigm">programming paradigm</a> to provide a clear distinction of when to use mechanism and when to use policy.</p>
+
+<h2 id="what-are-mechanisms">What are Mechanisms</h2>
+
+<p>A mechanism is “the how” and covers everything from language syntax to operating system features like:</p>
+
+<ul>
+  <li><a href="https://en.wikipedia.org/wiki/Syntax_%28programming_languages%29">language syntax</a> mechanisms
+    <ul>
+      <li>loops (while, doWhile, for, forEach, etc.)</li>
+      <li>conditionals (==, &lt;, &gt;, &lt;=, etc.)</li>
+      <li>primitive data types (int, float, var, array[], etc.)</li>
+      <li><a href="https://en.wikipedia.org/wiki/Scope_%28computer_science%29">scope</a> ( {}, (), closures, parameterized sub-routines, blocks, etc.)</li>
+    </ul>
+  </li>
+  <li><a href="https://en.wikipedia.org/wiki/Programming_paradigm">programming paradigm</a> mechanisms
+    <ul>
+      <li>behaviors, signals, switching, events, etc. (<a href="https://en.wikipedia.org/wiki/Functional_reactive_programming">functional reactive programming</a>)</li>
+      <li>entities, ports, buffers, etc. (<a href="https://en.wikipedia.org/wiki/Flow-based_programming">flow based programming</a>)</li>
+      <li>connectors, primitive constraints, quantities, constraint networks, probes (<a href="https://mitpress.mit.edu/sicp/full-text/book/book-Z-H-22.html#%_sec_3.3.5">constraint systems programming</a>)</li>
+      <li>ourselves (mechanisms)</li>
+      <li>etc.</li>
+    </ul>
+  </li>
+  <li><a href="https://en.wikipedia.org/wiki/Operating_system">operating system</a> mechanisms
+    <ul>
+      <li>persistence (files, memory)</li>
+      <li>communication (sockets, ports, pipes)</li>
+      <li>ui/ux (windows, buttons)</li>
+      <li>databases (sql, key/value stores, map reduce)</li>
+      <li>devices (display, keyboard, mouse, trackpad)</li>
+    </ul>
+  </li>
+  <li>math mechanisms
+    <ul>
+      <li>addition, subtraction, vectors, matrices, etc.</li>
+    </ul>
+  </li>
+  <li>etc.</li>
+</ul>
+
+<p>Mechanisms are tightly coupled to the programming language by-which they were implemented.</p>
+
+<h3 id="defining-mechanisms">Defining Mechanisms</h3>
+
+<p>A mechanism can be viewed as a fundamental data-type that also contains an algorithm:</p>
+
+<ul>
+  <li><strong>an algorithm</strong> - The source-code that implements the mechanism’s algorithm.</li>
+  <li><strong>data</strong> - The data required by the mechanism to run the algorithm.
+    <ul>
+      <li>Since a mechanism <strong>is</strong> the only fundamental data-type, the data is also a mechanism.</li>
+    </ul>
+  </li>
+  <li><strong>an invocation point</strong> - “go”, “makeItSo#1”, “run”
+    <ul>
+      <li>For performance purposes, invocation points can be defined for each primitive data-type in any given language: especially strongly typed languages (see C# add mechanism below).</li>
+    </ul>
+  </li>
+</ul>
+
+<p>A single invocation point means the behavioral interface to a mechanism is the same for all mechanisms. You can think of it as playing a game of <a href="https://en.wikipedia.org/wiki/Dominoes">dominoes</a> where every tile has the exact same number of spots.</p>
+
+<p class="featurette pagination-centered">
+    <img class="featurette-image img-polaroid" src="/assets/img/posts/mechanisms_domino_interface.png" />
+</p>
+
+<p>This makes it really easy to use mechanisms.</p>
+
+<p>An example add mechanism in Javascript:</p>
+
+<pre><code>var ArrF = function() {};
+ArrF.prototype = {
+  get val() { return this.d; },
+  get go() { return this.d; },
+  get asNum() { return this.d[0]; },
+  get asArr() { return this.d; },
+  get asStr() { return "[" + this.d.toString() +"]"; }
+};
+function arr(d) { var f = new ArrF(); f.d = d; return f; };
+</code></pre>
+
+<p>in C#:</p>
+
+<pre><code>public class add : iMech {
+  public iMech left { get; set; }
+  public iMech right { get; set; }
+  public iMech go {
+  	get { return new num { val = asNum }; }
+  }
+  public float asNum {
+  	get { return left.go.asNum + right.go.asNum; }
+  }
+  public string asStr {
+  	get { return string.Format ("({0} + {1})", left.asStr, right.asStr); }
+  }
+}
+</code></pre>
+
+<h2 id="what-are-policies">What are Policies</h2>
+
+<p>A policy is “the what” defined by using mechanisms. A policy is your program or application. Policies are fully decoupled from mechanism implementation.</p>
+
+<h3 id="defining-policies">Defining Policies</h3>
+
+<p>An example policy using an addition and number mechanism</p>
+
+<p>in Javascript:</p>
+
+<pre><code>var mech = add({
+  left: num(4),
+  right: num(8)
+});
+</code></pre>
+
+<p>in <a href="/design/design-composition-based-language">SipCoffee</a>:</p>
+
+<pre><code>add (
+  left 4
+  right 8
+)
+</code></pre>
+
+<p>in C#:</p>
+
+<pre><code>var mech = new add {
+  left = new num { val = 4 },
+  right = new num { val = 8 }
+};
+</code></pre>
+
+<h2 id="further-reading">Further Reading</h2>
+
+<p>Some readings on separation of mechanism and policy:</p>
+
+<ul>
+  <li><a href="https://stackoverflow.com/questions/4784500/policy-and-mechanism">Stackoverflow - Policy and Mechanisms</a></li>
+  <li><a href="https://en.wikipedia.org/wiki/Separation_of_mechanism_and_policy">Wikipedia - Separation of Mechanism and Policy</a></li>
+  <li><a href="https://sites.google.com/site/mylokesh/policyvsmechanism">Policy-vs-Mechanism</a></li>
+</ul>
+
+<h2 id="mechanisms--vs--parameterized-sub-routines">Mechanisms -vs- Parameterized Sub-Routines</h2>
+
+<p>Traditionally, sub-routines have data “pushed” into them via parameters (though sub-routines can “pull” from scoped data) and then run the algorithm contained in the sub-routine.</p>
+
+<p>Mechanisms never have data (mechanisms) “pushed” to them. Instead, mechanisms use internal data (mechanisms) to “pull” information to the algorithm.</p>
+
+<p>Consider an add sub-routine with an addition algorithm:</p>
+
+<pre><code>int add ( int left, int right ) {
+  return left + right;
+}
+</code></pre>
+
+<p>We “push” into add values contained in the left and right parameters.</p>
+
+<p>Consider an add mechanism (pseudo-code):</p>
+
+<pre><code>mechanism add {
+  mechanism left;
+  mechanism right;
+  
+  mechanism go {
+    return left.go + right.go;
+  }
+}
+</code></pre>
+
+<p>In this case, data is “pulled” from the left and right mechanisms by invoking those mechanism (go) on left and right.</p>
+
+<p>Further examples using real languages are provided in the post <a href="/design/design-csharp-and-homoiconicity">C# and Homoiconicity</a> and <a href="/design/design-javascript-and-homoiconicity">Javascript and Homoiconicity</a>.</p>
+
+<p>When we use the traditional add in a program, we need to know where the value of left and right come from before we can call add’s algorithm:</p>
+
+<pre><code>int x = 5;
+int y = 8;
+int result = add (x, y); // can't get around it. We must push something to add here.
+</code></pre>
+
+<p>We can’t get around it. At some point, when we call add while programming, we have to pass parameters to add.</p>
+
+<p>When we use add as a mechanism, we don’t need to know where the values of left and right come from before we call add’s algorithm:</p>
+
+<pre><code>// addMech defined anywhere in the program.
+// perhaps during initiation
+
+mechanism result = addMech.go;
+</code></pre>
+
+<p>In fact, we don’t even need to know what data is required by the add algorithm when we use add in our policy. The internal workings of add are <strong>fully</strong> encapsulated and hidden from the policy.</p>
+
+<h3 id="defining-mechanisms-using-functional-programming">Defining Mechanisms Using Functional Programming</h3>
+
+<p>So far, we’ve discussed how to create mechanisms using objects. It should also be possible to create mechanisms using functional programming which we will discuss in another post.</p>
+
+<h2 id="scope-scopeget-and-scopeset-mechanisms">Scope, scopeGet and scopeSet Mechanisms</h2>
+
+<p>I’m thinking about perhaps implementing a few of the mechanisms required for constraint systems. Any ideas?</p>
+
+<p>Either that, or implement Scope as a mechanism.</p>
+
+<p>Let’s choose something that is very core to a language and maybe a little difficult to implement: <a href="https://en.wikipedia.org/wiki/Scope_%28computer_science%29">scoping</a>. This is just one, of many ways, to implement the scope mechanism in C#. Remember, you can roll your own scope mechanism.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Mechanisms and policies are a great way of assuring separation of the how we do something from the why. Our software frameworks only contain the how (mechanisms) and <strong>never</strong> the why (policies).</p>
+
+<p>This means our programs, the policies, are 100% decoupled from the framework. This makes it a lot easier to port our policies to different programming languages, operating systems and future languages. Imagine if programs had always been written using policies as opposed to mixing the how and why in the framework.</p>
+
+<p>If you find our work on mechanisms interesting, please follow us <a href="http://www.twitter.com/interfaceVision">@interfaceVision</a> and/or <a href="http://www.twitter.com/erichosick">@erichosick</a>.</p>
+
+      <hr>
+      <div class="pagination pagination-centered">
+        <ul>
+        
+          <li class="prev"><a href="/design/design-csharp-and-homoiconicity" title="C# and Homoiconicity: Source-code that is a Data-Structure">&larr; Previous</a></li>
+        
+          <li><a href="/archive.html">Archive</a></li>
+        
+          <li class="next disabled"><a>Next &rarr;</a>
+        
+        </ul>
+      </div>    
+      <hr>
+      <div>
+        
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_developer = 1;
+    var disqus_shortname = 'erichosickblog'; // required: replace example with your forum shortname
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+      </div>
+
+    </div>    
+  </div>
+</div>
+
+
+
+      <hr>
+      <footer>
+         <p>&copy; <a href="http://www.twitter.com/erichosick" target="_blank">Eric Hosick</a> 2012</p>
+       </footer>
+    </div>    
+    <!--
+
+    <script src="/assets/js/jquery.js"></script>
+    <script src="/assets/js/bootstrap-transition.js"></script>
+    <script src="/assets/js/bootstrap-alert.js"></script>
+    <script src="/assets/js/bootstrap-modal.js"></script>
+    <script src="/assets/js/bootstrap-dropdown.js"></script>
+    <script src="/assets/js/bootstrap-scrollspy.js"></script>
+    <script src="/assets/js/bootstrap-tab.js"></script>
+    <script src="/assets/js/bootstrap-tooltip.js"></script>
+    <script src="/assets/js/bootstrap-popover.js"></script>
+    <script src="/assets/js/bootstrap-button.js"></script>
+    <script src="/assets/js/bootstrap-collapse.js"></script>
+    <script src="/assets/js/bootstrap-carousel.js"></script>
+    <script src="/assets/js/bootstrap-typeahead.js"></script>
+    
+    -->
+
+    
+  </body>
+</html>
+

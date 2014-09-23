@@ -92,7 +92,7 @@
      
     	<li><a href="/tags.html#nginx-ref">nginx <span>1</span></a></li>
      
-    	<li><a href="/tags.html#message-oriented Programming-ref">message-oriented Programming <span>2</span></a></li>
+    	<li><a href="/tags.html#mechanism-oriented Programming-ref">mechanism-oriented Programming <span>1</span></a></li>
     
   
 
@@ -119,7 +119,7 @@
       </div>
       <h2 id="introduction">Introduction</h2>
 
-<p>One question we’ve been asked is how fast is the Vision framework? To answer that, we’ve created parts (aka messages) that can be used to configure a web server from scratch. The results are shown below.</p>
+<p>One question we’ve been asked is how fast is the Vision framework? To answer that, we’ve created <a href="/design/design-mechanisms-and-policies">mechanisms</a> that can be used to configure a web server from scratch. The results are shown below.</p>
 
 <h3 id="the-results">The Results</h3>
 
@@ -164,23 +164,25 @@ Shortest transaction:     0.00
   <p>We realize the comparison is <strong>not</strong> apples to apples but we wanted to have something we can start comparing to.</p>
 </blockquote>
 
-<p>Let’s look at the <a href="/design/design-composition-based-language">SipCoffee</a> message-configuration that gave us these results.</p>
+<p>Let’s look at the policy defined using <a href="/design/design-composition-based-language">SipCoffee</a> that gave us these results.</p>
 
 <h2 id="quick-introduction-to-sipcoffee">Quick Introduction to SipCoffee</h2>
 
-<p>SipCoffee is a message-oriented programming language. By that, we mean that all parts within the language are considered messages. A message contains some specific behavior and an aggregate of named-message (a class (message) with computed properties (named-messages)).</p>
+<p>SipCoffee is a programming language that creates policies defined by the composition of <a href="/design/design-mechanisms-and-policies">mechanisms</a>. A mechanism contains some specific behavior (an algorithm) and properties which contain one or more mechanisms.</p>
 
-<p>A program is created by composing messages. This can also be viewed as creating a data structure which contains both data and behavior (behavior and data-structures are inseparable: as they should be).</p>
+<p>A program is a policy that is created by composing mechanisms. This can also be viewed as creating a data structure which contains both data and behavior (behavior and data-structures are inseparable: see <a href="https://en.wikipedia.org/wiki/Homoiconicity">homoiconicity</a>).</p>
 
-<p>When a message is activated, the behavior composed within the message is executed. This may cause named-message (those computed properties of the message) to also active.</p>
+<p>When a mechanism is activated, the behavior contained within the mechanism is executed. This may cause one or more properties, which contain mechanisms, to also active.</p>
 
-<p>We call SipCoffee programs message-configurations because we’ve completely separated mechanisms from the business domain. Any changes you make in a program are directly related to the business domain.</p>
+<p>SipCoffee programs are called policies because we’ve completely separated mechanisms from policy. Any changes you make in a program are directly related to the policy.</p>
 
-<p>In the message-configuration below, you can twiddle with the Web Server at any level. You can change queue sizes, time out periods, the server port and uri, the number of parts in a part pool, and even the cache size of the socket reader.</p>
+<p>In the policy below, you can twiddle with the Web Server at any level. You can change queue sizes, time out periods, the server port and uri, the number of parts in a part pool, and even the cache size of the socket reader.</p>
 
-<h2 id="building-a-web-server-from-scratch">Building A Web Server From Scratch</h2>
+<p>You can’t change the mechanisms themselves. If you want the File mechanism to act differently, you will need to go into the code that describes that mechanism and edit it there.</p>
 
-<p>The following is the message-configuration of a very very simple, but complete, WebServer in only <strong>50 lines</strong> of SipCoffee.</p>
+<h2 id="a-web-server-policy-from-scratch">A Web Server Policy From Scratch</h2>
+
+<p>The following policy is a very very simple, but complete, WebServer in only <strong>50 lines</strong> of SipCoffee.</p>
 
 <pre><code>Scope ( scopeId -2
   ins (
@@ -229,27 +231,27 @@ Shortest transaction:     0.00
                     streamSource ScopeGet ( withName "socket" )
                     data ScopeGet ( withName "respBody" )
                   )
-                  NamedMessageGet ( withName "close" 
+                  NamedMechanismGet ( withName "close" 
                     part ScopeGet ( withName "socket" callBehavior false )
                   ) ) ) ) ) ) ) ) ) )
 </code></pre>
 
-<p>Example messages are <strong>Scope</strong>, <strong>File</strong>, <strong>ArrayByteBuilder</strong>, <strong>ArrayByte</strong> and <strong>Socket</strong> (all implemented as classes). Example named-messages are <em>ins</em>, <em>named</em>, <em>sizeGrowBy</em> and <em>withName</em> (all implemented as computed properties).</p>
+<p>Example mechanisms are <strong>Scope</strong>, <strong>File</strong>, <strong>ArrayByteBuilder</strong>, <strong>ArrayByte</strong> and <strong>Socket</strong> (all implemented using C# classes). Example properties are <em>ins</em>, <em>named</em>, <em>sizeGrowBy</em> and <em>withName</em> (all implemented using C# computed properties).</p>
 
-<p>Let’s break the message-configuration down into smaller parts we can easily explain.</p>
+<p>Let’s break the policy down into smaller parts we can easily explain.</p>
 
-<h3 id="the-socketrouter-message">The SocketRouter Message</h3>
+<h3 id="the-socketrouter-mechanism">The SocketRouter Mechanism</h3>
 
-<p>The <strong>SocketRouter</strong> message, when activated, listens to a data stream on a given port. Any new connections on that data stream are forwarded to another data stream for handling.</p>
+<p>The <strong>SocketRouter</strong> mechanism, when activated, listens to a data stream on a given port. Any new connections on that data stream are forwarded to another data stream for handling.</p>
 
-<p>The <strong>SocketRouter</strong> has two named-messages:</p>
+<p>The <strong>SocketRouter</strong> has two properties:</p>
 
 <ul>
   <li>streamSource - The source of all data streams.</li>
-  <li>socketFactory - The message-configuration that handles reading from and writing to of any incoming data streams.</li>
+  <li>socketFactory - The policy that handles reading from and writing to any incoming data streams.</li>
 </ul>
 
-<p>The message-configuration for the <em>streamSource</em> named-message is very simple. </p>
+<p>The policy for the <em>streamSource</em> property is very simple. </p>
 
 <pre><code>streamSource SocketListener ( backlogQueueSize 2000 
   ipEndPoint IPEndPoint ( port 3050 
@@ -258,21 +260,21 @@ Shortest transaction:     0.00
 )
 </code></pre>
 
-<p>The <em>streamSource</em> named-message is a <strong>SocketListener</strong> message with a <em>backlogQueueSize</em> named-message of a <strong>2000</strong> message (Yep! 2000 is also a message) and a configured <em>ipEndPoint</em> which is easy to figure out.</p>
+<p>The <em>streamSource</em> property is a <strong>SocketListener</strong> mechanism with a <em>backlogQueueSize</em> property of a <strong>2000</strong> mechanism (Yep! 2000 is also a mechanism) and a configured <em>ipEndPoint</em> which is easy to figure out.</p>
 
-<p>The <em>socketFactory</em> named-message is a bit more complicated. We could configure our Web Server to handle one request at a time. However, that isn’t very practical and scales worth shit. We need a way to allow messages to run on multiple threads at the same time.</p>
+<p>The <em>socketFactory</em> property is a bit more complicated. We could define a policy for our Web Server to handle one request at a time. However, that isn’t very practical and scales worth shit. We need a way to allow mechanisms to run on multiple threads at the same time.</p>
 
 <p>To do this, we can use factories and part pools.</p>
 
-<h3 id="the-factoryinstance-partpool-and-partpooldecorator-messages">The FactoryInstance, PartPool and PartPoolDecorator Messages</h3>
+<h3 id="the-factoryinstance-partpool-and-partpooldecorator-mechanisms">The FactoryInstance, PartPool and PartPoolDecorator Mechanisms</h3>
 
-<p>A <strong>FactoryInstance</strong> message, when activated, will return a copy of the message-configuration located in the <em>part</em> named-message.</p>
+<p>A <strong>FactoryInstance</strong> mechanism, when activated, will return a copy of the policy located in the <em>part</em> property.</p>
 
 <ul>
-  <li>part - The message-configuration we’ll make a copy of.</li>
+  <li>part - The policy we’ll make a copy of.</li>
 </ul>
 
-<p>Our message-configuration is as follows:</p>
+<p>Our policy is as follows:</p>
 
 <pre><code>FactoryInstance (
   part PartPoolDecorator (
@@ -281,28 +283,28 @@ Shortest transaction:     0.00
 )
 </code></pre>
 
-<p>In the above message-configuration, the <strong>FactoryInstance</strong> message creates a copy of a <strong>PartPoolDecorator</strong> and all messages configured in the <strong>PartPoolDecorator</strong> message. This is one of the advantages of programming using data structures as opposed to parameterized functions. Want to create a copy of a program? Just duplicate it (Functions are great at manipulating data structures but don’t make for very good data-structures in and of themselves).</p>
+<p>In the above policy, the <strong>FactoryInstance</strong> mechanism creates a copy of a <strong>PartPoolDecorator</strong> and all mechanisms configured in the <strong>PartPoolDecorator</strong> mechanism. This is one of the advantages of programming using data structures as opposed to parameterized functions. Want to create a copy of a program? Just duplicate it (Functions are great at manipulating data structures but don’t make for very good data-structures in and of themselves).</p>
 
-<p>We could implement our Web Server using only the <strong>FactoryInstance</strong> message-configuration. Each time a request comes in, a copy of the message-configuration to handle the request is made and ran in it’s own thread (more on that below). However, why keep making copies of our message-configuration for every request by a client? Allocating and freeing memory are expensive operations. We should be able to re-use our copied message-configurations. This is where the <strong>PartPool</strong> and <strong>PartPoolDecorator</strong> messages come into play.</p>
+<p>We could implement our Web Server using only the <strong>FactoryInstance</strong> policy. Each time a request comes in, a copy of the policy to handle the request is made and ran in it’s own thread (more on that below). However, why keep making copies of our policy for every request by a client? Allocating and freeing memory are expensive operations. We should be able to re-use our copied policys. This is where the <strong>PartPool</strong> and <strong>PartPoolDecorator</strong> mechanisms come into play.</p>
 
-<p>The messages <strong>PartPool</strong> and <strong>PartPoolDecorator</strong>, together, allow any message-configuration to be re-used multiple times throughout the execution of a program.</p>
+<p>The mechanisms <strong>PartPool</strong> and <strong>PartPoolDecorator</strong>, together, allow any policy to be re-used multiple times throughout the execution of a program.</p>
 
-<p>The <strong>PartPool</strong> message is simple:</p>
+<p>The <strong>PartPool</strong> mechanism is simple:</p>
 
 <ul>
   <li>initialSize - The initial number of parts in the pool. If all the parts in the pool are in use, a new item is created and added to the part pool.</li>
-  <li>item - The message-configuration that is pooled by the <strong>PartPool</strong> message. This is always configured with some kind of factory. The item’s message-configuration is activated initialSize number of times and the result pooled inside the <strong>PartPool</strong> message.</li>
+  <li>item - The policy that is pooled by the <strong>PartPool</strong> mechanism. This is always configured with some kind of factory. The item’s policy is activated initialSize number of times and the result pooled inside the <strong>PartPool</strong> mechanism.</li>
 </ul>
 
-<p>The <strong>PartPoolDecorator</strong> message, when activated, activates the message contained in the <em>part</em> named-message. When the configured-message in <em>part</em> finishes, the <strong>PartPoolDecorator</strong> message automatically returns itself to it’s part pool.</p>
+<p>The <strong>PartPoolDecorator</strong> mechanism, when activated, activates the mechanism contained in the <em>part</em> property. When the configured-mechanism in <em>part</em> finishes, the <strong>PartPoolDecorator</strong> mechanism automatically returns itself to it’s part pool.</p>
 
 <ul>
-  <li>part - The configured message to activate. When the message is finished, the <strong>PartPoolDecorator</strong> places itself back into the <strong>PartPool</strong>.</li>
+  <li>part - The configured mechanism to activate. When the mechanism is finished, the <strong>PartPoolDecorator</strong> places itself back into the <strong>PartPool</strong>.</li>
 </ul>
 
-<p>Using these two messages in conjunction with a factory, we can take <strong>any</strong> message-configuration and make it re-usable. This allows us to configure very scalable message-configurations.</p>
+<p>Using these two mechanisms in conjunction with a factory, we can take <strong>any</strong> policy and make it re-usable. This allows us to configure very scalable policys.</p>
 
-<p>Our specific message-configuration is as follows:</p>
+<p>Our specific policy is as follows:</p>
 
 <pre><code>PartPool ( initialSize 500
   item FactoryInstance (
@@ -312,32 +314,32 @@ Shortest transaction:     0.00
       ) ) ) )
 </code></pre>
 
-<p>The <strong>PartPool</strong> message starts out with an initialSize named-message of <strong>500</strong>. When the PartPool is first activated, the <strong>FactoryInstance</strong> message is activated 500 times (on as many threads as we can) and the results are placed in the <strong>PartPool</strong> message. The <strong>PartPool</strong> pulls a single message from it’s pool and activates it.</p>
+<p>The <strong>PartPool</strong> mechanism starts out with an initialSize property of <strong>500</strong>. When the PartPool is first activated, the <strong>FactoryInstance</strong> mechanism is activated 500 times (on as many threads as we can) and the results are placed in the <strong>PartPool</strong> mechanism. The <strong>PartPool</strong> pulls a single mechanism from it’s pool and activates it.</p>
 
-<p>In this case, the <strong>PartPoolDecorator</strong> is configured to contain a <strong>RunWorkerWithTimeOut</strong> message. This means the <strong>PartPoolDecorator</strong> is actually activated in a new thread meaning the <strong>PartPool</strong> returns control, almost immediately, to it’s parent message: the <strong>SocketRouter</strong> message. The <strong>SocketRouter</strong> message is now ready to handle the next incoming request.</p>
+<p>In this case, the <strong>PartPoolDecorator</strong> is configured to contain a <strong>RunWorkerWithTimeOut</strong> mechanism. This means the <strong>PartPoolDecorator</strong> is actually activated in a new thread meaning the <strong>PartPool</strong> returns control, almost immediately, to it’s parent mechanism: the <strong>SocketRouter</strong> mechanism. The <strong>SocketRouter</strong> mechanism is now ready to handle the next incoming request.</p>
 
-<h3 id="the-runworkerwithtimeout-message">The RunWorkerWithTimeOut Message</h3>
+<h3 id="the-runworkerwithtimeout-mechanism">The RunWorkerWithTimeOut Mechanism</h3>
 
-<p>Here are where things get even cooler. The <strong>RunWorkerWithTimeOut</strong> message is able to run <strong>any</strong> message-configuration in a thread. Yep. Multi-threaded programming in SipCoffee is just that simple.</p>
+<p>Here are where things get even cooler. The <strong>RunWorkerWithTimeOut</strong> mechanism is able to run <strong>any</strong> policy in a thread. Yep. Multi-threaded programming in SipCoffee is just that simple.</p>
 
 <ul>
   <li>waitTime - The time in milliseconds before the worker thread times out.</li>
-  <li>part - The message-configuration to run within the worker thread.</li>
+  <li>part - The policy to run within the worker thread.</li>
 </ul>
 
-<h3 id="the-scope-and-scopeget-messages">The Scope and ScopeGet Messages</h3>
+<h3 id="the-scope-and-scopeget-mechanisms">The Scope and ScopeGet Mechanisms</h3>
 
-<p>Take a quick look at the original message-configuration. What you will notice is that there are no functions, parameters or variables. In message-oriented programming, <strong>everything is a message</strong>. Even the context/scope that a message is activated in, usually defined with a language using { and } (Defining context in a language isn’t very data-structure friendly), is a message.</p>
+<p>Take a quick look at the original policy. What you will notice is that there are no functions, parameters or variables. In mechanism-oriented programming, <strong>everything is a mechanism</strong>. Even the context/scope that a mechanism is activated in, usually defined with a language using { and } (Defining context in a language isn’t very data-structure friendly), is a mechanism.</p>
 
-<p>To support context, we have a <strong>Scope</strong> message to define the context a message-configuration runs in.</p>
+<p>To support context, we have a <strong>Scope</strong> mechanism to define the context a policy runs in.</p>
 
 <ul>
-  <li>part - The configured-message to activate within the context.</li>
-  <li>ins - One or more configured-messages contained within the context of the scope. These can also be viewed as Variables.</li>
-  <li>scopeId - When configured with a negative numeric message, the scope is “global” in nature. When not configured, the scopeId is based on the managed thread id a message-configuration is ran in (this is really powerful and explained below in detail)</li>
+  <li>part - The configured-mechanism to activate within the context.</li>
+  <li>ins - One or more configured-mechanisms contained within the context of the scope. These can also be viewed as Variables.</li>
+  <li>scopeId - When configured with a negative numeric mechanism, the scope is “global” in nature. When not configured, the scopeId is based on the managed thread id a policy is ran in (this is really powerful and explained below in detail)</li>
 </ul>
 
-<p>In our message-configuration we have the following <strong>Scope</strong> message configured:</p>
+<p>In our policy we have the following <strong>Scope</strong> mechanism configured:</p>
 
 <pre><code>part Scope (
   ins (
@@ -351,26 +353,26 @@ Shortest transaction:     0.00
 )
 </code></pre>
 
-<p>The <em>part</em> named-message contains an <strong>Array</strong> message (more on that later). The <em>ins</em> named-message contains 5 messages, something like variables, each with a unique name within that Scope’s context:</p>
+<p>The <em>part</em> property contains an <strong>Array</strong> mechanism (more on that later). The <em>ins</em> property contains 5 mechanisms, something like variables, each with a unique name within that Scope’s context:</p>
 
 <ul>
-  <li>A Socket message named “socket” - The socket we use to read and write to the stream within the current thread.</li>
-  <li>An ArrayByteBuffered message named “requestBody” - The buffer where the body of the request from the client is placed.</li>
-  <li>A ScopeGet message named “respHead” - The header that will be sent to the client.</li>
-  <li>Another ScopeGet message named “respBody” - The message body that will be sent to the client.</li>
-  <li>An HttpHeader message named “httpHeader” - The http header received from the client.</li>
+  <li>A Socket mechanism named “socket” - The socket we use to read and write to the stream within the current thread.</li>
+  <li>An ArrayByteBuffered mechanism named “requestBody” - The buffer where the body of the request from the client is placed.</li>
+  <li>A ScopeGet mechanism named “respHead” - The header that will be sent to the client.</li>
+  <li>Another ScopeGet mechanism named “respBody” - The mechanism body that will be sent to the client.</li>
+  <li>An HttpHeader mechanism named “httpHeader” - The http header received from the client.</li>
 </ul>
 
-<p>Here comes some programming power! A “variable” can be a single message like <strong>Socket</strong> or it can be another configured message! Yep! Just think of the power you have as a programmer. Variables are actually configured-messages!</p>
+<p>Here comes some programming power! A “variable” can be a single mechanism like <strong>Socket</strong> or it can be another configured mechanism! Yep! Just think of the power you have as a programmer. Variables are actually configured-mechanisms!</p>
 
-<p>Notice that, for this <strong>Scope</strong> message, the <em>scopeId</em> named-message is not defined. This means, the context of the Scope will be based on the current named thread. Yep! Even more <strong>POWER</strong>! We can run this message-configuration in as many threads as we want and there is no chance of the “variables” being accessed from multiple threads. You no longer need to worry about re-entrance or things being thread safe within this <strong>Scope</strong> (this isn’t the case when a <strong>Scope</strong> message is configured to be global).</p>
+<p>Notice that, for this <strong>Scope</strong> mechanism, the <em>scopeId</em> property is not defined. This means, the context of the Scope will be based on the current named thread. Yep! Even more <strong>POWER</strong>! We can run this policy in as many threads as we want and there is no chance of the “variables” being accessed from multiple threads. You no longer need to worry about re-entrance or things being thread safe within this <strong>Scope</strong> (this isn’t the case when a <strong>Scope</strong> mechanism is configured to be global).</p>
 
-<p>In message-oriented programming, accessing a “Variable” is also done using messages. SipCoffee has no equals (=) operator. To access a “Variable” within the current scope, you use the <strong>ScopeGet</strong> message.</p>
+<p>In mechanism-oriented programming, accessing a “Variable” is also done using mechanisms. SipCoffee has no equals (=) operator. To access a “Variable” within the current scope, you use the <strong>ScopeGet</strong> mechanism.</p>
 
 <ul>
   <li>withName - The name of the “Variable”.</li>
-  <li>named - The unique name of the ScopeGet message (so we can access a ScopeGet message from another ScopeGet message if we like).</li>
-  <li>scopeId - When configured with a negative numeric message, the scope is “global” in nature. When not configured, the scopeId is based on the managed thread id a message-configuration is ran in (this is really powerful and explained below in detail).</li>
+  <li>named - The unique name of the ScopeGet mechanism (so we can access a ScopeGet mechanism from another ScopeGet mechanism if we like).</li>
+  <li>scopeId - When configured with a negative numeric mechanism, the scope is “global” in nature. When not configured, the scopeId is based on the managed thread id a policy is ran in (this is really powerful and explained below in detail).</li>
 </ul>
 
 <p>In this example:</p>
@@ -378,7 +380,7 @@ Shortest transaction:     0.00
 <pre><code>ScopeGet ( named "respHead" scopeId -2 withName "Http200.Body.Html" )
 </code></pre>
 
-<p>The <strong>ScopeGet</strong> message locates and activates a message <em>named</em> “respHead” in a <em>scopeId</em> of -2. This is configured as follows:</p>
+<p>The <strong>ScopeGet</strong> mechanism locates and activates a mechanism <em>named</em> “respHead” in a <em>scopeId</em> of -2. This is configured as follows:</p>
 
 <pre><code>Scope ( scopeId -2
   ins (
@@ -396,7 +398,7 @@ Shortest transaction:     0.00
 )  
 </code></pre>
 
-<p>the <em>streamSource</em> named-message of the <strong>SocketReaderHeaderBody</strong> is a <strong>ScopeGet</strong> message. That message is configured to locate a message named “socket” configured as follows:</p>
+<p>the <em>streamSource</em> property of the <strong>SocketReaderHeaderBody</strong> is a <strong>ScopeGet</strong> mechanism. That mechanism is configured to locate a mechanism named “socket” configured as follows:</p>
 
 <pre><code>part Scope (
   ins (
@@ -409,18 +411,18 @@ Shortest transaction:     0.00
 
 <h2 id="reading-from-and-writing-to-the-stream">Reading from and Writing to the Stream</h2>
 
-<p>To activate messages in a given order, we can use an <em>Array</em> message setting the <em>run</em> named-message to a <strong>true</strong> message (Yep, even true is a message).</p>
+<p>To activate mechanisms in a given order, we can use an <em>Array</em> mechanism setting the <em>run</em> property to a <strong>true</strong> mechanism (Yep, even true is a mechanism).</p>
 
 <pre><code>Array ( run true
   ins ( ... )
 )
 </code></pre>
 
-<p>Any messages in the <em>ins</em> named-message of the <em>Array</em> message are activated in the order they were inserted.</p>
+<p>Any mechanisms in the <em>ins</em> property of the <em>Array</em> mechanism are activated in the order they were inserted.</p>
 
-<p>Let’s look at how the message-configuration works.</p>
+<p>Let’s look at how the policy works.</p>
 
-<p>First, we activate a <strong>SocketReaderHeaderBody</strong> message:</p>
+<p>First, we activate a <strong>SocketReaderHeaderBody</strong> mechanism:</p>
 
 <pre><code>SocketReaderHeaderBody ( autoOpen true
   streamSource ScopeGet ( withName "socket" )
@@ -435,11 +437,11 @@ Shortest transaction:     0.00
 <ul>
   <li>autoOpen true - Automatically open the stream source.</li>
   <li>streamSource ScopeGet ( withName “socket” ) - the source of the stream is located in a Scoped “Variable” named ‘socket’</li>
-  <li>data ArrayByteBuffered ( sizeGrowBy 1024 sizeInitial 1024 ) - The header data of the message is an ArrayByteBuffered with an initial size of 1024 bytes and grows by 1024 bytes to place the header data in.</li>
+  <li>data ArrayByteBuffered ( sizeGrowBy 1024 sizeInitial 1024 ) - The header data of the mechanism is an ArrayByteBuffered with an initial size of 1024 bytes and grows by 1024 bytes to place the header data in.</li>
   <li>body ScopeGet ( withName “requestBody” ) - The body buffer is located in a Scoped “Variable” named ‘requestBody’</li>
-  <li>headerEncoder ScopeGet ( withName “httpHeader” ) - The message to encode and decode the header is located in a Scoped “Variable” named “httpHeader”</li>
+  <li>headerEncoder ScopeGet ( withName “httpHeader” ) - The mechanism to encode and decode the header is located in a Scoped “Variable” named “httpHeader”</li>
   <li>buffer ArrayByteBuffered ( sizeInitial 1024 sizeGrowBy 1024 ) - The buffer used directly by the socket is an ArrayByteBuffered with an initial size of 1024 bytes and grows by 1024 bytes to place the header data in.</li>
-  <li>terminator ArrayByte ( withArrayByte byte ( 13 10 13 10 ) ) - The terminator between a message header and body is this ArraByte of 13 10 13 10 which happens to be the terminator between the header and body of html.</li>
+  <li>terminator ArrayByte ( withArrayByte byte ( 13 10 13 10 ) ) - The terminator between a mechanism header and body is this ArraByte of 13 10 13 10 which happens to be the terminator between the header and body of html.</li>
 </ul>
 
 <p>Second, we write to the socket the response header:</p>
@@ -453,7 +455,7 @@ Shortest transaction:     0.00
 <ul>
   <li>autoOpen false - Don’t auto open the data stream because we did that with the read above.</li>
   <li>streamSource ScopeGet ( withName “socket” ) - the source of the stream is located in a Scoped “Variable” named ‘socket’. Yep. The same streamSource as above.</li>
-  <li>data ScopeGet ( withName “respHead” ) - Oh man! Awesome. We are accessing a Variable named “respHead” which is a ScopeGet message which accesses a “Variable” named “Http200.Header”. Of course, in future message-configurations, the response header to write could change.</li>
+  <li>data ScopeGet ( withName “respHead” ) - Oh man! Awesome. We are accessing a Variable named “respHead” which is a ScopeGet mechanism which accesses a “Variable” named “Http200.Header”. Of course, in future policys, the response header to write could change.</li>
 </ul>
 
 <p>Third, we write to the socket the response body:</p>
@@ -467,27 +469,27 @@ Shortest transaction:     0.00
 <ul>
   <li>autoOpen false - Yep! Still don’t auto open the data stream because we did that with the read above.</li>
   <li>streamSource ScopeGet ( withName “socket” ) - the source of the stream is located in a Scoped “Variable” named ‘socket’. Yep. The same streamSource as above.</li>
-  <li>data ScopeGet ( withName “respBody” ) - Oh man! Awesome. We are accessing a Variable named “respBody” which is a ScopeGet message which accesses a “Variable” named “Http200.Body.Html”. We are writing to our socket the information located in a file.</li>
+  <li>data ScopeGet ( withName “respBody” ) - Oh man! Awesome. We are accessing a Variable named “respBody” which is a ScopeGet mechanism which accesses a “Variable” named “Http200.Body.Html”. We are writing to our socket the information located in a file.</li>
 </ul>
 
 <p>Finally, we close the socket:</p>
 
-<pre><code>NamedMessageGet ( withName "close" 
+<pre><code>NamedMechanismGet ( withName "close" 
   part ScopeGet ( withName "socket" callBehavior false )
 )
 </code></pre>
 
-<p>The <strong>NamedMessageGet</strong> message causes a named message to activate. In this case, the named-message <em>close</em> (implementation is a calculated property accessed using reflection) of that same socket is activated.</p>
+<p>The <strong>NamedMechanismGet</strong> mechanism causes a named mechanism to activate. In this case, the property <em>close</em> (implementation is a calculated property accessed using reflection) of that same socket is activated.</p>
 
-<p>And, once all of that runs we “fall-up” the message-configuration and the <strong>PartPoolDecorator</strong> message returns us to the PartPool to be used again!</p>
+<p>And, once all of that runs we “fall-up” the policy and the <strong>PartPoolDecorator</strong> mechanism returns us to the PartPool to be used again!</p>
 
 <h2 id="conclusion">Conclusion</h2>
 
-<p>Message-oriented programming kicks ass. In 50 lines of code, we are able to create a scalable web server that is able to keep up with the big names. We haven’t even started to optimize our underlying technology and it was written in C#. Imagine if it was implemented in something like <a href="http://www.rust-lang.org/">Rust</a> (aww please add calculated properties rust people!).</p>
+<p>Mechanism-oriented programming kicks ass. In 50 lines of code, we are able to create a scalable web server that is able to keep up with the big names. We haven’t even started to optimize our underlying technology and it was written in C#. Imagine if it was implemented in something like <a href="http://www.rust-lang.org/">Rust</a> (aww please add calculated properties rust people!).</p>
 
-<p>We have a data-structure of messages that is also the behavior of the program. That makes the message-configuration very easily re-used in a multi-threaded environment. We aren’t allocating memory all the time and we are able to activate message-configurations without the overhead of locking and worrying about re-entrance. We get the speed of “single threaded” programming in a multi-threaded environment. Woo hoo!</p>
+<p>We have a data-structure of mechanisms that is also the behavior of the program. That makes the policy very easily re-used in a multi-threaded environment. We aren’t allocating memory all the time and we are able to activate policys without the overhead of locking and worrying about re-entrance. We get the speed of “single threaded” programming in a multi-threaded environment. Woo hoo!</p>
 
-<p>If you find our work on message-oriented programming interesting, please follow us <a href="http://www.twitter.com/interfaceVision">@interfaceVision</a> and/or <a href="http://www.twitter.com/erichosick">@erichosick</a>.</p>
+<p>If you find our work on mechanism-oriented programming interesting, please follow us <a href="http://www.twitter.com/interfaceVision">@interfaceVision</a> and/or <a href="http://www.twitter.com/erichosick">@erichosick</a>.</p>
 
       <hr>
       <div class="pagination pagination-centered">

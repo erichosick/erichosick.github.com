@@ -166,7 +166,7 @@ Fundamental parts of the language are key words (loop, between, forEach, withEac
       to = new num {val = 8},
       by = new num {val = 2},
       do = new writeToCon {
-        text: str { val = "Hello world!" },
+        text = str { val = "Hello world!" },
       },
     };
 
