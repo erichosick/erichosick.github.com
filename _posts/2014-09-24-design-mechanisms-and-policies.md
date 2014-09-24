@@ -12,11 +12,11 @@ author_twitter: erichosick
 
 Software engineers strive to separate the what (policy) from the how (mechanism) for reasons like [code re-use](https://en.wikipedia.org/wiki/Code_reuse), [maintainability](https://en.wikipedia.org/wiki/Maintainability), [modularity](https://en.wikipedia.org/wiki/Modular_programming) and [separation of concerns](https://en.wikipedia.org/wiki/Separation_of_concerns).
 
-The design decisions on when to use policies instead of mechanisms is often ambiguous. We propose a mechanism centric [programming paradigm](https://en.wikipedia.org/wiki/Programming_paradigm) to provide a clear distinction of when to use mechanism and when to use policy.
+We propose a mechanism centric [programming paradigm](https://en.wikipedia.org/wiki/Programming_paradigm) to help engineers create better software frameworks.
 
-## What are Mechanisms
+## What are Mechanisms?
 
-A mechanism is "the how" and covers everything from language syntax to operating system features like:
+A mechanism is "the how". Our mechanisms cover everything from language syntax to operating system features like:
 
 * [language syntax](https://en.wikipedia.org/wiki/Syntax_%28programming_languages%29) mechanisms
   * loops (while, doWhile, for, forEach, etc.)
@@ -87,34 +87,60 @@ in C#:
       }
     }
 
-## What are Policies
+## What are Policies?
 
 A policy is "the what" defined by using mechanisms. A policy is your program or application. Policies are fully decoupled from mechanism implementation.
 
 ### Defining Policies
 
-An example policy using an addition and number mechanism
+An example policy using a add, fieldGet and fieldSet mechanisms.
 
 in Javascript:
 
-    var mech = add({
-      left: num(4),
-      right: num(8)
+    var mech = fieldSet ({
+      form: "calc",
+      field: "result",
+      source: add({
+        left: fieldGet({
+          form: "calc",
+          field: "left"
+        }),
+        right: fieldGet({
+          form: "calc",
+          field: "right"
+        })
+      })
     });
     
 in [SipCoffee]({% post_url 2013-12-19-design-composition-based-language %}):
 
-    add (
-      left 4
-      right 8
+    fieldSet (
+      form "calc"
+      field "result"
+      source add (
+        left fieldGet (
+          form "calc"
+          field "left"
+        )
+        right fieldGet (
+          form "calc"
+          field "right"
+        )
+      )
     )
 
 in C#:
 
-    var mech = new add {
-      left = new num { val = 4 },
-      right = new num { val = 8 }
+    var mech = new fieldSet {
+      form = "calc",
+      field = "result",
+      source = new add {
+        left = new fieldGet { form = "calc", field = "left" },
+        right = new fieldGet { form = "calc", field = "right" }
+      },
     };
+    
+These policies add two values entered on a form and place the result in a form field called "result".
 
 ## Further Reading
 
@@ -123,6 +149,52 @@ Some readings on separation of mechanism and policy:
 * [Stackoverflow - Policy and Mechanisms](https://stackoverflow.com/questions/4784500/policy-and-mechanism)
 * [Wikipedia - Separation of Mechanism and Policy](https://en.wikipedia.org/wiki/Separation_of_mechanism_and_policy)
 * [Policy-vs-Mechanism](https://sites.google.com/site/mylokesh/policyvsmechanism)
+
+
+## When do we Create New Mechanisms?
+
+In our programming paradigm, all programs and applications are implemented using policies.
+
+So, we ask ourselves the question:
+
+> Can we, efficiently, implement our policy using available mechanisms?
+
+If the answer is yes, then don't create any new mechanisms.
+
+If the answer is no, then most likely the policy can't be defined because the mechanisms required don't exist or they aren't efficient enough for the problem domain (the software framework is lacking).
+
+### Why Consider Efficiency?
+
+To quickly make the point on why efficiency is important, let's focus on problems that could be solved using a [turing machine](https://en.wikipedia.org/wiki/Turing_machine).
+
+All [turing complete](https://en.wikipedia.org/wiki/Turing_completeness) problems could be solved by creating policies using only those mechanisms that make up a turing machine (example mechanisms being states, tables, alphabets, leftShift and rightShift).
+
+However, on current day architectures, these mechanisms could result in policies with unsatisfactory algorithm execution times.
+
+If a policy was taking too long to run, it's time to reconsider the mechanisms being used and/or consider implementing new mechanisms better suited for the problem space.
+
+## Why use a Trivial Policy Example?
+
+Things (mechanisms) have an almost unlimited number of usages.
+
+Take apples for example. We could:
+
+* eat them raw
+* use them to grow a tree
+* turn them into apple sauce
+* turn them into an apple pie
+* use them in experiments
+* burn them
+* create [dried apple dolls](http://civilwartalk.com/threads/dried-apple-dolls.91125/)
+* use one to play catch
+
+The decision on what we want to do, the policy, with apples is never trivial when we have an unlimited list of policies to choose from.
+
+The ability to make the decision to use add in a policy is only possible because of years of education, an understanding of the problem space, working with customers, mocking out solutions and coming up with unit tests.
+
+Only after all that work are we able to define what (the policy) we want to do with add (the mechanism).
+
+A line of code is never trivial.
 
 ## Mechanisms -vs- Parameterized Sub-Routines
 
@@ -149,7 +221,7 @@ Consider an add mechanism (pseudo-code):
       }
     }
 
-In this case, data is "pulled" from the left and right mechanisms by invoking those mechanism (go) on left and right.
+In this case, data is "pulled" from the left and right mechanisms by invoking those mechanisms (go) on left and right.
 
 Further examples using real languages are provided in the post [C# and Homoiconicity]({% post_url 2014-09-21-design-csharp-and-homoiconicity %}) and [Javascript and Homoiconicity]({% post_url 2014-09-18-design-javascript-and-homoiconicity %}).
 

@@ -121,11 +121,11 @@
 
 <p>Software engineers strive to separate the what (policy) from the how (mechanism) for reasons like <a href="https://en.wikipedia.org/wiki/Code_reuse">code re-use</a>, <a href="https://en.wikipedia.org/wiki/Maintainability">maintainability</a>, <a href="https://en.wikipedia.org/wiki/Modular_programming">modularity</a> and <a href="https://en.wikipedia.org/wiki/Separation_of_concerns">separation of concerns</a>.</p>
 
-<p>The design decisions on when to use policies instead of mechanisms is often ambiguous. We propose a mechanism centric <a href="https://en.wikipedia.org/wiki/Programming_paradigm">programming paradigm</a> to provide a clear distinction of when to use mechanism and when to use policy.</p>
+<p>We propose a mechanism centric <a href="https://en.wikipedia.org/wiki/Programming_paradigm">programming paradigm</a> to help engineers create better software frameworks.</p>
 
-<h2 id="what-are-mechanisms">What are Mechanisms</h2>
+<h2 id="what-are-mechanisms">What are Mechanisms?</h2>
 
-<p>A mechanism is “the how” and covers everything from language syntax to operating system features like:</p>
+<p>A mechanism is “the how”. Our mechanisms cover everything from language syntax to operating system features like:</p>
 
 <ul>
   <li><a href="https://en.wikipedia.org/wiki/Syntax_%28programming_languages%29">language syntax</a> mechanisms
@@ -220,37 +220,63 @@ function arr(d) { var f = new ArrF(); f.d = d; return f; };
 }
 </code></pre>
 
-<h2 id="what-are-policies">What are Policies</h2>
+<h2 id="what-are-policies">What are Policies?</h2>
 
 <p>A policy is “the what” defined by using mechanisms. A policy is your program or application. Policies are fully decoupled from mechanism implementation.</p>
 
 <h3 id="defining-policies">Defining Policies</h3>
 
-<p>An example policy using an addition and number mechanism</p>
+<p>An example policy using a add, fieldGet and fieldSet mechanisms.</p>
 
 <p>in Javascript:</p>
 
-<pre><code>var mech = add({
-  left: num(4),
-  right: num(8)
+<pre><code>var mech = fieldSet ({
+  form: "calc",
+  field: "result",
+  source: add({
+    left: fieldGet({
+      form: "calc",
+      field: "left"
+    }),
+    right: fieldGet({
+      form: "calc",
+      field: "right"
+    })
+  })
 });
 </code></pre>
 
 <p>in <a href="/design/design-composition-based-language">SipCoffee</a>:</p>
 
-<pre><code>add (
-  left 4
-  right 8
+<pre><code>fieldSet (
+  form "calc"
+  field "result"
+  source add (
+    left fieldGet (
+      form "calc"
+      field "left"
+    )
+    right fieldGet (
+      form "calc"
+      field "right"
+    )
+  )
 )
 </code></pre>
 
 <p>in C#:</p>
 
-<pre><code>var mech = new add {
-  left = new num { val = 4 },
-  right = new num { val = 8 }
+<pre><code>var mech = new fieldSet {
+  form = "calc",
+  field = "result",
+  source = new add {
+    left = new fieldGet { form = "calc", field = "left" },
+    right = new fieldGet { form = "calc", field = "right" }
+  },
 };
 </code></pre>
+
+<p>These policies add two values entered on a form and place the result in a form field called “result”.</p>
 
 <h2 id="further-reading">Further Reading</h2>
 
@@ -261,6 +287,55 @@ function arr(d) { var f = new ArrF(); f.d = d; return f; };
   <li><a href="https://en.wikipedia.org/wiki/Separation_of_mechanism_and_policy">Wikipedia - Separation of Mechanism and Policy</a></li>
   <li><a href="https://sites.google.com/site/mylokesh/policyvsmechanism">Policy-vs-Mechanism</a></li>
 </ul>
+
+<h2 id="when-do-we-create-new-mechanisms">When do we Create New Mechanisms?</h2>
+
+<p>In our programming paradigm, all programs and applications are implemented using policies.</p>
+
+<p>So, we ask ourselves the question:</p>
+
+<blockquote>
+  <p>Can we, efficiently, implement our policy using available mechanisms?</p>
+</blockquote>
+
+<p>If the answer is yes, then don’t create any new mechanisms.</p>
+
+<p>If the answer is no, then most likely the policy can’t be defined because the mechanisms required don’t exist or they aren’t efficient enough for the problem domain (the software framework is lacking).</p>
+
+<h3 id="why-consider-efficiency">Why Consider Efficiency?</h3>
+
+<p>To quickly make the point on why efficiency is important, let’s focus on problems that could be solved using a <a href="https://en.wikipedia.org/wiki/Turing_machine">turing machine</a>.</p>
+
+<p>All <a href="https://en.wikipedia.org/wiki/Turing_completeness">turing complete</a> problems could be solved by creating policies using only those mechanisms that make up a turing machine (example mechanisms being states, tables, alphabets, leftShift and rightShift).</p>
+
+<p>However, on current day architectures, these mechanisms could result in policies with unsatisfactory algorithm execution times.</p>
+
+<p>If a policy was taking too long to run, it’s time to reconsider the mechanisms being used and/or consider implementing new mechanisms better suited for the problem space.</p>
+
+<h2 id="why-use-a-trivial-policy-example">Why use a Trivial Policy Example?</h2>
+
+<p>Things (mechanisms) have an almost unlimited number of usages.</p>
+
+<p>Take apples for example. We could:</p>
+
+<ul>
+  <li>eat them raw</li>
+  <li>use them to grow a tree</li>
+  <li>turn them into apple sauce</li>
+  <li>turn them into an apple pie</li>
+  <li>use them in experiments</li>
+  <li>burn them</li>
+  <li>create <a href="http://civilwartalk.com/threads/dried-apple-dolls.91125/">dried apple dolls</a></li>
+  <li>use one to play catch</li>
+</ul>
+
+<p>The decision on what we want to do, the policy, with apples is never trivial when we have an unlimited list of policies to choose from.</p>
+
+<p>The ability to make the decision to use add in a policy is only possible because of years of education, an understanding of the problem space, working with customers, mocking out solutions and coming up with unit tests.</p>
+
+<p>Only after all that work are we able to define what (the policy) we want to do with add (the mechanism).</p>
+
+<p>A line of code is never trivial.</p>
 
 <h2 id="mechanisms--vs--parameterized-sub-routines">Mechanisms -vs- Parameterized Sub-Routines</h2>
 
@@ -289,7 +364,7 @@ function arr(d) { var f = new ArrF(); f.d = d; return f; };
 }
 </code></pre>
 
-<p>In this case, data is “pulled” from the left and right mechanisms by invoking those mechanism (go) on left and right.</p>
+<p>In this case, data is “pulled” from the left and right mechanisms by invoking those mechanisms (go) on left and right.</p>
 
 <p>Further examples using real languages are provided in the post <a href="/design/design-csharp-and-homoiconicity">C# and Homoiconicity</a> and <a href="/design/design-javascript-and-homoiconicity">Javascript and Homoiconicity</a>.</p>
 

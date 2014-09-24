@@ -4,7 +4,7 @@
  <title>Eric Hosick</title>
  <link href="http://erichosick.github.com/atom.xml" rel="self"/>
  <link href="http://erichosick.github.com"/>
- <updated>2014-09-22T22:57:42-07:00</updated>
+ <updated>2014-09-23T16:39:54-07:00</updated>
  <id>http://erichosick.github.com</id>
  <author>
    <name>Eric Hosick</name>
@@ -21,11 +21,11 @@
 
 &lt;p&gt;Software engineers strive to separate the what (policy) from the how (mechanism) for reasons like &lt;a href=&quot;https://en.wikipedia.org/wiki/Code_reuse&quot;&gt;code re-use&lt;/a&gt;, &lt;a href=&quot;https://en.wikipedia.org/wiki/Maintainability&quot;&gt;maintainability&lt;/a&gt;, &lt;a href=&quot;https://en.wikipedia.org/wiki/Modular_programming&quot;&gt;modularity&lt;/a&gt; and &lt;a href=&quot;https://en.wikipedia.org/wiki/Separation_of_concerns&quot;&gt;separation of concerns&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;The design decisions on when to use policies instead of mechanisms is often ambiguous. We propose a mechanism centric &lt;a href=&quot;https://en.wikipedia.org/wiki/Programming_paradigm&quot;&gt;programming paradigm&lt;/a&gt; to provide a clear distinction of when to use mechanism and when to use policy.&lt;/p&gt;
+&lt;p&gt;We propose a mechanism centric &lt;a href=&quot;https://en.wikipedia.org/wiki/Programming_paradigm&quot;&gt;programming paradigm&lt;/a&gt; to help engineers create better software frameworks.&lt;/p&gt;
 
-&lt;h2 id=&quot;what-are-mechanisms&quot;&gt;What are Mechanisms&lt;/h2&gt;
+&lt;h2 id=&quot;what-are-mechanisms&quot;&gt;What are Mechanisms?&lt;/h2&gt;
 
-&lt;p&gt;A mechanism is “the how” and covers everything from language syntax to operating system features like:&lt;/p&gt;
+&lt;p&gt;A mechanism is “the how”. Our mechanisms cover everything from language syntax to operating system features like:&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Syntax_%28programming_languages%29&quot;&gt;language syntax&lt;/a&gt; mechanisms
@@ -120,37 +120,63 @@ function arr(d) { var f = new ArrF(); f.d = d; return f; };
 }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h2 id=&quot;what-are-policies&quot;&gt;What are Policies&lt;/h2&gt;
+&lt;h2 id=&quot;what-are-policies&quot;&gt;What are Policies?&lt;/h2&gt;
 
 &lt;p&gt;A policy is “the what” defined by using mechanisms. A policy is your program or application. Policies are fully decoupled from mechanism implementation.&lt;/p&gt;
 
 &lt;h3 id=&quot;defining-policies&quot;&gt;Defining Policies&lt;/h3&gt;
 
-&lt;p&gt;An example policy using an addition and number mechanism&lt;/p&gt;
+&lt;p&gt;An example policy using a add, fieldGet and fieldSet mechanisms.&lt;/p&gt;
 
 &lt;p&gt;in Javascript:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;var mech = add({
-  left: num(4),
-  right: num(8)
+&lt;pre&gt;&lt;code&gt;var mech = fieldSet ({
+  form: &quot;calc&quot;,
+  field: &quot;result&quot;,
+  source: add({
+    left: fieldGet({
+      form: &quot;calc&quot;,
+      field: &quot;left&quot;
+    }),
+    right: fieldGet({
+      form: &quot;calc&quot;,
+      field: &quot;right&quot;
+    })
+  })
 });
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;in &lt;a href=&quot;/design/design-composition-based-language&quot;&gt;SipCoffee&lt;/a&gt;:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;add (
-  left 4
-  right 8
+&lt;pre&gt;&lt;code&gt;fieldSet (
+  form &quot;calc&quot;
+  field &quot;result&quot;
+  source add (
+    left fieldGet (
+      form &quot;calc&quot;
+      field &quot;left&quot;
+    )
+    right fieldGet (
+      form &quot;calc&quot;
+      field &quot;right&quot;
+    )
+  )
 )
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;in C#:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;var mech = new add {
-  left = new num { val = 4 },
-  right = new num { val = 8 }
+&lt;pre&gt;&lt;code&gt;var mech = new fieldSet {
+  form = &quot;calc&quot;,
+  field = &quot;result&quot;,
+  source = new add {
+    left = new fieldGet { form = &quot;calc&quot;, field = &quot;left&quot; },
+    right = new fieldGet { form = &quot;calc&quot;, field = &quot;right&quot; }
+  },
 };
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;These policies add two values entered on a form and place the result in a form field called “result”.&lt;/p&gt;
 
 &lt;h2 id=&quot;further-reading&quot;&gt;Further Reading&lt;/h2&gt;
 
@@ -161,6 +187,55 @@ function arr(d) { var f = new ArrF(); f.d = d; return f; };
   &lt;li&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Separation_of_mechanism_and_policy&quot;&gt;Wikipedia - Separation of Mechanism and Policy&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://sites.google.com/site/mylokesh/policyvsmechanism&quot;&gt;Policy-vs-Mechanism&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
+
+&lt;h2 id=&quot;when-do-we-create-new-mechanisms&quot;&gt;When do we Create New Mechanisms?&lt;/h2&gt;
+
+&lt;p&gt;In our programming paradigm, all programs and applications are implemented using policies.&lt;/p&gt;
+
+&lt;p&gt;So, we ask ourselves the question:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Can we, efficiently, implement our policy using available mechanisms?&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;If the answer is yes, then don’t create any new mechanisms.&lt;/p&gt;
+
+&lt;p&gt;If the answer is no, then most likely the policy can’t be defined because the mechanisms required don’t exist or they aren’t efficient enough for the problem domain (the software framework is lacking).&lt;/p&gt;
+
+&lt;h3 id=&quot;why-consider-efficiency&quot;&gt;Why Consider Efficiency?&lt;/h3&gt;
+
+&lt;p&gt;To quickly make the point on why efficiency is important, let’s focus on problems that could be solved using a &lt;a href=&quot;https://en.wikipedia.org/wiki/Turing_machine&quot;&gt;turing machine&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;All &lt;a href=&quot;https://en.wikipedia.org/wiki/Turing_completeness&quot;&gt;turing complete&lt;/a&gt; problems could be solved by creating policies using only those mechanisms that make up a turing machine (example mechanisms being states, tables, alphabets, leftShift and rightShift).&lt;/p&gt;
+
+&lt;p&gt;However, on current day architectures, these mechanisms could result in policies with unsatisfactory algorithm execution times.&lt;/p&gt;
+
+&lt;p&gt;If a policy was taking too long to run, it’s time to reconsider the mechanisms being used and/or consider implementing new mechanisms better suited for the problem space.&lt;/p&gt;
+
+&lt;h2 id=&quot;why-use-a-trivial-policy-example&quot;&gt;Why use a Trivial Policy Example?&lt;/h2&gt;
+
+&lt;p&gt;Things (mechanisms) have an almost unlimited number of usages.&lt;/p&gt;
+
+&lt;p&gt;Take apples for example. We could:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;eat them raw&lt;/li&gt;
+  &lt;li&gt;use them to grow a tree&lt;/li&gt;
+  &lt;li&gt;turn them into apple sauce&lt;/li&gt;
+  &lt;li&gt;turn them into an apple pie&lt;/li&gt;
+  &lt;li&gt;use them in experiments&lt;/li&gt;
+  &lt;li&gt;burn them&lt;/li&gt;
+  &lt;li&gt;create &lt;a href=&quot;http://civilwartalk.com/threads/dried-apple-dolls.91125/&quot;&gt;dried apple dolls&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;use one to play catch&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The decision on what we want to do, the policy, with apples is never trivial when we have an unlimited list of policies to choose from.&lt;/p&gt;
+
+&lt;p&gt;The ability to make the decision to use add in a policy is only possible because of years of education, an understanding of the problem space, working with customers, mocking out solutions and coming up with unit tests.&lt;/p&gt;
+
+&lt;p&gt;Only after all that work are we able to define what (the policy) we want to do with add (the mechanism).&lt;/p&gt;
+
+&lt;p&gt;A line of code is never trivial.&lt;/p&gt;
 
 &lt;h2 id=&quot;mechanisms--vs--parameterized-sub-routines&quot;&gt;Mechanisms -vs- Parameterized Sub-Routines&lt;/h2&gt;
 
@@ -189,7 +264,7 @@ function arr(d) { var f = new ArrF(); f.d = d; return f; };
 }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;In this case, data is “pulled” from the left and right mechanisms by invoking those mechanism (go) on left and right.&lt;/p&gt;
+&lt;p&gt;In this case, data is “pulled” from the left and right mechanisms by invoking those mechanisms (go) on left and right.&lt;/p&gt;
 
 &lt;p&gt;Further examples using real languages are provided in the post &lt;a href=&quot;/design/design-csharp-and-homoiconicity&quot;&gt;C# and Homoiconicity&lt;/a&gt; and &lt;a href=&quot;/design/design-javascript-and-homoiconicity&quot;&gt;Javascript and Homoiconicity&lt;/a&gt;.&lt;/p&gt;
 
