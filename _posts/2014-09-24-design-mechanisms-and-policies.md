@@ -13,7 +13,7 @@ author_twitter: erichosick
 
 ## Introduction
 
-Please visit the [jsVision](http://www.github.com/jsVision) gitub repository to checkout and play with mechanisms.
+Please visit the [jsVision](https://github.com/erichosick/jsVision) gitub repository to checkout and play with mechanisms.
 
 A working example (requires latest browsers):
 
@@ -118,7 +118,7 @@ Mechanisms for this post are defined in:
 
 * [Core Mechanisms](/assets/js/mCore.js)
 * [Web Mechanisms](/assets/js/mWeb.js)
-* [Github Repository](http://www.github.com/jsVision) (with LOTS of tests)
+* [Github Repository](https://github.com/erichosick/jsVision) (with LOTS of tests)
 
 in C#:
 
