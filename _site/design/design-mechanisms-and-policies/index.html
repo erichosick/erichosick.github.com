@@ -127,7 +127,7 @@
 
 <p>Please visit the <a href="https://github.com/erichosick/jsVision">jsVision</a> gitub repository to checkout and play with mechanisms.</p>
 
-<p>A working example (requires latest browsers):</p>
+<p>A working example (may require latest browser):</p>
 
 <form id="add">
   <input id="lft" value="5" />
@@ -136,18 +136,16 @@
   =
   <input id="res" value="" />
   <input type="button" value="calc" onclick="
-  M.propSet({
-    destProp: &quot;value&quot;,
-    dest: M.getElemById(&quot;res&quot;),
-    src: M.add(
-       M.propGet( &quot;value&quot;, M.getElemById(&quot;lft&quot;) ),
-       M.propGet( &quot;value&quot;, M.getElemById(&quot;rgh&quot;) )
-    )
-  }).go;
+  M.propSet(&quot;value&quot;, M.e$(&quot;res&quot;),
+    M.add( M.p$( &quot;value&quot;, M.e$(&quot;lft&quot;) ), M.p$( &quot;value&quot;, M.e$(&quot;rgh&quot;) ) )
+  ).go;
 " />
 </form>
 
-<pre><code>M.propSet( "value", M.getElemById( "res" ),
+<pre><code>// The policy invoked when calc is pressed.
+// Try copying and pasting the code in your browser console.
+
+M.propSet( "value", M.getElemById( "res" ),
   M.add(
     M.propGet( "value", M.getElemById( "lft" ) ),
     M.propGet( "value", M.getElemById( "rgh" ) )
@@ -155,11 +153,11 @@
 ).go;
 </code></pre>
 
-<h5 id="the-policy-ran-when-calc-is-pressed-">(the policy ran when calc is pressed )</h5>
-
 <p>Software engineers strive to separate the what (policy) from the how (mechanism) for reasons like <a href="https://en.wikipedia.org/wiki/Code_reuse">code re-use</a>, <a href="https://en.wikipedia.org/wiki/Maintainability">maintainability</a>, <a href="https://en.wikipedia.org/wiki/Modular_programming">modularity</a> and <a href="https://en.wikipedia.org/wiki/Separation_of_concerns">separation of concerns</a>.</p>
 
 <p>We propose a mechanism centric <a href="https://en.wikipedia.org/wiki/Programming_paradigm">programming paradigm</a> to help engineers create software frameworks which are easy to use.</p>
+
+<p>Mechanisms help framework users focus on their business solutions and not the framework.</p>
 
 <h2 id="what-are-mechanisms">What are Mechanisms?</h2>
 
@@ -229,12 +227,12 @@
           <li><a href="http://blaag.haard.se/What-s-the-point-of-properties-in-Python/">Python</a></li>
         </ul>
       </li>
-      <li>For performance purposes, invocation points can be defined for each primitive data-type in any given language.</li>
+      <li>Optionally, invocation points can be defined for primitive data-type in any given language.</li>
     </ul>
   </li>
 </ul>
 
-<p>A single invocation point means the behavioral interface to a mechanism is the same for all mechanisms. You can think of it as playing a game of <a href="https://en.wikipedia.org/wiki/Dominoes">dominoes</a> where every tile has the exact same number of spots.</p>
+<p>A single invocation point means the behavioral interface of <strong>all</strong> mechanisms (algorithms) is the same. You can think of it as playing a game of <a href="https://en.wikipedia.org/wiki/Dominoes">dominoes</a> where every tile has the exact same number of spots.</p>
 
 <p class="featurette pagination-centered">
     <img class="featurette-image img-polaroid" src="/assets/img/posts/mechanisms_domino_interface.png" />
@@ -253,14 +251,10 @@ AddF.prototype = Object.create(DualArgF.prototype, {
   goNum: { get: function() { return this._l.goNum + this._r.goNum; } },
   goStr: { get: function() { return "(" + this._l.goStr + " + " + this._r.goStr + ")"; } }
 });
-function add(d) {
+function add(left,right) {
   var f = Object.create(AddF.prototype);
-  if ( undefined !== right ) {
-     f.l = left;
-     f.r = right;
-  } else {
-     f.d = left;
-  }
+  f.l = left;
+  f.r = right;
   return f;
 };
 </code></pre>
@@ -292,15 +286,16 @@ function add(d) {
 
 <h2 id="what-are-policies">What are Policies?</h2>
 
-<p>A policy is “the what” defined by using mechanisms. A policy is your program or application. Policies are fully decoupled from mechanism implementation.</p>
+<p>A policy is “the what” defined by using mechanisms. A policy is the program or application. Policies are fully decoupled from mechanism implementation.</p>
 
 <h3 id="defining-policies">Defining Policies</h3>
 
-<p>An example policy using add, propGet, propSet and getElemById mechanisms.</p>
+<p>An example policy using add, propGet (also p$), propSet and getElemById (also e$) mechanisms.</p>
 
 <p>in Javascript (function-ish)</p>
 
-<pre><code>M.propSet( "value", M.getElemById( "result" ),
+<pre><code>// we are leaning towards this syntax
+M.propSet( "value", M.getElemById( "result" ),
   M.add(
     M.propGet( "value", M.getElemById( "left" ) ),
     M.propGet( "value", M.getElemById( "right" ) )
@@ -327,22 +322,22 @@ function add(d) {
 </code></pre>
 
 <form id="add">
-  <input id="left" value="5" />
+  <input id="left" value="17" />
   +
-  <input id="right" value="-2" />
+  <input id="right" value="-5" />
   =
   <input id="result" value="" />
   <input type="button" value="calc" onclick="
   M.propSet({
-    dest: M.getElemById(&quot;result&quot;),
+    dest: M.e$(&quot;result&quot;),
     destProp: &quot;value&quot;,
     src: M.add({
       l: M.propGet({
-        item: M.getElemById(&quot;left&quot;),
+        item: M.e$(&quot;left&quot;),
         prop: &quot;value&quot;
       }),
       r: M.propGet({
-        item: M.getElemById(&quot;right&quot;),
+        item: M.e$(&quot;right&quot;),
         prop: &quot;value&quot;
       })
     })
@@ -371,8 +366,8 @@ function add(d) {
 <p>in C#:</p>
 
 <pre><code>new propSet {
-  dest = new getElemById { id = "result "},
   destProp = "result",
+  dest = new getElemById { id = "result "},
   src = new add {
     l = new propGet {
       item = new getElemById { id = "left"},
@@ -386,7 +381,7 @@ function add(d) {
 };
 </code></pre>
 
-<p>Your probably noticed already that policies can be easily converted to different languages.</p>
+<p>Your probably noticed already that policies can be easily converted between different languages.</p>
 
 <h2 id="further-reading">Further Reading</h2>
 
@@ -415,9 +410,9 @@ function add(d) {
 <ul>
   <li>the policy can’t be defined because the mechanisms required don’t exist.</li>
   <li>the existing mechanisms aren’t efficient enough for the problem domain (the software framework is lacking).</li>
-  <li>there are common policy configurations and policies would look better if we created a single mechanism out of a policy configuration.
+  <li>there are common policies that would look better if we created a single mechanism out of the policy.
     <ul>
-      <li>In the above examples, we access the value property of getElemById quite often. A mechanism, say called getElemValById, may be a good addition.</li>
+      <li>In the examples, we access a property of a DOM element quite often using two mechanisms.</li>
     </ul>
   </li>
 </ul>
@@ -426,7 +421,7 @@ function add(d) {
 
 <h3 id="why-consider-efficiency">Why Consider Efficiency?</h3>
 
-<p>To quickly make the point on why efficiency is important, let’s focus on problems that could be solved using a <a href="https://en.wikipedia.org/wiki/Turing_machine">turing machine</a>.</p>
+<p>Let’s consider only problems that could be solved using a <a href="https://en.wikipedia.org/wiki/Turing_machine">turing machine</a>.</p>
 
 <p>All <a href="https://en.wikipedia.org/wiki/Turing_completeness">turing complete</a> problems could be solved by creating policies using only those mechanisms that make up a turing machine (example mechanisms being states, tables, alphabets, leftShift and rightShift).</p>
 
@@ -454,13 +449,13 @@ function add(d) {
   <li><strong>How</strong> we do that is with purchased parts and tools (the mechanisms).</li>
 </ul>
 
-<p>The truck (assembly) is a policy.</p>
+<p>The truck is a policy.</p>
 
 <p>One domain’s mechanism is another domain’s policy.</p>
 
 <h2 id="mechanisms--vs--parameterized-sub-routines">Mechanisms -vs- (Parameterized) Sub-Routines</h2>
 
-<p>Traditionally, sub-routines have data “pushed” into them via parameters, though sub-routines can “pull” from scoped data, and then run the algorithm contained in the sub-routine.</p>
+<p>Sub-routines have data “pushed” into them via parameters (though sub-routines can “pull” from scoped data).</p>
 
 <p>Mechanisms never have data “pushed” to them. Instead, mechanisms “pull” data into the mechanism for use by the algorithm.</p>
 
@@ -512,41 +507,43 @@ mechanism result = addMech.go; // We can initialize addMech somewhere else
 
 <p>Go into a console (For example: View -&gt; Developer -&gt; JavaScript Console in Chrome).</p>
 
-<pre><code>// NOTE: Be careful NOT to hook an add policy to itself.
+<pre><code>// NOTE: Be careful NOT to hook a policy to itself.
 
 // Create addA policy
-$ var addA = M.add({l:4,r:2});
+$ var addA = M.add( 4, 2 );
 $ addA.go; // 6
 $ addA.goStr; // (4 + 2)
+$ addA.goBool; // true
+$ addA.goArr; // [6]
 
 // Create addB policy
-$ var addB = M.add({l:3,r:-1});
+$ var addB = M.add( 3, -1 );
 $ addB.go; // 2
 $ addB.goStr; // (3 + -1)
 
 // Create addC policy
-$ var addC = M.add({l:addA,r:addB});
+$ var addC = M.add( addA, addB );
 $ addC.go; // 8
 $ addC.goStr; // (4 + 2) + (3 + -1))
 
-// Create form access policy
-$ var frmL = M.propGet({item: M.getElemById("left"), prop: "value" });
+// Create a form-access policy
+$ var frmL = M.p$( "value", M.e$("left") );
 $ frmL.go; // based on form data
 $ frmL.goNum;
 $ frmL.goStr;    
 
 // Create addD policy
-$ var addD = M.add({l:addA,r:frmL});
+$ var addD = M.add( M.add( 4, 2 ), M.p$( "value", M.e$("left") ) );
 $ addD.go;  // based on form data
 $ addD.goNum;
-$ addD.goStr;    
+$ addD.goStr;
+$ addD.goBool;
+$ addD.goArr;
 </code></pre>
 
 <h2 id="conclusion">Conclusion</h2>
 
-<p>Mechanisms and policies are a way of helping programmers separate the how from the why. Our software frameworks only contain the how (mechanisms) and <strong>never</strong> the why (policies).</p>
-
-<p>This means our programs, the policies, are 100% decoupled from the framework. This makes it easier to port our programs (policies) to different programming languages, operating systems and future languages.</p>
+<p>Mechanisms and policies are a way of helping programmers separate the how from the why. Software frameworks only contain the how (mechanisms) and <strong>never</strong> the why (policies).</p>
 
 <p>If you find our work on mechanisms interesting, please follow us <a href="http://www.twitter.com/interfaceVision">@interfaceVision</a> and/or <a href="http://www.twitter.com/erichosick">@erichosick</a>.</p>
 

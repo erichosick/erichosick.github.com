@@ -55,7 +55,7 @@ PropGetF.prototype = Object.create(MechF.prototype, {
    goArr: { enumerable: false, get: function() { return [this.go]; } },
    goBool: { enumerable: false, get: function() { return Boolean(this.go); }}
 });
-module.exports.propGet = function(prop, item, itemGo) {
+function propGet(prop, item, itemGo) {
    var f = Object.create(PropGetF.prototype);
    if ( undefined !== item ) {
       f.prop = prop;
@@ -66,28 +66,42 @@ module.exports.propGet = function(prop, item, itemGo) {
    }
    return f;
 };
+module.exports.propGet = propGet;
+module.exports.p$ = propGet;
 
 function PropSetF(){};
 PropSetF.prototype = Object.create(MechF.prototype, {
    d: { enumerable: false,
       set: function(d) {
          if (isDef(d)) {
-            this._itemGo = isDef(d.itemGo) ? d.itemGo : true;
-            this._destProp = isDef(d.destProp) ? d.destProp : "";
-            this._src = d.src;
-            this._dest = d.dest;
+            this.itemGo = d.itemGo;
+            this.destProp = d.destProp;
+            this.src = d.src;
+            this.dest = d.dest;
          } else {
-            this._itemGo = true;
-            this._destProp = "";
-            this._dest = null;
-            this._src = null;
+            this.itemGo = true;
+            this.destProp = "";
+            this.dest = null;
+            this.src = null;
          }
       }
    },
-   itemGo: { enumerable: false, get: function() { return this._itemGo; } },
-   destProp: { enumerable: false, get: function() {  return this._destProp; } },
-   src: { enumerable: false, get: function() { return this._src.go; } },
-   dest: {enumerable: false, get: function() { return this.itemGo ? this._dest.go : this._dest; } },
+   itemGo: { enumerable: false,
+      get: function() { return this._itemGo; },
+      set: function(d) { this._itemGo = isDef(d) ? d : true; }
+   },
+   destProp: { enumerable: false,
+      get: function() {  return this._destProp.isMechanism ? this._destProp.goStr : this._destProp; },
+      set: function(d) { this._destProp = isDef(d) ? d : ""; }
+   },
+   src: { enumerable: false,
+      get: function() { return this._src.isMechanism? this._src.go : this._src; },
+      set: function(d) { this._src = d; }
+   },
+   dest: { enumerable: false,
+      get: function() { return this._itemGo ? this._dest.go : this._dest; },
+      set: function(d) { this._dest = d; }
+   },
    go: { enumerable: false, get: function() {
       var s = this.src;
       var d = this.dest;
@@ -97,9 +111,16 @@ PropSetF.prototype = Object.create(MechF.prototype, {
       return s;
    }},
 });
-module.exports.propSet = function(d) {
+module.exports.propSet = function(destProp, dest, src, itemGo) {
    var f = Object.create(PropSetF.prototype);
-   f.d = d;
+   if ( undefined !== dest ) {
+      f.destProp = destProp;
+      f.dest = dest;
+      f.src = src;
+      f.itemGo = itemGo;
+   } else {
+      f.d = destProp;
+   }
    return f;
 }
 
@@ -284,118 +305,3 @@ module.exports.div = function(left,right) {
    return f;
 };
 
-
-// Something is 0, false, null, undefined, NaN ""
-
-
-// "" = 0 in javascript?
-
-
-
-
-
-
-// Utils
-
-// Console
-
-// var WriteLnF = function() {};
-// WriteLnF.prototype = {
-//   get go() {
-//      var r = this.d.text.goNum;
-//      console.log(r);
-//      return r;
-//   },
-//   get goNum() {
-//      var r = this.d.text.goNum;
-//      console.log(r);
-//      return r;
-//   },
-//   get goArr() {
-//      var r = this.d.text.goArr;
-//      console.log(r);
-//      return r;
-//   },
-//   get goStr() {
-//      var r = this.d.text.goStr;
-//      console.log(r);
-//      return r;
-//   }
-// };
-// function writeLn(d) { var f = new WriteLnF(); f.d = d; return f; };
-// 
-// module.exports.writeLn = writeLn;
-
-
-
-
-
-
-
-
-
-
-// var ArrF = function() {};
-// ArrF.prototype = {
-//   get val() { return this.d.val; },
-//   get go() { return this.d.val; },
-//   get goNum() { return this.d.val[0]; },
-//   get goArr() { return this.d.val; },
-//   get goStr() { return "[" + this.d.val.toString() +"]"; }
-// };
-// 
-// function arr(d) {
-//    var f = new ArrF();
-//    if ( !d.val ) { // num(6) used
-//       f.d.val = d;
-//    } else { // num ( { val : 6 } ) used
-//       f.d = d;
-//    }
-//    return f;
-// };
-
-// var ScopeF = function() {};
-// ScopeF.prototype = {
-// };
-// function scope(d) { var f = new ScopeF(); f.d = d; return f; };
-// 
-// var ScopeGetF = function() {};
-// ScopeGetF.prototype = {
-//    
-// };
-// function scopeGet(d) { var f = new ScopeGetF(); f.d = d; return f; };
-// 
-// var ScopeSetF = function() {};
-// ScopeSetF.prototype = {
-//    
-// };
-// function scopeSet(d) { var f = new ScopeSetF(); f.d = d; return f; };
-
-
-// module.exports.num2 = num2;
-// module.exports.arr = arr;
-// module.exports.scope = scope;
-// module.exports.scopeGet = scopeGet;
-// module.exports.scopeSet = scopeSet;
- 
-// var MulF = function() {};
-// MulF.prototype = {
-//   get go() { return this.goNum; },
-//   get goNum() { return this.d.left.goNum * this.d.right.goNum; },
-//   get goStr() { return "(" + this.d.left.goStr + " * " + this.d.right.goStr + ")"; }
-// };
-// function mul(d) { var f = new MulF(); f.d = d; return f; };
-// 
-// var DivF = function() {};
-// DivF.prototype = {
-//   get go() { return this.goNum; },
-//   get goNum() { return this.d.left.goNum / this.d.right.goNum; },
-//   get goStr() { return "(" + this.d.left.goStr + " / " + this.d.right.goStr + ")"; }
-// };
-// function div(d) { var f = new DivF(); f.d = d; return f; };
-// 
-// 
-// module.exports.add = add;
-// module.exports.sub = sub;
-// module.exports.mul = mul;
-// module.exports.div = div;

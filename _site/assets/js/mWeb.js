@@ -17,9 +17,11 @@ if ( document ) { // Check if ran in browser. Don't do anything if not ran in a 
          }
       }
    });
-   module.exports.getElemById = function(d) {
+   function getElemById(id) {
       var f = Object.create(GetElemById.prototype);
-      f.id = d;
+      f.id = id;
       return f;
    };
+   module.exports.getElemById = getElemById;
+   module.exports.e$ = getElemById;
 }
