@@ -25,21 +25,29 @@ A working example (requires latest browsers):
   <input id="res" value=""/>
   <input type="button" value="calc" onClick='
   M.propSet({
-    dest: M.getElemById("res"),
     destProp: "value",
-    src: M.add({
-      l: M.propGet({ item: M.getElemById("lft"), prop: "value" }),
-      r: M.propGet({ item: M.getElemById("rgh"), prop: "value" })
-    })
+    dest: M.getElemById("res"),
+    src: M.add(
+       M.propGet( "value", M.getElemById("lft") ),
+       M.propGet( "value", M.getElemById("rgh") )
+    )
   }).go;
 '/>
 </form>
 
-##### (be sure to inspect the calc button)
+
+    M.propSet( "value", M.getElemById( "res" ),
+      M.add(
+        M.propGet( "value", M.getElemById( "lft" ) ),
+        M.propGet( "value", M.getElemById( "rgh" ) )
+      )
+    ).go;
+
+##### (the policy ran when calc is pressed )
 
 Software engineers strive to separate the what (policy) from the how (mechanism) for reasons like [code re-use](https://en.wikipedia.org/wiki/Code_reuse), [maintainability](https://en.wikipedia.org/wiki/Maintainability), [modularity](https://en.wikipedia.org/wiki/Modular_programming) and [separation of concerns](https://en.wikipedia.org/wiki/Separation_of_concerns).
 
-We propose a mechanism centric [programming paradigm](https://en.wikipedia.org/wiki/Programming_paradigm) to help engineers create better software frameworks.
+We propose a mechanism centric [programming paradigm](https://en.wikipedia.org/wiki/Programming_paradigm) to help engineers create software frameworks which are easy to use.
 
 ## What are Mechanisms?
 
@@ -144,6 +152,15 @@ A policy is "the what" defined by using mechanisms. A policy is your program or 
 
 An example policy using add, propGet, propSet and getElemById mechanisms.
 
+in Javascript (function-ish)
+
+    M.propSet( "value", M.getElemById( "result" ),
+      M.add(
+        M.propGet( "value", M.getElemById( "left" ) ),
+        M.propGet( "value", M.getElemById( "right" ) )
+      )
+    ).go;
+
 in Javascript (object-ish):
 
     M.propSet({
@@ -160,15 +177,6 @@ in Javascript (object-ish):
         })
       })
     }).go;
-    
-in Javascript (function-ish)
-
-    M.propSet( "value", M.getElemById( "result" ),
-      M.add(
-        M.propGet( "value", M.getElemById( "left" ) ),
-        M.propGet( "value", M.getElemById( "right" ) )
-      )
-    ).go;
 
 <form id="add">
   <input id="left" value="5"/>

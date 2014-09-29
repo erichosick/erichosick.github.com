@@ -24,9 +24,9 @@ PropGetF.prototype = Object.create(MechF.prototype, {
    d: { enumerable: false,
       set: function(d) {
          if (isDef(d)) {
-            this._itemGo = isDef(d.itemGo) ? d.itemGo : true;
-            this._prop = isDef(d.prop) ? d.prop : "";
-            this._item = d.item;
+            this.itemGo = d.itemGo;
+            this.prop = d.prop;
+            this.item = d.item;
          } else {
             this._itemGo = true;
             this._prop = "";
@@ -34,9 +34,18 @@ PropGetF.prototype = Object.create(MechF.prototype, {
          }
       }
    },
-   prop: { enumerable: false, get: function() {  return this._prop.isMechanism ? this._prop.goStr : this._prop; } },
-   item: { enumerable: false, get: function() { return this._itemGo ? this._item.go : this._item; } },
-   itemGo: { enumerable: false, get: function() { return this._itemGo; } },
+   prop: { enumerable: false,
+      get: function() {  return this._prop.isMechanism ? this._prop.goStr : this._prop; },
+      set: function(d) { this._prop = isDef(d) ? d : ""; }
+   },
+   item: { enumerable: false,
+      get: function() { return this._itemGo ? this._item.go : this._item; },
+      set: function(d) { this._item = d; }
+   },
+   itemGo: { enumerable: false,
+      get: function() { return this._itemGo; },
+      set: function(d) { this._itemGo = isDef(d) ? d : true; }
+   },
    go: { enumerable: false, get: function() {
       var i = this.item;
       return isDef(i) ? i[this.prop] : undefined;
@@ -46,9 +55,15 @@ PropGetF.prototype = Object.create(MechF.prototype, {
    goArr: { enumerable: false, get: function() { return [this.go]; } },
    goBool: { enumerable: false, get: function() { return Boolean(this.go); }}
 });
-module.exports.propGet = function(d) {
+module.exports.propGet = function(prop, item, itemGo) {
    var f = Object.create(PropGetF.prototype);
-   f.d = d;
+   if ( undefined !== item ) {
+      f.prop = prop;
+      f.item = item;
+      f.itemGo = itemGo;
+   } else {
+      f.d = prop;
+   }
    return f;
 };
 
@@ -210,9 +225,14 @@ AddF.prototype = Object.create(DualArgF.prototype, {
    goNum: { get: function() { return this._l.goNum + this._r.goNum; } },
    goStr: { get: function() { return "(" + this._l.goStr + " + " + this._r.goStr + ")"; } }
 });
-module.exports.add = function(d) {
+module.exports.add = function(left,right) {
    var f = Object.create(AddF.prototype);
-   f.d = d;
+   if ( undefined !== right ) {
+      f.l = left;
+      f.r = right;
+   } else {
+      f.d = left;
+   }
    return f;
 };
 
@@ -221,9 +241,14 @@ SubF.prototype = Object.create(DualArgF.prototype, {
    goNum: { get: function() { return this._l.goNum - this._r.goNum; } },
    goStr: { get: function() { return "(" + this._l.goStr + " - " + this._r.goStr + ")"; } }
 });
-module.exports.sub = function(d) {
+module.exports.sub = function(left,right) {
    var f = Object.create(SubF.prototype);
-   f.d = d;
+   if ( undefined !== right ) {
+      f.l = left;
+      f.r = right;
+   } else {
+      f.d = left;
+   }
    return f;
 };
 
@@ -232,9 +257,14 @@ MulF.prototype = Object.create(DualArgF.prototype, {
    goNum: { get: function() { return this._l.goNum * this._r.goNum; } },
    goStr: { get: function() { return "(" + this._l.goStr + " * " + this._r.goStr + ")"; } }
 });
-module.exports.mul = function(d) {
+module.exports.mul = function(left,right) {
    var f = Object.create(MulF.prototype);
-   f.d = d;
+   if ( undefined !== right ) {
+      f.l = left;
+      f.r = right;
+   } else {
+      f.d = left;
+   }
    return f;
 };
 
@@ -243,9 +273,14 @@ DivF.prototype = Object.create(DualArgF.prototype, {
    goNum: { get: function() { return this._l.goNum / this._r.goNum; } },
    goStr: { get: function() { return "(" + this._l.goStr + " / " + this._r.goStr + ")"; } }
 });
-module.exports.div = function(d) {
+module.exports.div = function(left,right) {
    var f = Object.create(DivF.prototype);
-   f.d = d;
+   if ( undefined !== right ) {
+      f.l = left;
+      f.r = right;
+   } else {
+      f.d = left;
+   }
    return f;
 };
 

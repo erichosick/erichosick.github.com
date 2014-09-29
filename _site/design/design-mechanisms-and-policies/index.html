@@ -137,21 +137,29 @@
   <input id="res" value="" />
   <input type="button" value="calc" onclick="
   M.propSet({
-    dest: M.getElemById(&quot;res&quot;),
     destProp: &quot;value&quot;,
-    src: M.add({
-      l: M.propGet({ item: M.getElemById(&quot;lft&quot;), prop: &quot;value&quot; }),
-      r: M.propGet({ item: M.getElemById(&quot;rgh&quot;), prop: &quot;value&quot; })
-    })
+    dest: M.getElemById(&quot;res&quot;),
+    src: M.add(
+       M.propGet( &quot;value&quot;, M.getElemById(&quot;lft&quot;) ),
+       M.propGet( &quot;value&quot;, M.getElemById(&quot;rgh&quot;) )
+    )
   }).go;
 " />
 </form>
 
-<h5 id="be-sure-to-inspect-the-calc-button">(be sure to inspect the calc button)</h5>
+<pre><code>M.propSet( "value", M.getElemById( "res" ),
+  M.add(
+    M.propGet( "value", M.getElemById( "lft" ) ),
+    M.propGet( "value", M.getElemById( "rgh" ) )
+  )
+).go;
+</code></pre>
+
+<h5 id="the-policy-ran-when-calc-is-pressed-">(the policy ran when calc is pressed )</h5>
 
 <p>Software engineers strive to separate the what (policy) from the how (mechanism) for reasons like <a href="https://en.wikipedia.org/wiki/Code_reuse">code re-use</a>, <a href="https://en.wikipedia.org/wiki/Maintainability">maintainability</a>, <a href="https://en.wikipedia.org/wiki/Modular_programming">modularity</a> and <a href="https://en.wikipedia.org/wiki/Separation_of_concerns">separation of concerns</a>.</p>
 
-<p>We propose a mechanism centric <a href="https://en.wikipedia.org/wiki/Programming_paradigm">programming paradigm</a> to help engineers create better software frameworks.</p>
+<p>We propose a mechanism centric <a href="https://en.wikipedia.org/wiki/Programming_paradigm">programming paradigm</a> to help engineers create software frameworks which are easy to use.</p>
 
 <h2 id="what-are-mechanisms">What are Mechanisms?</h2>
 
@@ -285,6 +293,16 @@ function add(d) {
 
 <p>An example policy using add, propGet, propSet and getElemById mechanisms.</p>
 
+<p>in Javascript (function-ish)</p>
+
+<pre><code>M.propSet( "value", M.getElemById( "result" ),
+  M.add(
+    M.propGet( "value", M.getElemById( "left" ) ),
+    M.propGet( "value", M.getElemById( "right" ) )
+  )
+).go;
+</code></pre>
+
 <p>in Javascript (object-ish):</p>
 
 <pre><code>M.propSet({
@@ -301,16 +319,6 @@ function add(d) {
     })
   })
 }).go;
-</code></pre>
-
-<p>in Javascript (function-ish)</p>
-
-<pre><code>M.propSet( "value", M.getElemById( "result" ),
-  M.add(
-    M.propGet( "value", M.getElemById( "left" ) ),
-    M.propGet( "value", M.getElemById( "right" ) )
-  )
-).go;
 </code></pre>
 
 <form id="add">
