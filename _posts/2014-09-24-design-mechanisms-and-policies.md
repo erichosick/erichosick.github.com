@@ -118,9 +118,15 @@ An example add mechanism in Javascript with two invocation points (goNum and goS
     });
     function add(d) {
       var f = Object.create(AddF.prototype);
-      f.d = d;
+      if ( undefined !== right ) {
+         f.l = left;
+         f.r = right;
+      } else {
+         f.d = left;
+      }
       return f;
     };
+
 
 Mechanisms for this post are defined in:
 

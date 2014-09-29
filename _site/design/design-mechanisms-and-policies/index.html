@@ -255,7 +255,12 @@ AddF.prototype = Object.create(DualArgF.prototype, {
 });
 function add(d) {
   var f = Object.create(AddF.prototype);
-  f.d = d;
+  if ( undefined !== right ) {
+     f.l = left;
+     f.r = right;
+  } else {
+     f.d = left;
+  }
   return f;
 };
 </code></pre>
