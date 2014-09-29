@@ -3,7 +3,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Mechanisms as a Programming Paradigm</title>
+    <title>Mechanisms</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Mechanisms - Blurring the Distinction Between Languages, Operating Systems and Frameworks">
     <meta name="author" content="Eric Hosick">
@@ -84,6 +84,8 @@
      
     	<li><a href="/tags.html#csharp-ref">csharp <span>1</span></a></li>
      
+    	<li><a href="/tags.html#Javascript-ref">Javascript <span>2</span></a></li>
+     
     	<li><a href="/tags.html#composition-ref">composition <span>4</span></a></li>
      
     	<li><a href="/tags.html#mechanisms-ref">mechanisms <span>2</span></a></li>
@@ -106,7 +108,7 @@
   <div class="span9">
     <div class="hero-unit">
       <div class="page-header">
-        <h1>Mechanisms as a Programming Paradigm</h1>
+        <h1>Mechanisms</h1>
         <div class="row-fluid">
           <div class="span2">
             <img src="/assets/img/eric_hosick.jpg" class="img-rounded">
@@ -117,7 +119,35 @@
           </div>
         </div>
       </div>
-      <h2 id="introduction">Introduction</h2>
+      <script src="/assets/js/mCore.js"></script>
+
+<script src="/assets/js/mWeb.js"></script>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>Please visit the <a href="http://www.github.com/jsVision">jsVision</a> gitub repository to checkout and play with mechanisms.</p>
+
+<p>A working example (requires latest browsers):</p>
+
+<form id="add">
+  <input id="lft" value="5" />
+  +
+  <input id="rgh" value="-2" />
+  =
+  <input id="res" value="" />
+  <input type="button" value="calc" onclick="
+  M.propSet({
+    dest: M.getElemById(&quot;res&quot;),
+    destProp: &quot;value&quot;,
+    src: M.add({
+      l: M.propGet({ item: M.getElemById(&quot;lft&quot;), prop: &quot;value&quot; }),
+      r: M.propGet({ item: M.getElemById(&quot;rgh&quot;), prop: &quot;value&quot; })
+    })
+  }).go;
+" />
+</form>
+
+<h5 id="be-sure-to-inspect-the-calc-button">(be sure to inspect the calc button)</h5>
 
 <p>Software engineers strive to separate the what (policy) from the how (mechanism) for reasons like <a href="https://en.wikipedia.org/wiki/Code_reuse">code re-use</a>, <a href="https://en.wikipedia.org/wiki/Maintainability">maintainability</a>, <a href="https://en.wikipedia.org/wiki/Modular_programming">modularity</a> and <a href="https://en.wikipedia.org/wiki/Separation_of_concerns">separation of concerns</a>.</p>
 
@@ -125,7 +155,7 @@
 
 <h2 id="what-are-mechanisms">What are Mechanisms?</h2>
 
-<p>A mechanism is “the how”. Our mechanisms cover everything from language syntax to operating system features like:</p>
+<p>A mechanism is “the how”. Mechanisms cover everything from language syntax to operating system features like:</p>
 
 <ul>
   <li><a href="https://en.wikipedia.org/wiki/Syntax_%28programming_languages%29">language syntax</a> mechanisms
@@ -164,6 +194,12 @@
 
 <p>Mechanisms are tightly coupled to the programming language by-which they were implemented.</p>
 
+<h3 id="mechanisms-make-everything-first-class-citizens">Mechanisms Make Everything “First-Class Citizens”</h3>
+
+<p>Every mechanism is a <a href="https://en.wikipedia.org/wiki/First-class_citizen">first class citizen</a>.</p>
+
+<p>Even traditional programming statements like break or catch are first class citizens.</p>
+
 <h3 id="defining-mechanisms">Defining Mechanisms</h3>
 
 <p>A mechanism can be viewed as a fundamental data-type that also contains an algorithm:</p>
@@ -177,7 +213,15 @@
   </li>
   <li><strong>an invocation point</strong> - “go”, “makeItSo#1”, “run”
     <ul>
-      <li>For performance purposes, invocation points can be defined for each primitive data-type in any given language: especially strongly typed languages (see C# add mechanism below).</li>
+      <li>An invocation point is a calculated property
+        <ul>
+          <li><a href="http://csharp.2000things.com/tag/calculated-property/">C#</a></li>
+          <li>Javascript <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/get">get</a> and <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/set">set</a></li>
+          <li><a href="https://stackoverflow.com/questions/11716550/ruby-class-set-get">Ruby Language</a></li>
+          <li><a href="http://blaag.haard.se/What-s-the-point-of-properties-in-Python/">Python</a></li>
+        </ul>
+      </li>
+      <li>For performance purposes, invocation points can be defined for each primitive data-type in any given language.</li>
     </ul>
   </li>
 </ul>
@@ -188,34 +232,47 @@
     <img class="featurette-image img-polaroid" src="/assets/img/posts/mechanisms_domino_interface.png" />
 </p>
 
-<p>This makes it really easy to use mechanisms.</p>
+<p>This makes it really easy to use a mechanism.</p>
 
-<p>An example add mechanism in Javascript:</p>
+<h3 id="example-mechanisms">Example Mechanisms</h3>
 
-<pre><code>var ArrF = function() {};
-ArrF.prototype = {
-  get val() { return this.d; },
-  get go() { return this.d; },
-  get asNum() { return this.d[0]; },
-  get asArr() { return this.d; },
-  get asStr() { return "[" + this.d.toString() +"]"; }
+<p>Mechanisms are tightly coupled to the language they are implemented in meaning the constructs we use to implement mechanisms may not be mechanisms.</p>
+
+<p>An example add mechanism in Javascript with two invocation points (goNum and goStr):</p>
+
+<pre><code>function AddF(){};
+AddF.prototype = Object.create(DualArgF.prototype, {
+  goNum: { get: function() { return this._l.goNum + this._r.goNum; } },
+  goStr: { get: function() { return "(" + this._l.goStr + " + " + this._r.goStr + ")"; } }
+});
+function add(d) {
+  var f = Object.create(AddF.prototype);
+  f.d = d;
+  return f;
 };
-function arr(d) { var f = new ArrF(); f.d = d; return f; };
 </code></pre>
+
+<p>Mechanisms for this post are defined in:</p>
+
+<ul>
+  <li><a href="/assets/js/mCore.js">Core Mechanisms</a></li>
+  <li><a href="/assets/js/mWeb.js">Web Mechanisms</a></li>
+  <li><a href="http://www.github.com/jsVision">Github Repository</a> (with LOTS of tests)</li>
+</ul>
 
 <p>in C#:</p>
 
-<pre><code>public class add : iMech {
-  public iMech left { get; set; }
-  public iMech right { get; set; }
-  public iMech go {
-  	get { return new num { val = asNum }; }
+<pre><code>public class add : mechanism {
+  public mechanism l { get; set; }
+  public mechanism r { get; set; }
+  public mechanism go {
+  	get { return new num { v = goNum }; }
   }
-  public float asNum {
-  	get { return left.go.asNum + right.go.asNum; }
+  public float goNum {
+  	get { return l.goNum + r.goNum; }
   }
-  public string asStr {
-  	get { return string.Format ("({0} + {1})", left.asStr, right.asStr); }
+  public string goStr {
+  	get { return string.Format ("({0} + {1})", l.goStr, r.goStr); }
   }
 }
 </code></pre>
@@ -226,39 +283,63 @@ function arr(d) { var f = new ArrF(); f.d = d; return f; };
 
 <h3 id="defining-policies">Defining Policies</h3>
 
-<p>An example policy using a add, fieldGet and fieldSet mechanisms.</p>
+<p>An example policy using add, propGet, propSet and getElemById mechanisms.</p>
 
 <p>in Javascript:</p>
 
-<pre><code>var mech = fieldSet ({
-  form: "calc",
-  field: "result",
-  source: add({
-    left: fieldGet({
-      form: "calc",
-      field: "left"
+<pre><code>M.propSet({
+  dest: M.getElemById("result"),
+  destProp: "value",
+  src: M.add({
+    l: M.propGet({
+      item: M.getElemById("left"),
+      prop: "value"
     }),
-    right: fieldGet({
-      form: "calc",
-      field: "right"
+    r: M.propGet({
+      item: M.getElemById("right"),
+      prop: "value"
     })
   })
-});
+}).go;
 </code></pre>
+
+<form id="add">
+  <input id="left" value="5" />
+  +
+  <input id="right" value="-2" />
+  =
+  <input id="result" value="" />
+  <input type="button" value="calc" onclick="
+  M.propSet({
+    dest: M.getElemById(&quot;result&quot;),
+    destProp: &quot;value&quot;,
+    src: M.add({
+      l: M.propGet({
+        item: M.getElemById(&quot;left&quot;),
+        prop: &quot;value&quot;
+      }),
+      r: M.propGet({
+        item: M.getElemById(&quot;right&quot;),
+        prop: &quot;value&quot;
+      })
+    })
+  }).go;
+" />
+</form>
 
 <p>in <a href="/design/design-composition-based-language">SipCoffee</a>:</p>
 
-<pre><code>fieldSet (
-  form "calc"
-  field "result"
-  source add (
-    left fieldGet (
-      form "calc"
-      field "left"
+<pre><code>propSet (
+  destProp "value"
+  dest getElemById ( id "result")
+  src add (
+    l propGet (
+      item getElemById (id "left")
+      prop "value"
     )
-    right fieldGet (
-      form "calc"
-      field "right"
+    r propGet (
+      item getElemById (id "right")
+      prop "value"
     )
   )
 )
@@ -266,17 +347,23 @@ function arr(d) { var f = new ArrF(); f.d = d; return f; };
 
 <p>in C#:</p>
 
-<pre><code>var mech = new fieldSet {
-  form = "calc",
-  field = "result",
-  source = new add {
-    left = new fieldGet { form = "calc", field = "left" },
-    right = new fieldGet { form = "calc", field = "right" }
+<pre><code>new propSet {
+  dest = new getElemById { id = "result "},
+  destProp = "result",
+  src = new add {
+    l = new propGet {
+      item = new getElemById { id = "left"},
+      prop = "left",
+    },
+    r = new propGet {
+      item = new getElemById { id = "right"},
+      prop = "right",
+    }
   },
 };
 </code></pre>
 
-<p>These policies add two values entered on a form and place the result in a form field called “result”.</p>
+<p>Your probably noticed already that policies can be easily converted to different languages.</p>
 
 <h2 id="further-reading">Further Reading</h2>
 
@@ -290,17 +377,29 @@ function arr(d) { var f = new ArrF(); f.d = d; return f; };
 
 <h2 id="when-do-we-create-new-mechanisms">When do we Create New Mechanisms?</h2>
 
-<p>In our programming paradigm, all programs and applications are implemented using policies.</p>
+<p>All programs and applications are implemented using policies.</p>
 
 <p>So, we ask ourselves the question:</p>
 
 <blockquote>
-  <p>Can we, efficiently, implement our policy using available mechanisms?</p>
+  <p>Can we, efficiently, implement our policy (program) using available mechanisms?</p>
 </blockquote>
 
 <p>If the answer is yes, then don’t create any new mechanisms.</p>
 
-<p>If the answer is no, then most likely the policy can’t be defined because the mechanisms required don’t exist or they aren’t efficient enough for the problem domain (the software framework is lacking).</p>
+<p>If the answer is no, it is because:</p>
+
+<ul>
+  <li>the policy can’t be defined because the mechanisms required don’t exist.</li>
+  <li>the existing mechanisms aren’t efficient enough for the problem domain (the software framework is lacking).</li>
+  <li>there are common policy configurations and policies would look better if we created a single mechanism out of a policy configuration.
+    <ul>
+      <li>In the above examples, we access the value property of getElemById quite often. A mechanism, say called getElemValById, may be a good addition.</li>
+    </ul>
+  </li>
+</ul>
+
+<p>A, lofty, goal is to provide all mechanisms necessary to create any policy within a single programming-language-framework.</p>
 
 <h3 id="why-consider-efficiency">Why Consider Efficiency?</h3>
 
@@ -312,36 +411,35 @@ function arr(d) { var f = new ArrF(); f.d = d; return f; };
 
 <p>If a policy was taking too long to run, it’s time to reconsider the mechanisms being used and/or consider implementing new mechanisms better suited for the problem space.</p>
 
-<h2 id="why-use-a-trivial-policy-example">Why use a Trivial Policy Example?</h2>
+<h3 id="when-is-a-policy-a-mechanism">When Is a Policy a Mechanism</h3>
 
-<p>Things (mechanisms) have an almost unlimited number of usages.</p>
+<p>Context is important when considering if something is a policy or a mechanism.</p>
 
-<p>Take apples for example. We could:</p>
+<h4 id="a-company-that-ships-goods">A Company That Ships Goods</h4>
 
 <ul>
-  <li>eat them raw</li>
-  <li>use them to grow a tree</li>
-  <li>turn them into apple sauce</li>
-  <li>turn them into an apple pie</li>
-  <li>use them in experiments</li>
-  <li>burn them</li>
-  <li>create <a href="http://civilwartalk.com/threads/dried-apple-dolls.91125/">dried apple dolls</a></li>
-  <li>use one to play catch</li>
+  <li><strong>What</strong> we need to do is ship goods to our customers (the policy).</li>
+  <li><strong>How</strong> we do that is with a truck, some goods and directions (the mechanisms).</li>
 </ul>
 
-<p>The decision on what we want to do, the policy, with apples is never trivial when we have an unlimited list of policies to choose from.</p>
+<p>The truck is a mechanism.</p>
 
-<p>The ability to make the decision to use add in a policy is only possible because of years of education, an understanding of the problem space, working with customers, mocking out solutions and coming up with unit tests.</p>
+<h4 id="a-company-that-makes-trucks">A Company That Makes Trucks</h4>
 
-<p>Only after all that work are we able to define what (the policy) we want to do with add (the mechanism).</p>
+<ul>
+  <li><strong>What</strong> we need to do is assemble trucks (the policy).</li>
+  <li><strong>How</strong> we do that is with purchased parts and tools (the mechanisms).</li>
+</ul>
 
-<p>A line of code is never trivial.</p>
+<p>The truck (assembly) is a policy.</p>
 
-<h2 id="mechanisms--vs--parameterized-sub-routines">Mechanisms -vs- Parameterized Sub-Routines</h2>
+<p>One domain’s mechanism is another domain’s policy.</p>
 
-<p>Traditionally, sub-routines have data “pushed” into them via parameters (though sub-routines can “pull” from scoped data) and then run the algorithm contained in the sub-routine.</p>
+<h2 id="mechanisms--vs--parameterized-sub-routines">Mechanisms -vs- (Parameterized) Sub-Routines</h2>
 
-<p>Mechanisms never have data (mechanisms) “pushed” to them. Instead, mechanisms use internal data (mechanisms) to “pull” information to the algorithm.</p>
+<p>Traditionally, sub-routines have data “pushed” into them via parameters, though sub-routines can “pull” from scoped data, and then run the algorithm contained in the sub-routine.</p>
+
+<p>Mechanisms never have data “pushed” to them. Instead, mechanisms “pull” data into the mechanism for use by the algorithm.</p>
 
 <p>Consider an add sub-routine with an addition algorithm:</p>
 
@@ -350,7 +448,7 @@ function arr(d) { var f = new ArrF(); f.d = d; return f; };
 }
 </code></pre>
 
-<p>We “push” into add values contained in the left and right parameters.</p>
+<p>We “push” into the add sub-routine the values contained in the left and right parameters.</p>
 
 <p>Consider an add mechanism (pseudo-code):</p>
 
@@ -358,13 +456,13 @@ function arr(d) { var f = new ArrF(); f.d = d; return f; };
   mechanism left;
   mechanism right;
   
-  mechanism go {
-    return left.go + right.go;
+  mechanism goNum {
+    return left.goNum + right.goNum;
   }
 }
 </code></pre>
 
-<p>In this case, data is “pulled” from the left and right mechanisms by invoking those mechanisms (go) on left and right.</p>
+<p>In this case, data is “pulled” from the left and right mechanisms by invoking those mechanisms: left.goNum and right.goNum.</p>
 
 <p>Further examples using real languages are provided in the post <a href="/design/design-csharp-and-homoiconicity">C# and Homoiconicity</a> and <a href="/design/design-javascript-and-homoiconicity">Javascript and Homoiconicity</a>.</p>
 
@@ -372,40 +470,63 @@ function arr(d) { var f = new ArrF(); f.d = d; return f; };
 
 <pre><code>int x = 5;
 int y = 8;
-int result = add (x, y); // can't get around it. We must push something to add here.
+int result = add (x, y); // We must push data into add right here.
 </code></pre>
 
-<p>We can’t get around it. At some point, when we call add while programming, we have to pass parameters to add.</p>
+<p>We can’t get around it. At some point while coding, when we call add, we have to pass parameters to add at that point in the code.</p>
 
 <p>When we use add as a mechanism, we don’t need to know where the values of left and right come from before we call add’s algorithm:</p>
 
 <pre><code>// addMech defined anywhere in the program.
 // perhaps during initiation
 
-mechanism result = addMech.go;
+mechanism result = addMech.go; // We can initialize addMech somewhere else
 </code></pre>
 
 <p>In fact, we don’t even need to know what data is required by the add algorithm when we use add in our policy. The internal workings of add are <strong>fully</strong> encapsulated and hidden from the policy.</p>
 
-<h3 id="defining-mechanisms-using-functional-programming">Defining Mechanisms Using Functional Programming</h3>
+<h2 id="play-around-in-the-console">Play Around In the Console</h2>
 
-<p>So far, we’ve discussed how to create mechanisms using objects. It should also be possible to create mechanisms using functional programming which we will discuss in another post.</p>
+<p>Go into a console (For example: View -&gt; Developer -&gt; JavaScript Console in Chrome).</p>
 
-<h2 id="scope-scopeget-and-scopeset-mechanisms">Scope, scopeGet and scopeSet Mechanisms</h2>
+<pre><code>// NOTE: Be careful NOT to hook an add policy to itself.
 
-<p>I’m thinking about perhaps implementing a few of the mechanisms required for constraint systems. Any ideas?</p>
+// Create addA policy
+$ var addA = M.add({l:4,r:2});
+$ addA.go; // 6
+$ addA.goStr; // (4 + 2)
 
-<p>Either that, or implement Scope as a mechanism.</p>
+// Create addB policy
+$ var addB = M.add({l:3,r:-1});
+$ addB.go; // 2
+$ addB.goStr; // (3 + -1)
 
-<p>Let’s choose something that is very core to a language and maybe a little difficult to implement: <a href="https://en.wikipedia.org/wiki/Scope_%28computer_science%29">scoping</a>. This is just one, of many ways, to implement the scope mechanism in C#. Remember, you can roll your own scope mechanism.</p>
+// Create addC policy
+$ var addC = M.add({l:addA,r:addB});
+$ addC.go; // 8
+$ addC.goStr; // (4 + 2) + (3 + -1))
+
+// Create form access policy
+$ var frmL = M.propGet({item: M.getElemById("left"), prop: "value" });
+$ frmL.go; // based on form data
+$ frmL.goNum;
+$ frmL.goStr;    
+
+// Create addD policy
+$ var addD = M.add({l:addA,r:frmL});
+$ addD.go;  // based on form data
+$ addD.goNum;
+$ addD.goStr;    
+</code></pre>
 
 <h2 id="conclusion">Conclusion</h2>
 
-<p>Mechanisms and policies are a great way of assuring separation of the how we do something from the why. Our software frameworks only contain the how (mechanisms) and <strong>never</strong> the why (policies).</p>
+<p>Mechanisms and policies are a way of helping programmers separate the how from the why. Our software frameworks only contain the how (mechanisms) and <strong>never</strong> the why (policies).</p>
 
-<p>This means our programs, the policies, are 100% decoupled from the framework. This makes it a lot easier to port our policies to different programming languages, operating systems and future languages. Imagine if programs had always been written using policies as opposed to mixing the how and why in the framework.</p>
+<p>This means our programs, the policies, are 100% decoupled from the framework. This makes it easier to port our programs (policies) to different programming languages, operating systems and future languages.</p>
 
 <p>If you find our work on mechanisms interesting, please follow us <a href="http://www.twitter.com/interfaceVision">@interfaceVision</a> and/or <a href="http://www.twitter.com/erichosick">@erichosick</a>.</p>
+
 
       <hr>
       <div class="pagination pagination-centered">
