@@ -249,3 +249,118 @@ module.exports.div = function(d) {
    return f;
 };
 
+
+// Something is 0, false, null, undefined, NaN ""
+
+
+// "" = 0 in javascript?
+
+
+
+
+
+
+// Utils
+
+// Console
+
+// var WriteLnF = function() {};
+// WriteLnF.prototype = {
+//   get go() {
+//      var r = this.d.text.goNum;
+//      console.log(r);
+//      return r;
+//   },
+//   get goNum() {
+//      var r = this.d.text.goNum;
+//      console.log(r);
+//      return r;
+//   },
+//   get goArr() {
+//      var r = this.d.text.goArr;
+//      console.log(r);
+//      return r;
+//   },
+//   get goStr() {
+//      var r = this.d.text.goStr;
+//      console.log(r);
+//      return r;
+//   }
+// };
+// function writeLn(d) { var f = new WriteLnF(); f.d = d; return f; };
+// 
+// module.exports.writeLn = writeLn;
+
+
+
+
+
+
+
+
+
+
+// var ArrF = function() {};
+// ArrF.prototype = {
+//   get val() { return this.d.val; },
+//   get go() { return this.d.val; },
+//   get goNum() { return this.d.val[0]; },
+//   get goArr() { return this.d.val; },
+//   get goStr() { return "[" + this.d.val.toString() +"]"; }
+// };
+// 
+// function arr(d) {
+//    var f = new ArrF();
+//    if ( !d.val ) { // num(6) used
+//       f.d.val = d;
+//    } else { // num ( { val : 6 } ) used
+//       f.d = d;
+//    }
+//    return f;
+// };
+
+// var ScopeF = function() {};
+// ScopeF.prototype = {
+// };
+// function scope(d) { var f = new ScopeF(); f.d = d; return f; };
+// 
+// var ScopeGetF = function() {};
+// ScopeGetF.prototype = {
+//    
+// };
+// function scopeGet(d) { var f = new ScopeGetF(); f.d = d; return f; };
+// 
+// var ScopeSetF = function() {};
+// ScopeSetF.prototype = {
+//    
+// };
+// function scopeSet(d) { var f = new ScopeSetF(); f.d = d; return f; };
+
+
+// module.exports.num2 = num2;
+// module.exports.arr = arr;
+// module.exports.scope = scope;
+// module.exports.scopeGet = scopeGet;
+// module.exports.scopeSet = scopeSet;
+ 
+// var MulF = function() {};
+// MulF.prototype = {
+//   get go() { return this.goNum; },
+//   get goNum() { return this.d.left.goNum * this.d.right.goNum; },
+//   get goStr() { return "(" + this.d.left.goStr + " * " + this.d.right.goStr + ")"; }
+// };
+// function mul(d) { var f = new MulF(); f.d = d; return f; };
+// 
+// var DivF = function() {};
+// DivF.prototype = {
+//   get go() { return this.goNum; },
+//   get goNum() { return this.d.left.goNum / this.d.right.goNum; },
+//   get goStr() { return "(" + this.d.left.goStr + " / " + this.d.right.goStr + ")"; }
+// };
+// function div(d) { var f = new DivF(); f.d = d; return f; };
+// 
+// 
+// module.exports.add = add;
+// module.exports.sub = sub;
+// module.exports.mul = mul;
+// module.exports.div = div;

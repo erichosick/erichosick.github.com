@@ -285,22 +285,32 @@ function add(d) {
 
 <p>An example policy using add, propGet, propSet and getElemById mechanisms.</p>
 
-<p>in Javascript:</p>
+<p>in Javascript (object-ish):</p>
 
 <pre><code>M.propSet({
-  dest: M.getElemById("result"),
   destProp: "value",
+  dest: M.getElemById("result"),
   src: M.add({
     l: M.propGet({
-      item: M.getElemById("left"),
-      prop: "value"
+      prop: "value",
+      item: M.getElemById("left")
     }),
     r: M.propGet({
-      item: M.getElemById("right"),
-      prop: "value"
+      prop: "value",
+      item: M.getElemById("right")
     })
   })
 }).go;
+</code></pre>
+
+<p>in Javascript (function-ish)</p>
+
+<pre><code>M.propSet( "value", M.getElemById( "result" ),
+  M.add(
+    M.propGet( "value", M.getElemById( "left" ) ),
+    M.propGet( "value", M.getElemById( "right" ) )
+  )
+).go;
 </code></pre>
 
 <form id="add">

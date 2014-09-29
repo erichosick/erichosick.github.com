@@ -144,22 +144,31 @@ A policy is "the what" defined by using mechanisms. A policy is your program or 
 
 An example policy using add, propGet, propSet and getElemById mechanisms.
 
-in Javascript:
+in Javascript (object-ish):
 
     M.propSet({
-      dest: M.getElemById("result"),
       destProp: "value",
+      dest: M.getElemById("result"),
       src: M.add({
         l: M.propGet({
-          item: M.getElemById("left"),
-          prop: "value"
+          prop: "value",
+          item: M.getElemById("left")
         }),
         r: M.propGet({
-          item: M.getElemById("right"),
-          prop: "value"
+          prop: "value",
+          item: M.getElemById("right")
         })
       })
     }).go;
+    
+in Javascript (function-ish)
+
+    M.propSet( "value", M.getElemById( "result" ),
+      M.add(
+        M.propGet( "value", M.getElemById( "left" ) ),
+        M.propGet( "value", M.getElemById( "right" ) )
+      )
+    ).go;
 
 <form id="add">
   <input id="left" value="5"/>
