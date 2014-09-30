@@ -137,7 +137,7 @@
   <input id="res" value="" />
   <input type="button" value="calc" onclick="
   M.propSet(&quot;value&quot;, M.e$(&quot;res&quot;),
-    M.add( M.p$( &quot;value&quot;, M.e$(&quot;lft&quot;) ), M.p$( &quot;value&quot;, M.e$(&quot;rgh&quot;) ) )
+    M.add(M.p$(&quot;value&quot;, M.e$(&quot;lft&quot;)), M.p$(&quot;value&quot;, M.e$(&quot;rgh&quot;)))
   ).go;
 " />
 </form>
@@ -290,14 +290,24 @@ function add(left, right) {
 
 <h3 id="defining-policies">Defining Policies</h3>
 
-<p>An example policy using add, propGet (also p$), propSet and getElemById (also e$) mechanisms.</p>
+<p>An example policy using <em>add(left,right)</em>, <em>propGet(propertyName, source)</em>, <em>propSet(propertyName, destination, source)</em> and <em>getElemById(id)</em> mechanisms.</p>
+
+<form id="add">
+  <input id="left" value="17" />
+  +
+  <input id="right" value="-5" />
+  =
+  <input id="result" value="" />
+  <input type="button" value="calc" onclick="
+  M.propSet(&quot;value&quot;, M.e$(&quot;result&quot;),
+    M.add(M.p$(&quot;value&quot;, M.e$(&quot;left&quot;)), M.p$(&quot;value&quot;, M.e$(&quot;right&quot;)))
+  ).go;
+" />
+</form>
 
 <p>in Javascript (<a href="/design/design-composition-based-language">sip-ish</a>):</p>
 
 <pre><code>// preferred syntax
-// propSet(propertyName, destination, source) { ... };
-// propGet(propertyName, source) { ... };
-// add(left, right) {...};
 M.propSet("value", M.getElemById("result"),
   M.add(
     M.propGet("value", M.getElemById("left")),
@@ -324,19 +334,6 @@ M.propSet({
   })
 }).go;
 </code></pre>
-
-<form id="add">
-  <input id="left" value="17" />
-  +
-  <input id="right" value="-5" />
-  =
-  <input id="result" value="" />
-  <input type="button" value="calc" onclick="
-  M.propSet(&quot;value&quot;, M.e$(&quot;result&quot;),
-    M.add( M.p$( &quot;value&quot;, M.e$(&quot;left&quot;) ), M.p$( &quot;value&quot;, M.e$(&quot;right&quot;) ) )
-  ).go;
-" />
-</form>
 
 <p>in <a href="/design/design-composition-based-language">SipCoffee</a>:</p>
 
@@ -523,10 +520,6 @@ $ addD.goStr;
 $ addD.goBool;
 $ addD.goArr;
 </code></pre>
-
-<h2 id="conclusion">Conclusion</h2>
-
-<p>Mechanisms and policies are a way of helping programmers separate the how from the why. Software frameworks only contain the how (mechanisms) and <strong>never</strong> the why (policies).</p>
 
 <p>If you find our work on mechanisms interesting, please follow us <a href="http://www.twitter.com/interfaceVision">@interfaceVision</a> and/or <a href="http://www.twitter.com/erichosick">@erichosick</a>.</p>
 

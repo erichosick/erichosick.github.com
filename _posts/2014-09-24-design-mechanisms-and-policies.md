@@ -25,7 +25,7 @@ A working example (may require latest browser):
   <input id="res" value=""/>
   <input type="button" value="calc" onClick='
   M.propSet("value", M.e$("res"),
-    M.add( M.p$( "value", M.e$("lft") ), M.p$( "value", M.e$("rgh") ) )
+    M.add(M.p$("value", M.e$("lft")), M.p$("value", M.e$("rgh")))
   ).go;
 '/>
 </form>
@@ -149,14 +149,24 @@ A policy is "the what" defined by using mechanisms. A policy is the program or a
 
 ### Defining Policies
 
-An example policy using add, propGet (also p$), propSet and getElemById (also e$) mechanisms.
+An example policy using *add(left,right)*, *propGet(propertyName, source)*, *propSet(propertyName, destination, source)* and *getElemById(id)* mechanisms.
+
+<form id="add">
+  <input id="left" value="17"/>
+  +
+  <input id="right" value="-5"/>
+  =
+  <input id="result" value=""/>
+  <input type="button" value="calc" onClick='
+  M.propSet("value", M.e$("result"),
+    M.add(M.p$("value", M.e$("left")), M.p$("value", M.e$("right")))
+  ).go;
+'/>
+</form>
 
 in Javascript ([sip-ish]({% post_url 2013-12-19-design-composition-based-language %})):
 
     // preferred syntax
-    // propSet(propertyName, destination, source) { ... };
-    // propGet(propertyName, source) { ... };
-    // add(left, right) {...};
     M.propSet("value", M.getElemById("result"),
       M.add(
         M.propGet("value", M.getElemById("left")),
@@ -181,20 +191,6 @@ in Javascript (object-ish):
         })
       })
     }).go;
-
-<form id="add">
-  <input id="left" value="17"/>
-  +
-  <input id="right" value="-5"/>
-  =
-  <input id="result" value=""/>
-  <input type="button" value="calc" onClick='
-  M.propSet("value", M.e$("result"),
-    M.add( M.p$( "value", M.e$("left") ), M.p$( "value", M.e$("right") ) )
-  ).go;
-'/>
-</form>
-
 
 in [SipCoffee]({% post_url 2013-12-19-design-composition-based-language %}):
 
@@ -363,10 +359,6 @@ Go into a console (For example: View -> Developer -> JavaScript Console in Chrom
     $ addD.goStr;
     $ addD.goBool;
     $ addD.goArr;
-
-## Conclusion
-
-Mechanisms and policies are a way of helping programmers separate the how from the why. Software frameworks only contain the how (mechanisms) and **never** the why (policies).
 
 If you find our work on mechanisms interesting, please follow us [@interfaceVision](http://www.twitter.com/interfaceVision) and/or [@erichosick](http://www.twitter.com/erichosick).
 
