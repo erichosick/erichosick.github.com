@@ -4,7 +4,7 @@
  <title>Eric Hosick</title>
  <link href="http://erichosick.github.com/atom.xml" rel="self"/>
  <link href="http://erichosick.github.com"/>
- <updated>2014-09-29T16:07:21-07:00</updated>
+ <updated>2014-09-30T10:00:11-07:00</updated>
  <id>http://erichosick.github.com</id>
  <author>
    <name>Eric Hosick</name>
@@ -142,6 +142,14 @@ M.propSet( &quot;value&quot;, M.getElemById( &quot;res&quot; ),
 
 &lt;p&gt;Mechanisms are tightly coupled to the language they are implemented in meaning the constructs we use to implement mechanisms may not be mechanisms.&lt;/p&gt;
 
+&lt;p&gt;Mechanisms for this post are defined in:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;/assets/js/mCore.js&quot;&gt;Core Mechanisms&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;/assets/js/mWeb.js&quot;&gt;Web Mechanisms&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/erichosick/jsVision&quot;&gt;Github Repository&lt;/a&gt; (with LOTS of tests)&lt;/li&gt;
+&lt;/ul&gt;
+
 &lt;p&gt;An example add mechanism in Javascript with two invocation points (goNum and goStr):&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;function AddF(){};
@@ -156,14 +164,6 @@ function add(left,right) {
   return f;
 };
 &lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Mechanisms for this post are defined in:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;/assets/js/mCore.js&quot;&gt;Core Mechanisms&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;/assets/js/mWeb.js&quot;&gt;Web Mechanisms&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/erichosick/jsVision&quot;&gt;Github Repository&lt;/a&gt; (with LOTS of tests)&lt;/li&gt;
-&lt;/ul&gt;
 
 &lt;p&gt;in C#:&lt;/p&gt;
 
@@ -190,7 +190,7 @@ function add(left,right) {
 
 &lt;p&gt;An example policy using add, propGet (also p$), propSet and getElemById (also e$) mechanisms.&lt;/p&gt;
 
-&lt;p&gt;in Javascript (function-ish)&lt;/p&gt;
+&lt;p&gt;in Javascript (&lt;a href=&quot;/design/design-composition-based-language&quot;&gt;sip-ish&lt;/a&gt;)&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;// we are leaning towards this syntax
 M.propSet( &quot;value&quot;, M.getElemById( &quot;result&quot; ),

@@ -244,6 +244,14 @@ M.propSet( "value", M.getElemById( "res" ),
 
 <p>Mechanisms are tightly coupled to the language they are implemented in meaning the constructs we use to implement mechanisms may not be mechanisms.</p>
 
+<p>Mechanisms for this post are defined in:</p>
+
+<ul>
+  <li><a href="/assets/js/mCore.js">Core Mechanisms</a></li>
+  <li><a href="/assets/js/mWeb.js">Web Mechanisms</a></li>
+  <li><a href="https://github.com/erichosick/jsVision">Github Repository</a> (with LOTS of tests)</li>
+</ul>
+
 <p>An example add mechanism in Javascript with two invocation points (goNum and goStr):</p>
 
 <pre><code>function AddF(){};
@@ -258,14 +266,6 @@ function add(left,right) {
   return f;
 };
 </code></pre>
-
-<p>Mechanisms for this post are defined in:</p>
-
-<ul>
-  <li><a href="/assets/js/mCore.js">Core Mechanisms</a></li>
-  <li><a href="/assets/js/mWeb.js">Web Mechanisms</a></li>
-  <li><a href="https://github.com/erichosick/jsVision">Github Repository</a> (with LOTS of tests)</li>
-</ul>
 
 <p>in C#:</p>
 
@@ -292,7 +292,7 @@ function add(left,right) {
 
 <p>An example policy using add, propGet (also p$), propSet and getElemById (also e$) mechanisms.</p>
 
-<p>in Javascript (function-ish)</p>
+<p>in Javascript (<a href="/design/design-composition-based-language">sip-ish</a>)</p>
 
 <pre><code>// we are leaning towards this syntax
 M.propSet( "value", M.getElemById( "result" ),

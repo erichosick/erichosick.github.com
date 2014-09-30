@@ -106,6 +106,12 @@ This makes it really easy to use a mechanism.
 
 Mechanisms are tightly coupled to the language they are implemented in meaning the constructs we use to implement mechanisms may not be mechanisms.
 
+Mechanisms for this post are defined in:
+
+* [Core Mechanisms](/assets/js/mCore.js)
+* [Web Mechanisms](/assets/js/mWeb.js)
+* [Github Repository](https://github.com/erichosick/jsVision) (with LOTS of tests)
+
 An example add mechanism in Javascript with two invocation points (goNum and goStr):
 
     function AddF(){};
@@ -120,11 +126,6 @@ An example add mechanism in Javascript with two invocation points (goNum and goS
       return f;
     };
 
-Mechanisms for this post are defined in:
-
-* [Core Mechanisms](/assets/js/mCore.js)
-* [Web Mechanisms](/assets/js/mWeb.js)
-* [Github Repository](https://github.com/erichosick/jsVision) (with LOTS of tests)
 
 in C#:
 
@@ -150,7 +151,7 @@ A policy is "the what" defined by using mechanisms. A policy is the program or a
 
 An example policy using add, propGet (also p$), propSet and getElemById (also e$) mechanisms.
 
-in Javascript (function-ish)
+in Javascript ([sip-ish]({% post_url 2013-12-19-design-composition-based-language %}))
 
     // we are leaning towards this syntax
     M.propSet( "value", M.getElemById( "result" ),
