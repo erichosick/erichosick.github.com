@@ -32,6 +32,8 @@ A working example (may require latest browser):
 
     // The policy invoked when calc is pressed.
     // Try copying and pasting the code in your browser console.
+    // propSet(property, destination, source ){ ... };
+    // add(left, right){...};
 
     M.propSet( "value", M.getElemById( "res" ),
       M.add(
