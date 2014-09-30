@@ -197,8 +197,8 @@ in [SipCoffee]({% post_url 2013-12-19-design-composition-based-language %}):
     propSet("value"
       getElemById("result")
       add(
-        propGet("value" getElemById(id "left"))
-        propGet("value" getElemById(id "right"))
+        propGet("value" getElemById("left"))
+        propGet("value" getElemById("right"))
       )
     )
 
