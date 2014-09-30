@@ -32,8 +32,6 @@ A working example (may require latest browser):
 
     // The policy invoked when calc is pressed.
     // Try copying and pasting the code into your browser console.
-    // propSet(property, destination, source) { ... };
-    // add(left, right) {...};
 
     M.propSet("value", M.getElemById("res"),
       M.add(
@@ -108,11 +106,11 @@ This makes it really easy to use a mechanism.
 
 Mechanisms are tightly coupled to the language they are implemented in meaning the constructs we use to implement mechanisms may not be mechanisms.
 
-Mechanisms for this post are defined in:
+Source-code for examples:
 
 * [Core Mechanisms](/assets/js/mCore.js)
 * [Web Mechanisms](/assets/js/mWeb.js)
-* [Github Repository](https://github.com/erichosick/jsVision) (with LOTS of tests)
+* [Github Repository](https://github.com/erichosick/jsVision)
 
 An example add mechanism in Javascript with two invocation points (goNum and goStr):
 
@@ -153,9 +151,12 @@ A policy is "the what" defined by using mechanisms. A policy is the program or a
 
 An example policy using add, propGet (also p$), propSet and getElemById (also e$) mechanisms.
 
-in Javascript ([sip-ish]({% post_url 2013-12-19-design-composition-based-language %}))
+in Javascript ([sip-ish]({% post_url 2013-12-19-design-composition-based-language %})):
 
-    // we prefer this syntax
+    // preferred syntax
+    // propSet(propertyName, destination, source) { ... };
+    // propGet(propertyName, source) { ... };
+    // add(left, right) {...};
     M.propSet("value", M.getElemById("result"),
       M.add(
         M.propGet("value", M.getElemById("left")),
@@ -310,22 +311,21 @@ In this case, data is "pulled" from the left and right mechanisms by invoking th
 
 Further examples using real languages are provided in the post [C# and Homoiconicity]({% post_url 2014-09-21-design-csharp-and-homoiconicity %}) and [Javascript and Homoiconicity]({% post_url 2014-09-18-design-javascript-and-homoiconicity %}).
 
-When we use the traditional add in a program, we need to know where the value of left and right come from before we can call add's algorithm:
+We must provide the left,right parameters to add at the time of invocation.
 
-    int x = 5;
-    int y = 8;
-    int result = add (x, y); // We must push data into add right here.
+    int left = 5;
+    int right = 8;
+    int result = add(left, right); // We must push data into add right here.
 
-We can't get around it. At some point while coding, when we call add, we have to pass parameters to add at that point in the code.
+We can't get around it. While coding, we have to pass parameters to add at the time of invocation! It's forced on us by the language syntax.
 
-When we use add as a mechanism, we don't need to know where the values of left and right come from before we call add's algorithm:
-
-    // addMech defined anywhere in the program.
-    // perhaps during initiation
+We can invoke an add mechanism at anytime in our code without knowing anything about left and right **at the time of invocation**!
 
     mechanism result = addMech.go; // We can initialize addMech somewhere else
     
-In fact, we don't even need to know what data is required by the add algorithm when we use add in our policy. The internal workings of add are **fully** encapsulated and hidden from the policy.
+    // OR
+
+    mechanism result = addMech(left, right).go // or do it right here
 
 ## Play Around In the Console
 

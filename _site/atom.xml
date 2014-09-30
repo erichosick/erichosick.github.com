@@ -4,7 +4,7 @@
  <title>Eric Hosick</title>
  <link href="http://erichosick.github.com/atom.xml" rel="self"/>
  <link href="http://erichosick.github.com"/>
- <updated>2014-09-30T10:55:23-07:00</updated>
+ <updated>2014-09-30T11:50:00-07:00</updated>
  <id>http://erichosick.github.com</id>
  <author>
    <name>Eric Hosick</name>
@@ -42,8 +42,6 @@
 
 &lt;pre&gt;&lt;code&gt;// The policy invoked when calc is pressed.
 // Try copying and pasting the code into your browser console.
-// propSet(property, destination, source) { ... };
-// add(left, right) {...};
 
 M.propSet(&quot;value&quot;, M.getElemById(&quot;res&quot;),
   M.add(
@@ -144,12 +142,12 @@ M.propSet(&quot;value&quot;, M.getElemById(&quot;res&quot;),
 
 &lt;p&gt;Mechanisms are tightly coupled to the language they are implemented in meaning the constructs we use to implement mechanisms may not be mechanisms.&lt;/p&gt;
 
-&lt;p&gt;Mechanisms for this post are defined in:&lt;/p&gt;
+&lt;p&gt;Source-code for examples:&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;&lt;a href=&quot;/assets/js/mCore.js&quot;&gt;Core Mechanisms&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;/assets/js/mWeb.js&quot;&gt;Web Mechanisms&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/erichosick/jsVision&quot;&gt;Github Repository&lt;/a&gt; (with LOTS of tests)&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/erichosick/jsVision&quot;&gt;Github Repository&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;An example add mechanism in Javascript with two invocation points (goNum and goStr):&lt;/p&gt;
@@ -192,9 +190,12 @@ function add(left, right) {
 
 &lt;p&gt;An example policy using add, propGet (also p$), propSet and getElemById (also e$) mechanisms.&lt;/p&gt;
 
-&lt;p&gt;in Javascript (&lt;a href=&quot;/design/design-composition-based-language&quot;&gt;sip-ish&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;in Javascript (&lt;a href=&quot;/design/design-composition-based-language&quot;&gt;sip-ish&lt;/a&gt;):&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;// we prefer this syntax
+&lt;pre&gt;&lt;code&gt;// preferred syntax
+// propSet(propertyName, destination, source) { ... };
+// propGet(propertyName, source) { ... };
+// add(left, right) {...};
 M.propSet(&quot;value&quot;, M.getElemById(&quot;result&quot;),
   M.add(
     M.propGet(&quot;value&quot;, M.getElemById(&quot;left&quot;)),
@@ -365,24 +366,23 @@ M.propSet({
 
 &lt;p&gt;Further examples using real languages are provided in the post &lt;a href=&quot;/design/design-csharp-and-homoiconicity&quot;&gt;C# and Homoiconicity&lt;/a&gt; and &lt;a href=&quot;/design/design-javascript-and-homoiconicity&quot;&gt;Javascript and Homoiconicity&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;When we use the traditional add in a program, we need to know where the value of left and right come from before we can call add’s algorithm:&lt;/p&gt;
+&lt;p&gt;We must provide the left,right parameters to add at the time of invocation.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;int x = 5;
-int y = 8;
-int result = add (x, y); // We must push data into add right here.
+&lt;pre&gt;&lt;code&gt;int left = 5;
+int right = 8;
+int result = add(left, right); // We must push data into add right here.
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;We can’t get around it. At some point while coding, when we call add, we have to pass parameters to add at that point in the code.&lt;/p&gt;
+&lt;p&gt;We can’t get around it. While coding, we have to pass parameters to add at the time of invocation! It’s forced on us by the language syntax.&lt;/p&gt;
 
-&lt;p&gt;When we use add as a mechanism, we don’t need to know where the values of left and right come from before we call add’s algorithm:&lt;/p&gt;
+&lt;p&gt;We can invoke an add mechanism at anytime in our code without knowing anything about left and right &lt;strong&gt;at the time of invocation&lt;/strong&gt;!&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;// addMech defined anywhere in the program.
-// perhaps during initiation
+&lt;pre&gt;&lt;code&gt;mechanism result = addMech.go; // We can initialize addMech somewhere else
 
-mechanism result = addMech.go; // We can initialize addMech somewhere else
+// OR
+
+mechanism result = addMech(left, right).go // or do it right here
 &lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;In fact, we don’t even need to know what data is required by the add algorithm when we use add in our policy. The internal workings of add are &lt;strong&gt;fully&lt;/strong&gt; encapsulated and hidden from the policy.&lt;/p&gt;
 
 &lt;h2 id=&quot;play-around-in-the-console&quot;&gt;Play Around In the Console&lt;/h2&gt;
 
