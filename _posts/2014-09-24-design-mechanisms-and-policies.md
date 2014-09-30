@@ -32,13 +32,13 @@ A working example (may require latest browser):
 
     // The policy invoked when calc is pressed.
     // Try copying and pasting the code in your browser console.
-    // propSet(property, destination, source ){ ... };
+    // propSet(property, destination, source){ ... };
     // add(left, right){...};
 
-    M.propSet( "value", M.getElemById( "res" ),
+    M.propSet("value", M.getElemById("res"),
       M.add(
-        M.propGet( "value", M.getElemById( "lft" ) ),
-        M.propGet( "value", M.getElemById( "rgh" ) )
+        M.propGet("value", M.getElemById("lft")),
+        M.propGet("value", M.getElemById("rgh"))
       )
     ).go;
 
@@ -118,10 +118,10 @@ An example add mechanism in Javascript with two invocation points (goNum and goS
 
     function AddF(){};
     AddF.prototype = Object.create(DualArgF.prototype, {
-      goNum: { get: function() { return this._l.goNum + this._r.goNum; } },
-      goStr: { get: function() { return "(" + this._l.goStr + " + " + this._r.goStr + ")"; } }
+      goNum: { get: function() { return this._l.goNum + this._r.goNum; }},
+      goStr: { get: function() { return "(" + this._l.goStr + " + " + this._r.goStr + ")"; }}
     });
-    function add(left,right) {
+    function add(left, right) {
       var f = Object.create(AddF.prototype);
       f.l = left;
       f.r = right;
@@ -155,16 +155,17 @@ An example policy using add, propGet (also p$), propSet and getElemById (also e$
 
 in Javascript ([sip-ish]({% post_url 2013-12-19-design-composition-based-language %}))
 
-    // we are leaning towards this syntax
-    M.propSet( "value", M.getElemById( "result" ),
+    // we prefer this syntax
+    M.propSet("value", M.getElemById("result"),
       M.add(
-        M.propGet( "value", M.getElemById( "left" ) ),
-        M.propGet( "value", M.getElemById( "right" ) )
+        M.propGet("value", M.getElemById("left")),
+        M.propGet("value", M.getElemById("right"))
       )
     ).go;
 
 in Javascript (object-ish):
 
+    // Dooable but we prefer the sip-ish syntax
     M.propSet({
       destProp: "value",
       dest: M.getElemById("result"),
@@ -187,20 +188,9 @@ in Javascript (object-ish):
   =
   <input id="result" value=""/>
   <input type="button" value="calc" onClick='
-  M.propSet({
-    dest: M.e$("result"),
-    destProp: "value",
-    src: M.add({
-      l: M.propGet({
-        item: M.e$("left"),
-        prop: "value"
-      }),
-      r: M.propGet({
-        item: M.e$("right"),
-        prop: "value"
-      })
-    })
-  }).go;
+  M.propSet("value", M.e$("result"),
+    M.add( M.p$( "value", M.e$("left") ), M.p$( "value", M.e$("right") ) )
+  ).go;
 '/>
 </form>
 
@@ -209,7 +199,7 @@ in [SipCoffee]({% post_url 2013-12-19-design-composition-based-language %}):
 
     propSet (
       destProp "value"
-      dest getElemById ( id "result")
+      dest getElemById (id "result")
       src add (
         l propGet (
           item getElemById (id "left")
@@ -226,14 +216,14 @@ in C#:
 
     new propSet {
       destProp = "result",
-      dest = new getElemById { id = "result "},
+      dest = new getElemById {id = "result "},
       src = new add {
         l = new propGet {
-          item = new getElemById { id = "left"},
+          item = new getElemById {id = "left"},
           prop = "left",
         },
         r = new propGet {
-          item = new getElemById { id = "right"},
+          item = new getElemById {id = "right"},
           prop = "right",
         }
       },
@@ -308,7 +298,7 @@ Mechanisms never have data "pushed" to them. Instead, mechanisms "pull" data int
 
 Consider an add sub-routine with an addition algorithm:
 
-    int add ( int left, int right ) {
+    int add(int left, int right) {
       return left + right;
     }
 
@@ -353,30 +343,30 @@ Go into a console (For example: View -> Developer -> JavaScript Console in Chrom
     // NOTE: Be careful NOT to hook a policy to itself.
 
     // Create addA policy
-    $ var addA = M.add( 4, 2 );
+    $ var addA = M.add(4, 2);
     $ addA.go; // 6
     $ addA.goStr; // (4 + 2)
     $ addA.goBool; // true
     $ addA.goArr; // [6]
 
     // Create addB policy
-    $ var addB = M.add( 3, -1 );
+    $ var addB = M.add(3, -1);
     $ addB.go; // 2
     $ addB.goStr; // (3 + -1)
 
     // Create addC policy
-    $ var addC = M.add( addA, addB );
+    $ var addC = M.add(addA, addB);
     $ addC.go; // 8
     $ addC.goStr; // (4 + 2) + (3 + -1))
 
     // Create a form-access policy
-    $ var frmL = M.p$( "value", M.e$("left") );
+    $ var frmL = M.p$("value", M.e$("left"));
     $ frmL.go; // based on form data
     $ frmL.goNum;
     $ frmL.goStr;    
 
     // Create addD policy
-    $ var addD = M.add( M.add( 4, 2 ), M.p$( "value", M.e$("left") ) );
+    $ var addD = M.add(M.add(4, 2), M.p$("value", M.e$("left")));
     $ addD.go;  // based on form data
     $ addD.goNum;
     $ addD.goStr;

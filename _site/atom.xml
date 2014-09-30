@@ -4,7 +4,7 @@
  <title>Eric Hosick</title>
  <link href="http://erichosick.github.com/atom.xml" rel="self"/>
  <link href="http://erichosick.github.com"/>
- <updated>2014-09-30T10:02:45-07:00</updated>
+ <updated>2014-09-30T10:41:15-07:00</updated>
  <id>http://erichosick.github.com</id>
  <author>
    <name>Eric Hosick</name>
@@ -42,13 +42,13 @@
 
 &lt;pre&gt;&lt;code&gt;// The policy invoked when calc is pressed.
 // Try copying and pasting the code in your browser console.
-// propSet(property, destination, source ){ ... };
+// propSet(property, destination, source){ ... };
 // add(left, right){...};
 
-M.propSet( &quot;value&quot;, M.getElemById( &quot;res&quot; ),
+M.propSet(&quot;value&quot;, M.getElemById(&quot;res&quot;),
   M.add(
-    M.propGet( &quot;value&quot;, M.getElemById( &quot;lft&quot; ) ),
-    M.propGet( &quot;value&quot;, M.getElemById( &quot;rgh&quot; ) )
+    M.propGet(&quot;value&quot;, M.getElemById(&quot;lft&quot;)),
+    M.propGet(&quot;value&quot;, M.getElemById(&quot;rgh&quot;))
   )
 ).go;
 &lt;/code&gt;&lt;/pre&gt;
@@ -156,10 +156,10 @@ M.propSet( &quot;value&quot;, M.getElemById( &quot;res&quot; ),
 
 &lt;pre&gt;&lt;code&gt;function AddF(){};
 AddF.prototype = Object.create(DualArgF.prototype, {
-  goNum: { get: function() { return this._l.goNum + this._r.goNum; } },
-  goStr: { get: function() { return &quot;(&quot; + this._l.goStr + &quot; + &quot; + this._r.goStr + &quot;)&quot;; } }
+  goNum: { get: function() { return this._l.goNum + this._r.goNum; }},
+  goStr: { get: function() { return &quot;(&quot; + this._l.goStr + &quot; + &quot; + this._r.goStr + &quot;)&quot;; }}
 });
-function add(left,right) {
+function add(left, right) {
   var f = Object.create(AddF.prototype);
   f.l = left;
   f.r = right;
@@ -194,18 +194,19 @@ function add(left,right) {
 
 &lt;p&gt;in Javascript (&lt;a href=&quot;/design/design-composition-based-language&quot;&gt;sip-ish&lt;/a&gt;)&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;// we are leaning towards this syntax
-M.propSet( &quot;value&quot;, M.getElemById( &quot;result&quot; ),
+&lt;pre&gt;&lt;code&gt;// we prefer this syntax
+M.propSet(&quot;value&quot;, M.getElemById(&quot;result&quot;),
   M.add(
-    M.propGet( &quot;value&quot;, M.getElemById( &quot;left&quot; ) ),
-    M.propGet( &quot;value&quot;, M.getElemById( &quot;right&quot; ) )
+    M.propGet(&quot;value&quot;, M.getElemById(&quot;left&quot;)),
+    M.propGet(&quot;value&quot;, M.getElemById(&quot;right&quot;))
   )
 ).go;
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;in Javascript (object-ish):&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;M.propSet({
+&lt;pre&gt;&lt;code&gt;// Dooable but we prefer the sip-ish syntax
+M.propSet({
   destProp: &quot;value&quot;,
   dest: M.getElemById(&quot;result&quot;),
   src: M.add({
@@ -228,20 +229,9 @@ M.propSet( &quot;value&quot;, M.getElemById( &quot;result&quot; ),
   =
   &lt;input id=&quot;result&quot; value=&quot;&quot; /&gt;
   &lt;input type=&quot;button&quot; value=&quot;calc&quot; onclick=&quot;
-  M.propSet({
-    dest: M.e$(&amp;quot;result&amp;quot;),
-    destProp: &amp;quot;value&amp;quot;,
-    src: M.add({
-      l: M.propGet({
-        item: M.e$(&amp;quot;left&amp;quot;),
-        prop: &amp;quot;value&amp;quot;
-      }),
-      r: M.propGet({
-        item: M.e$(&amp;quot;right&amp;quot;),
-        prop: &amp;quot;value&amp;quot;
-      })
-    })
-  }).go;
+  M.propSet(&amp;quot;value&amp;quot;, M.e$(&amp;quot;result&amp;quot;),
+    M.add( M.p$( &amp;quot;value&amp;quot;, M.e$(&amp;quot;left&amp;quot;) ), M.p$( &amp;quot;value&amp;quot;, M.e$(&amp;quot;right&amp;quot;) ) )
+  ).go;
 &quot; /&gt;
 &lt;/form&gt;
 
@@ -249,7 +239,7 @@ M.propSet( &quot;value&quot;, M.getElemById( &quot;result&quot; ),
 
 &lt;pre&gt;&lt;code&gt;propSet (
   destProp &quot;value&quot;
-  dest getElemById ( id &quot;result&quot;)
+  dest getElemById (id &quot;result&quot;)
   src add (
     l propGet (
       item getElemById (id &quot;left&quot;)
@@ -267,14 +257,14 @@ M.propSet( &quot;value&quot;, M.getElemById( &quot;result&quot; ),
 
 &lt;pre&gt;&lt;code&gt;new propSet {
   destProp = &quot;result&quot;,
-  dest = new getElemById { id = &quot;result &quot;},
+  dest = new getElemById {id = &quot;result &quot;},
   src = new add {
     l = new propGet {
-      item = new getElemById { id = &quot;left&quot;},
+      item = new getElemById {id = &quot;left&quot;},
       prop = &quot;left&quot;,
     },
     r = new propGet {
-      item = new getElemById { id = &quot;right&quot;},
+      item = new getElemById {id = &quot;right&quot;},
       prop = &quot;right&quot;,
     }
   },
@@ -361,7 +351,7 @@ M.propSet( &quot;value&quot;, M.getElemById( &quot;result&quot; ),
 
 &lt;p&gt;Consider an add sub-routine with an addition algorithm:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;int add ( int left, int right ) {
+&lt;pre&gt;&lt;code&gt;int add(int left, int right) {
   return left + right;
 }
 &lt;/code&gt;&lt;/pre&gt;
@@ -410,30 +400,30 @@ mechanism result = addMech.go; // We can initialize addMech somewhere else
 &lt;pre&gt;&lt;code&gt;// NOTE: Be careful NOT to hook a policy to itself.
 
 // Create addA policy
-$ var addA = M.add( 4, 2 );
+$ var addA = M.add(4, 2);
 $ addA.go; // 6
 $ addA.goStr; // (4 + 2)
 $ addA.goBool; // true
 $ addA.goArr; // [6]
 
 // Create addB policy
-$ var addB = M.add( 3, -1 );
+$ var addB = M.add(3, -1);
 $ addB.go; // 2
 $ addB.goStr; // (3 + -1)
 
 // Create addC policy
-$ var addC = M.add( addA, addB );
+$ var addC = M.add(addA, addB);
 $ addC.go; // 8
 $ addC.goStr; // (4 + 2) + (3 + -1))
 
 // Create a form-access policy
-$ var frmL = M.p$( &quot;value&quot;, M.e$(&quot;left&quot;) );
+$ var frmL = M.p$(&quot;value&quot;, M.e$(&quot;left&quot;));
 $ frmL.go; // based on form data
 $ frmL.goNum;
 $ frmL.goStr;    
 
 // Create addD policy
-$ var addD = M.add( M.add( 4, 2 ), M.p$( &quot;value&quot;, M.e$(&quot;left&quot;) ) );
+$ var addD = M.add(M.add(4, 2), M.p$(&quot;value&quot;, M.e$(&quot;left&quot;)));
 $ addD.go;  // based on form data
 $ addD.goNum;
 $ addD.goStr;

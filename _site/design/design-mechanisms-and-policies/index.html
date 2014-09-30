@@ -144,13 +144,13 @@
 
 <pre><code>// The policy invoked when calc is pressed.
 // Try copying and pasting the code in your browser console.
-// propSet(property, destination, source ){ ... };
+// propSet(property, destination, source){ ... };
 // add(left, right){...};
 
-M.propSet( "value", M.getElemById( "res" ),
+M.propSet("value", M.getElemById("res"),
   M.add(
-    M.propGet( "value", M.getElemById( "lft" ) ),
-    M.propGet( "value", M.getElemById( "rgh" ) )
+    M.propGet("value", M.getElemById("lft")),
+    M.propGet("value", M.getElemById("rgh"))
   )
 ).go;
 </code></pre>
@@ -258,10 +258,10 @@ M.propSet( "value", M.getElemById( "res" ),
 
 <pre><code>function AddF(){};
 AddF.prototype = Object.create(DualArgF.prototype, {
-  goNum: { get: function() { return this._l.goNum + this._r.goNum; } },
-  goStr: { get: function() { return "(" + this._l.goStr + " + " + this._r.goStr + ")"; } }
+  goNum: { get: function() { return this._l.goNum + this._r.goNum; }},
+  goStr: { get: function() { return "(" + this._l.goStr + " + " + this._r.goStr + ")"; }}
 });
-function add(left,right) {
+function add(left, right) {
   var f = Object.create(AddF.prototype);
   f.l = left;
   f.r = right;
@@ -296,18 +296,19 @@ function add(left,right) {
 
 <p>in Javascript (<a href="/design/design-composition-based-language">sip-ish</a>)</p>
 
-<pre><code>// we are leaning towards this syntax
-M.propSet( "value", M.getElemById( "result" ),
+<pre><code>// we prefer this syntax
+M.propSet("value", M.getElemById("result"),
   M.add(
-    M.propGet( "value", M.getElemById( "left" ) ),
-    M.propGet( "value", M.getElemById( "right" ) )
+    M.propGet("value", M.getElemById("left")),
+    M.propGet("value", M.getElemById("right"))
   )
 ).go;
 </code></pre>
 
 <p>in Javascript (object-ish):</p>
 
-<pre><code>M.propSet({
+<pre><code>// Dooable but we prefer the sip-ish syntax
+M.propSet({
   destProp: "value",
   dest: M.getElemById("result"),
   src: M.add({
@@ -330,20 +331,9 @@ M.propSet( "value", M.getElemById( "result" ),
   =
   <input id="result" value="" />
   <input type="button" value="calc" onclick="
-  M.propSet({
-    dest: M.e$(&quot;result&quot;),
-    destProp: &quot;value&quot;,
-    src: M.add({
-      l: M.propGet({
-        item: M.e$(&quot;left&quot;),
-        prop: &quot;value&quot;
-      }),
-      r: M.propGet({
-        item: M.e$(&quot;right&quot;),
-        prop: &quot;value&quot;
-      })
-    })
-  }).go;
+  M.propSet(&quot;value&quot;, M.e$(&quot;result&quot;),
+    M.add( M.p$( &quot;value&quot;, M.e$(&quot;left&quot;) ), M.p$( &quot;value&quot;, M.e$(&quot;right&quot;) ) )
+  ).go;
 " />
 </form>
 
@@ -351,7 +341,7 @@ M.propSet( "value", M.getElemById( "result" ),
 
 <pre><code>propSet (
   destProp "value"
-  dest getElemById ( id "result")
+  dest getElemById (id "result")
   src add (
     l propGet (
       item getElemById (id "left")
@@ -369,14 +359,14 @@ M.propSet( "value", M.getElemById( "result" ),
 
 <pre><code>new propSet {
   destProp = "result",
-  dest = new getElemById { id = "result "},
+  dest = new getElemById {id = "result "},
   src = new add {
     l = new propGet {
-      item = new getElemById { id = "left"},
+      item = new getElemById {id = "left"},
       prop = "left",
     },
     r = new propGet {
-      item = new getElemById { id = "right"},
+      item = new getElemById {id = "right"},
       prop = "right",
     }
   },
@@ -463,7 +453,7 @@ M.propSet( "value", M.getElemById( "result" ),
 
 <p>Consider an add sub-routine with an addition algorithm:</p>
 
-<pre><code>int add ( int left, int right ) {
+<pre><code>int add(int left, int right) {
   return left + right;
 }
 </code></pre>
@@ -512,30 +502,30 @@ mechanism result = addMech.go; // We can initialize addMech somewhere else
 <pre><code>// NOTE: Be careful NOT to hook a policy to itself.
 
 // Create addA policy
-$ var addA = M.add( 4, 2 );
+$ var addA = M.add(4, 2);
 $ addA.go; // 6
 $ addA.goStr; // (4 + 2)
 $ addA.goBool; // true
 $ addA.goArr; // [6]
 
 // Create addB policy
-$ var addB = M.add( 3, -1 );
+$ var addB = M.add(3, -1);
 $ addB.go; // 2
 $ addB.goStr; // (3 + -1)
 
 // Create addC policy
-$ var addC = M.add( addA, addB );
+$ var addC = M.add(addA, addB);
 $ addC.go; // 8
 $ addC.goStr; // (4 + 2) + (3 + -1))
 
 // Create a form-access policy
-$ var frmL = M.p$( "value", M.e$("left") );
+$ var frmL = M.p$("value", M.e$("left"));
 $ frmL.go; // based on form data
 $ frmL.goNum;
 $ frmL.goStr;    
 
 // Create addD policy
-$ var addD = M.add( M.add( 4, 2 ), M.p$( "value", M.e$("left") ) );
+$ var addD = M.add(M.add(4, 2), M.p$("value", M.e$("left")));
 $ addD.go;  // based on form data
 $ addD.goNum;
 $ addD.goStr;
