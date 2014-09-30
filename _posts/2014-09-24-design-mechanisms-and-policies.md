@@ -31,9 +31,9 @@ A working example (may require latest browser):
 </form>
 
     // The policy invoked when calc is pressed.
-    // Try copying and pasting the code in your browser console.
-    // propSet(property, destination, source){ ... };
-    // add(left, right){...};
+    // Try copying and pasting the code into your browser console.
+    // propSet(property, destination, source) { ... };
+    // add(left, right) {...};
 
     M.propSet("value", M.getElemById("res"),
       M.add(
@@ -44,13 +44,13 @@ A working example (may require latest browser):
 
 Software engineers strive to separate the what (policy) from the how (mechanism) for reasons like [code re-use](https://en.wikipedia.org/wiki/Code_reuse), [maintainability](https://en.wikipedia.org/wiki/Maintainability), [modularity](https://en.wikipedia.org/wiki/Modular_programming) and [separation of concerns](https://en.wikipedia.org/wiki/Separation_of_concerns).
 
-We propose a mechanism centric [programming paradigm](https://en.wikipedia.org/wiki/Programming_paradigm) to help engineers create software frameworks which are easy to use.
+We propose a mechanism centric [programming paradigm](https://en.wikipedia.org/wiki/Programming_paradigm) to help engineers design software frameworks which are easy to use.
 
 Mechanisms help framework users focus on their business solutions and not the framework.
 
 ## What are Mechanisms?
 
-A mechanism is "the how". Mechanisms cover everything from language syntax to operating system features like:
+A mechanism is "the how". Mechanisms cover everything from language syntax to operating system features. Examples are:
 
 * [language syntax](https://en.wikipedia.org/wiki/Syntax_%28programming_languages%29) mechanisms
   * loops (while, doWhile, for, forEach, etc.)
@@ -89,12 +89,12 @@ A mechanism can be viewed as a fundamental data-type that also contains an algor
 * **data** - The data required by the mechanism to run the algorithm.
   * Since a mechanism **is** the only fundamental data-type, the data is also a mechanism.
 * **an invocation point** - "go", "makeItSo#1", "run"
-  * An invocation point is a calculated property
+  * An invocation point is a calculated property.
     * [C#](http://csharp.2000things.com/tag/calculated-property/)
     * Javascript [get](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/get) and [set](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/set)
     * [Ruby Language](https://stackoverflow.com/questions/11716550/ruby-class-set-get)
     * [Python](http://blaag.haard.se/What-s-the-point-of-properties-in-Python/)
-  * Optionally, invocation points can be defined for primitive data-type in any given language.
+  * Optionally, invocation points can be defined for primitive data-types in any given language.
 
 A single invocation point means the behavioral interface of **all** mechanisms (algorithms) is the same. You can think of it as playing a game of [dominoes](https://en.wikipedia.org/wiki/Dominoes) where every tile has the exact same number of spots.
 
@@ -197,18 +197,11 @@ in Javascript (object-ish):
 
 in [SipCoffee]({% post_url 2013-12-19-design-composition-based-language %}):
 
-    propSet (
-      destProp "value"
-      dest getElemById (id "result")
-      src add (
-        l propGet (
-          item getElemById (id "left")
-          prop "value"
-        )
-        r propGet (
-          item getElemById (id "right")
-          prop "value"
-        )
+    propSet("value"
+      getElemById("result")
+      add(
+        propGet("value" getElemById(id "left"))
+        propGet("value" getElemById(id "right"))
       )
     )
 
@@ -229,7 +222,7 @@ in C#:
       },
     };
 
-Your probably noticed already that policies can be easily converted between different languages.
+You've probably noticed already that policies can be easily converted between different languages.
 
 
 ## Further Reading
@@ -245,18 +238,16 @@ Some readings on separation of mechanism and policy:
 
 All programs and applications are implemented using policies.
 
-So, we ask ourselves the question:
+We ask ourselves the question:
 
 > Can we, efficiently, implement our policy (program) using available mechanisms?
 
-If the answer is yes, then don't create any new mechanisms.
-
-If the answer is no, it is because:
+Create a mechanism when:
 
 * the policy can't be defined because the mechanisms required don't exist.
 * the existing mechanisms aren't efficient enough for the problem domain (the software framework is lacking).
 * there are common policies that would look better if we created a single mechanism out of the policy.
-  * In the examples, we access a property of a DOM element quite often using two mechanisms.
+  * In the examples, accessing a property of a DOM element requires two mechanisms. We could make that one.
 
 A, lofty, goal is to provide all mechanisms necessary to create any policy within a single programming-language-framework.
 

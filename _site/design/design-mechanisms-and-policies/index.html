@@ -143,9 +143,9 @@
 </form>
 
 <pre><code>// The policy invoked when calc is pressed.
-// Try copying and pasting the code in your browser console.
-// propSet(property, destination, source){ ... };
-// add(left, right){...};
+// Try copying and pasting the code into your browser console.
+// propSet(property, destination, source) { ... };
+// add(left, right) {...};
 
 M.propSet("value", M.getElemById("res"),
   M.add(
@@ -157,13 +157,13 @@ M.propSet("value", M.getElemById("res"),
 
 <p>Software engineers strive to separate the what (policy) from the how (mechanism) for reasons like <a href="https://en.wikipedia.org/wiki/Code_reuse">code re-use</a>, <a href="https://en.wikipedia.org/wiki/Maintainability">maintainability</a>, <a href="https://en.wikipedia.org/wiki/Modular_programming">modularity</a> and <a href="https://en.wikipedia.org/wiki/Separation_of_concerns">separation of concerns</a>.</p>
 
-<p>We propose a mechanism centric <a href="https://en.wikipedia.org/wiki/Programming_paradigm">programming paradigm</a> to help engineers create software frameworks which are easy to use.</p>
+<p>We propose a mechanism centric <a href="https://en.wikipedia.org/wiki/Programming_paradigm">programming paradigm</a> to help engineers design software frameworks which are easy to use.</p>
 
 <p>Mechanisms help framework users focus on their business solutions and not the framework.</p>
 
 <h2 id="what-are-mechanisms">What are Mechanisms?</h2>
 
-<p>A mechanism is “the how”. Mechanisms cover everything from language syntax to operating system features like:</p>
+<p>A mechanism is “the how”. Mechanisms cover everything from language syntax to operating system features. Examples are:</p>
 
 <ul>
   <li><a href="https://en.wikipedia.org/wiki/Syntax_%28programming_languages%29">language syntax</a> mechanisms
@@ -221,7 +221,7 @@ M.propSet("value", M.getElemById("res"),
   </li>
   <li><strong>an invocation point</strong> - “go”, “makeItSo#1”, “run”
     <ul>
-      <li>An invocation point is a calculated property
+      <li>An invocation point is a calculated property.
         <ul>
           <li><a href="http://csharp.2000things.com/tag/calculated-property/">C#</a></li>
           <li>Javascript <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/get">get</a> and <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/set">set</a></li>
@@ -229,7 +229,7 @@ M.propSet("value", M.getElemById("res"),
           <li><a href="http://blaag.haard.se/What-s-the-point-of-properties-in-Python/">Python</a></li>
         </ul>
       </li>
-      <li>Optionally, invocation points can be defined for primitive data-type in any given language.</li>
+      <li>Optionally, invocation points can be defined for primitive data-types in any given language.</li>
     </ul>
   </li>
 </ul>
@@ -339,18 +339,11 @@ M.propSet({
 
 <p>in <a href="/design/design-composition-based-language">SipCoffee</a>:</p>
 
-<pre><code>propSet (
-  destProp "value"
-  dest getElemById (id "result")
-  src add (
-    l propGet (
-      item getElemById (id "left")
-      prop "value"
-    )
-    r propGet (
-      item getElemById (id "right")
-      prop "value"
-    )
+<pre><code>propSet("value"
+  getElemById("result")
+  add(
+    propGet("value" getElemById(id "left"))
+    propGet("value" getElemById(id "right"))
   )
 )
 </code></pre>
@@ -373,7 +366,7 @@ M.propSet({
 };
 </code></pre>
 
-<p>Your probably noticed already that policies can be easily converted between different languages.</p>
+<p>You’ve probably noticed already that policies can be easily converted between different languages.</p>
 
 <h2 id="further-reading">Further Reading</h2>
 
@@ -389,22 +382,20 @@ M.propSet({
 
 <p>All programs and applications are implemented using policies.</p>
 
-<p>So, we ask ourselves the question:</p>
+<p>We ask ourselves the question:</p>
 
 <blockquote>
   <p>Can we, efficiently, implement our policy (program) using available mechanisms?</p>
 </blockquote>
 
-<p>If the answer is yes, then don’t create any new mechanisms.</p>
-
-<p>If the answer is no, it is because:</p>
+<p>Create a mechanism when:</p>
 
 <ul>
   <li>the policy can’t be defined because the mechanisms required don’t exist.</li>
   <li>the existing mechanisms aren’t efficient enough for the problem domain (the software framework is lacking).</li>
   <li>there are common policies that would look better if we created a single mechanism out of the policy.
     <ul>
-      <li>In the examples, we access a property of a DOM element quite often using two mechanisms.</li>
+      <li>In the examples, accessing a property of a DOM element requires two mechanisms. We could make that one.</li>
     </ul>
   </li>
 </ul>
