@@ -4,7 +4,7 @@
  <title>Eric Hosick</title>
  <link href="http://erichosick.github.com/atom.xml" rel="self"/>
  <link href="http://erichosick.github.com"/>
- <updated>2014-09-30T19:05:47-07:00</updated>
+ <updated>2014-10-01T11:56:57-07:00</updated>
  <id>http://erichosick.github.com</id>
  <author>
    <name>Eric Hosick</name>
@@ -296,7 +296,7 @@ M.propSet({
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;A, lofty, goal is to provide all mechanisms necessary to create any policy within a single programming-language-framework.&lt;/p&gt;
+&lt;p&gt;A, lofty, goal is to provide all mechanisms necessary to create any policy within a single framework-programming-language.&lt;/p&gt;
 
 &lt;h3 id=&quot;why-consider-efficiency&quot;&gt;Why Consider Efficiency?&lt;/h3&gt;
 
@@ -418,6 +418,10 @@ $ addD.goStr;
 $ addD.goBool;
 $ addD.goArr;
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&quot;how-can-this-help-me-now&quot;&gt;How Can This Help Me Now?&lt;/h1&gt;
+
+&lt;p&gt;You don’t need an entire framework of mechanisms to get started. You can improve separation of policy from the framework-programming-language you use by applying the &lt;a href=&quot;https://en.wikipedia.org/wiki/Facade_pattern&quot;&gt;façade pattern&lt;/a&gt;: building out a few domain specific mechanisms.&lt;/p&gt;
 
 &lt;p&gt;If you find mechanisms interesting, please follow &lt;a href=&quot;http://www.twitter.com/erichosick&quot;&gt;@erichosick&lt;/a&gt;.&lt;/p&gt;
 

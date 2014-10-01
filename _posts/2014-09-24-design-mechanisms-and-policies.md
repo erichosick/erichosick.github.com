@@ -246,7 +246,7 @@ Create a mechanism when:
 * there are common policies that would look better if we created a single mechanism out of the policy.
   * In the examples, accessing a property of a DOM element requires two mechanisms. We could make that one.
 
-A, lofty, goal is to provide all mechanisms necessary to create any policy within a single programming-language-framework.
+A, lofty, goal is to provide all mechanisms necessary to create any policy within a single framework-programming-language.
 
 ### Why Consider Efficiency?
 
@@ -359,6 +359,10 @@ Go into a console (For example: View -> Developer -> JavaScript Console in Chrom
     $ addD.goStr;
     $ addD.goBool;
     $ addD.goArr;
+
+# How Can This Help Me Now?
+
+You don't need an entire framework of mechanisms to get started. You can improve separation of policy from the framework-programming-language you use by applying the [façade pattern](https://en.wikipedia.org/wiki/Facade_pattern): building out a few domain specific mechanisms.
 
 If you find mechanisms interesting, please follow [@erichosick](http://www.twitter.com/erichosick).
 
