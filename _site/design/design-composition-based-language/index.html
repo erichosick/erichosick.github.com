@@ -80,17 +80,21 @@
 
   
      
-    	<li><a href="/tags.html#Language-ref">Language <span>1</span></a></li>
+    	<li><a href="/tags.html#language-ref">language <span>1</span></a></li>
      
-    	<li><a href="/tags.html#Persistence-ref">Persistence <span>1</span></a></li>
+    	<li><a href="/tags.html#persistence-ref">persistence <span>1</span></a></li>
      
-    	<li><a href="/tags.html#Scripting-ref">Scripting <span>1</span></a></li>
+    	<li><a href="/tags.html#scripting-ref">scripting <span>1</span></a></li>
      
-    	<li><a href="/tags.html#Composition-ref">Composition <span>4</span></a></li>
+    	<li><a href="/tags.html#composition-ref">composition <span>5</span></a></li>
      
     	<li><a href="/tags.html#mechanisms-ref">mechanisms <span>2</span></a></li>
      
     	<li><a href="/tags.html#policies-ref">policies <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#homoiconic-ref">homoiconic <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#homoiconicity-ref">homoiconicity <span>1</span></a></li>
     
   
 
@@ -132,15 +136,15 @@
 <p>The Hello world policy in SipCoffee:</p>
 
 <div id="id-s1-1-top">&nbsp;</div>
-<pre><code>Application {
-  do WriteLine { text "Hello World" }
-}
 
-// with property ordering
+<pre><code>(Application
+  (WriteLine "Hello World")
+)
 
-Application {
-  WriteLine { "Hello World" }
-}
+// with named properties
+(Application
+  do (WriteLine text "Hello World")
+)
 </code></pre>
 
 <h6 id="id-s1-1">Policy-1.1: Hello World in SipCoffee.</h6>
@@ -160,19 +164,20 @@ Application {
 <p>A policy to write Hello World 10 times on separate lines.</p>
 
 <div id="id-s1-2-top">&nbsp;</div>
-<pre><code>Application {
-  do For { start 1 end 20 by 2 
-    do WriteLine { text "Hello World" }
-  }
-}
 
-// with property ordering
+<pre><code>(Application
+  (For 1 20 2 
+    (WriteLine "Hello World")
+  )
+)
 
-Application {
-  For { 1 20 2 
-    WriteLine { "Hello World" }
-  }
-}
+
+// with named properties
+(Application
+  do (For start 1 end 20 by 2 
+    do (WriteLine text "Hello World")
+  )
+)
 </code></pre>
 
 <h6 id="id-s1-2">Policy-1.2: Hello written 10 times in SipCoffee.</h6>
@@ -182,12 +187,12 @@ Application {
 <p>A policy to write the numbers 1, 2, 4, 8, 16 and 32 on separate lines.</p>
 
 <div id="id-s1-3-top">&nbsp;</div>
-<pre><code>Application {
-  do ForEach {
-    item List [ 1 2 4 8 16 32 ]
-    do WriteLine { text CurrentItem {} }
-  }
-}
+<pre><code>(Application
+  (ForEach
+    (List[ 1 2 4 8 16 32 ])
+    (WriteLine CurrentItem())
+  )
+)
 </code></pre>
 
 <h6 id="id-s1-3">Policy-1.3: A for each in SipCoffee.</h6>
@@ -197,27 +202,27 @@ Application {
 <p>A policy to write out the first name of users Jane, Smith and Joe: each on a new line.</p>
 
 <div id="id-s1-4-top">&nbsp;</div>
-<pre><code>Application {
-  do ForEach {
-    item List [
-      Hash [
-        KeyPair { key "firstName" value "Jane"}
-        KeyPair { key "lastName" value "First"}
-      ]
-      Hash [
-        KeyPair { key "firstName" value "Smith"}
-        KeyPair { key "lastName" value "Between"}
-      ]
-      Hash [
-        KeyPair { key "firstName" value "Joe"}
-        KeyPair { key "lastName" value "Last"}
-      ]
-    ]
-    do WriteLine {
-      text HashRead { hash CurrentItem{} key "firstName" }
-    }
-  }
-}
+<pre><code>(Application
+  (ForEach
+    (List[
+      (Hash
+        (KeyPair "firstName" "Jane")
+        (KeyPair "lastName" "First")
+      )
+      (Hash
+        (KeyPair "firstName" value "Smith")
+        (KeyPair "lastName" value "Between")
+      )
+      (Hash
+        (KeyPair "firstName" "Joe")
+        (KeyPair "lastName" "Last")
+      )]
+    )
+    (WriteLine
+      (HashRead "firstName" CurrentItem())
+    )
+  )
+)
 </code></pre>
 
 <h6 id="id-s1-4">Policy-1.4: A for each in SipCoffee.</h6>
@@ -227,19 +232,24 @@ Application {
 <p>A policy to write out the first name of users with data coming from a database: each on a new line.</p>
 
 <div id="id-s1-4-top">&nbsp;</div>
-<pre><code>Application {
-  do ForEach {
-    item SqlConnect {
-      database "someDatabase"
-      command SqlQuery {
-        sql "SELECT firstName, lastName FROM users"
-      }
-    }
-    do WriteLine {
-      text HashRead { hash CurrentItem{} key "firstName" }
-    }
-  }
-}
+<pre><code>(Application
+  (ForEach
+    (SqlConnect "someDatabase"
+      (SqlQuery "SELECT firstName, lastName FROM users")
+    )
+    (WriteLine (HashRead "firstName" CurrentItem()))
+  )
+)
+
+// named propertes
+(Application do
+  (ForEach item
+    (SqlConnect databaseName "someDatabase"
+      (SqlQuery sql "SELECT firstName, lastName FROM users")
+    )
+    (WriteLine text (HashRead key "firstName" hashTable CurrentItem()))
+  )
+)
 </code></pre>
 
 <h6 id="id-s1-4">Policy-1.4: A for each in SipCoffee.</h6>
@@ -266,17 +276,16 @@ Application {
 
 <p>Mechanisms are upper/lower case and properties are lower case. A property contains a mechanism or composition of mechanisms.</p>
 
-<p>We use {} to define the contents of a mechanism. We use [] to define special mechanisms which manage collections of data (Hash, List and Array are examples of just such a mechanism).</p>
+<p>We use () to define the contents of a mechanism.</p>
 
 <h2 id="parsing-expression-grammar">Parsing Expression Grammar</h2>
 
 <p>A pseudo parsing expression grammar is as follows:</p>
 
 <div id="id-g1-1-top">&nbsp;</div>
-<pre><code>a} PROPERTY &lt;- property primitive+
-b} PROPERTY &lt;- property MECHANISM+
-c} MECHANISM &lt;- Mechanism { PROPERTY* } // Could also be () if people prefered that.
-d} MECHANISM &lt;- Mechanism [ MECHANISM ]
+<pre><code>a} PROPERTY &lt;- MECHANISM
+b} PROPERTY &lt;- (MECHANISM PROPERTY+)
+d} PROPERTY &lt;- (MECHANISM [PROPERTY*])
 </code></pre>
 
 <h6 id="id-g1-1">Grammar-1.1: Parsing expression grammar for SipCoffee.</h6>
@@ -301,10 +310,10 @@ d} MECHANISM &lt;- Mechanism [ MECHANISM ]
 <p>A collection is defined by simply listing the item in the array separated by white space (we could also separate items using commas).</p>
 
 <ul>
-  <li>array of strings - [ “Hello” “And” “GoodBye” ]</li>
-  <li>array of integers - [ 1 2 5 6 12 656 ]</li>
-  <li>array of floats - [ 23.0f 345.4f 63.346f ]</li>
-  <li>array of Mechanisms - [ User { name “Jane” } User { name “Toan” } User { name “Frank” } ]</li>
+  <li>array of strings - [“Hello” “And” “GoodBye”]</li>
+  <li>array of integers - [1 2 5 6 12 656]</li>
+  <li>array of floats - [23.0f 345.4f 63.346f]</li>
+  <li>array of Mechanisms - [(User “Jane”) (User “Toan”) (User “Frank”)]</li>
 </ul>
 
 <h2 id="availability">Availability</h2>
@@ -315,11 +324,11 @@ d} MECHANISM &lt;- Mechanism [ MECHANISM ]
 
 <h2 id="other-possible-syntax">Other Possible Syntax</h2>
 
-<p>We could also use spacing to associate mechanisms with properties removing the need for {} or ()</p>
+<p>We could also use spacing to associate mechanisms with properties removing the need for ()</p>
 
 <pre><code>Application
   do ForEach
-    item List [ 1 2 4 8 16 32 ]
+    item List [1 2 4 8 16 32]
     do WriteLine
       text CurrentItem
 
@@ -341,7 +350,7 @@ Application
 
 <pre><code>Application
   ForEach
-    List [ 1 2 4 8 16 32 ]
+    List [1 2 4 8 16 32]
     WriteLine
       CurrentItem
 
@@ -363,24 +372,24 @@ Application
 
 <p>Something that looks a lot like functional programming (it could even be functional programming)</p>
 
-<pre><code>Application (
-  ForEach (
+<pre><code>Application(
+  ForEach(
     List ([ 1 2 4 8 16 32 ]),
-    WriteLine (
-      CurrentItem
+    WriteLine(
+      CurrentItem()
     )
   )
 )
-
+  
 // another example
 
-Application (
-  ForEach (
-    SqlConnect ( "someDatabase",
-      SqlQuery ( "SELECT firstName, lastName FROM users" )
+Application(
+  ForEach(
+    SqlConnect("someDatabase",
+      SqlQuery("SELECT firstName, lastName FROM users")
     ),
-    WriteLine (
-      HashRead ( CurrentItem, "firstName" )
+    WriteLine(
+      HashRead(CurrentItem(), "firstName")
     )
   )
 )

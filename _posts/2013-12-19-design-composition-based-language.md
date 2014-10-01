@@ -3,7 +3,7 @@ layout: post
 title: "A Programming Language Based on Composition of Mechanisms"
 description: "A very simple mechanism-oriented programming language which uses composition of mechanisms exclusively."
 category: Design
-tags: [Language, Persistence, Scripting, Composition, mechanisms, policies]
+tags: [language, persistence, scripting, composition, mechanisms, policies, homoiconic, homoiconicity]
 author: Eric Hosick
 author_twitter: erichosick
 ---
@@ -25,15 +25,15 @@ We focus on the creation of policy through the composition of existing mechanism
 The Hello world policy in SipCoffee:
 
 <div id='id-s1-1-top'>&nbsp;</div>
-    Application {
-      do WriteLine { text "Hello World" }
-    }
 
-    // with property ordering
-    
-    Application {
-      WriteLine { "Hello World" }
-    }
+    (Application
+      (WriteLine "Hello World")
+    )
+
+    // with named properties
+    (Application
+      do (WriteLine text "Hello World")
+    )
 
 ###### Policy-1.1: Hello World in SipCoffee. {#id-s1-1}
 
@@ -52,19 +52,21 @@ We can also define our policy by assuming an order for properties. This does lea
 A policy to write Hello World 10 times on separate lines.
 
 <div id='id-s1-2-top'>&nbsp;</div>
-    Application {
-      do For { start 1 end 20 by 2 
-        do WriteLine { text "Hello World" }
-      }
-    }
 
-    // with property ordering
-    
-    Application {
-      For { 1 20 2 
-        WriteLine { "Hello World" }
-      }
-    }
+    (Application
+      (For 1 20 2 
+        (WriteLine "Hello World")
+      )
+    )
+
+
+    // with named properties
+    (Application
+      do (For start 1 end 20 by 2 
+        do (WriteLine text "Hello World")
+      )
+    )
+
 
 ###### Policy-1.2: Hello written 10 times in SipCoffee. {#id-s1-2}
 
@@ -73,12 +75,12 @@ A policy to write Hello World 10 times on separate lines.
 A policy to write the numbers 1, 2, 4, 8, 16 and 32 on separate lines.
 
 <div id='id-s1-3-top'>&nbsp;</div>
-    Application {
-      do ForEach {
-        item List [ 1 2 4 8 16 32 ]
-        do WriteLine { text CurrentItem {} }
-      }
-    }
+    (Application
+      (ForEach
+        (List[ 1 2 4 8 16 32 ])
+        (WriteLine CurrentItem())
+      )
+    )
 
 ###### Policy-1.3: A for each in SipCoffee. {#id-s1-3}
 
@@ -87,27 +89,27 @@ A policy to write the numbers 1, 2, 4, 8, 16 and 32 on separate lines.
 A policy to write out the first name of users Jane, Smith and Joe: each on a new line.
 
 <div id='id-s1-4-top'>&nbsp;</div>
-    Application {
-      do ForEach {
-        item List [
-          Hash [
-            KeyPair { key "firstName" value "Jane"}
-            KeyPair { key "lastName" value "First"}
-          ]
-          Hash [
-            KeyPair { key "firstName" value "Smith"}
-            KeyPair { key "lastName" value "Between"}
-          ]
-          Hash [
-            KeyPair { key "firstName" value "Joe"}
-            KeyPair { key "lastName" value "Last"}
-          ]
-        ]
-        do WriteLine {
-          text HashRead { hash CurrentItem{} key "firstName" }
-        }
-      }
-    }
+    (Application
+      (ForEach
+        (List[
+          (Hash
+            (KeyPair "firstName" "Jane")
+            (KeyPair "lastName" "First")
+          )
+          (Hash
+            (KeyPair "firstName" value "Smith")
+            (KeyPair "lastName" value "Between")
+          )
+          (Hash
+            (KeyPair "firstName" "Joe")
+            (KeyPair "lastName" "Last")
+          )]
+        )
+        (WriteLine
+          (HashRead "firstName" CurrentItem())
+        )
+      )
+    )
 
 ###### Policy-1.4: A for each in SipCoffee. {#id-s1-4}
 
@@ -116,19 +118,24 @@ A policy to write out the first name of users Jane, Smith and Joe: each on a new
 A policy to write out the first name of users with data coming from a database: each on a new line.
 
 <div id='id-s1-4-top'>&nbsp;</div>
-    Application {
-      do ForEach {
-        item SqlConnect {
-          database "someDatabase"
-          command SqlQuery {
-            sql "SELECT firstName, lastName FROM users"
-          }
-        }
-        do WriteLine {
-          text HashRead { hash CurrentItem{} key "firstName" }
-        }
-      }
-    }
+    (Application
+      (ForEach
+        (SqlConnect "someDatabase"
+          (SqlQuery "SELECT firstName, lastName FROM users")
+        )
+        (WriteLine (HashRead "firstName" CurrentItem()))
+      )
+    )
+
+    // named propertes
+    (Application do
+      (ForEach item
+        (SqlConnect databaseName "someDatabase"
+          (SqlQuery sql "SELECT firstName, lastName FROM users")
+        )
+        (WriteLine text (HashRead key "firstName" hashTable CurrentItem()))
+      )
+    )
 
 ###### Policy-1.4: A for each in SipCoffee. {#id-s1-4}
 
@@ -154,17 +161,16 @@ Syntactically, the language is simple.
 
 Mechanisms are upper/lower case and properties are lower case. A property contains a mechanism or composition of mechanisms.
 
-We use {} to define the contents of a mechanism. We use [] to define special mechanisms which manage collections of data (Hash, List and Array are examples of just such a mechanism).
+We use () to define the contents of a mechanism.
 
 ## Parsing Expression Grammar
 
 A pseudo parsing expression grammar is as follows:
-  
+
 <div id='id-g1-1-top'>&nbsp;</div>
-    a} PROPERTY <- property primitive+
-    b} PROPERTY <- property MECHANISM+
-    c} MECHANISM <- Mechanism { PROPERTY* } // Could also be () if people prefered that.
-    d} MECHANISM <- Mechanism [ MECHANISM ]
+    a} PROPERTY <- MECHANISM
+    b} PROPERTY <- (MECHANISM PROPERTY+)
+    d} PROPERTY <- (MECHANISM [PROPERTY*])
 
 ###### Grammar-1.1: Parsing expression grammar for SipCoffee. {#id-g1-1}
 
@@ -185,10 +191,10 @@ Examples being:
 
 A collection is defined by simply listing the item in the array separated by white space (we could also separate items using commas).
 
-* array of strings - [ "Hello" "And" "GoodBye" ]
-* array of integers - [ 1 2 5 6 12 656 ]
-* array of floats - [ 23.0f 345.4f 63.346f ]
-* array of Mechanisms - [ User { name "Jane" } User { name "Toan" } User { name "Frank" } ]
+* array of strings - ["Hello" "And" "GoodBye"]
+* array of integers - [1 2 5 6 12 656]
+* array of floats - [23.0f 345.4f 63.346f]
+* array of Mechanisms - [(User "Jane") (User "Toan") (User "Frank")]
 
 ## Availability
 
@@ -198,11 +204,11 @@ In the mean time, please follow us [@interfaceVision](http://www.twitter.com/int
 
 ## Other Possible Syntax
 
-We could also use spacing to associate mechanisms with properties removing the need for {} or ()
+We could also use spacing to associate mechanisms with properties removing the need for ()
 
     Application
       do ForEach
-        item List [ 1 2 4 8 16 32 ]
+        item List [1 2 4 8 16 32]
         do WriteLine
           text CurrentItem
 
@@ -224,7 +230,7 @@ and with property ordering
 
     Application
       ForEach
-        List [ 1 2 4 8 16 32 ]
+        List [1 2 4 8 16 32]
         WriteLine
           CurrentItem
 
@@ -243,31 +249,29 @@ and with property ordering
 
 Though readability is getting tricky and knowledge of each mechanism's property ordering is required.
 
-
 Something that looks a lot like functional programming (it could even be functional programming)
 
-    Application (
-      ForEach (
+    Application(
+      ForEach(
         List ([ 1 2 4 8 16 32 ]),
-        WriteLine (
-          CurrentItem
+        WriteLine(
+          CurrentItem()
         )
       )
     )
-    
+  
     // another example
 
-    Application (
-      ForEach (
-        SqlConnect ( "someDatabase",
-          SqlQuery ( "SELECT firstName, lastName FROM users" )
+    Application(
+      ForEach(
+        SqlConnect("someDatabase",
+          SqlQuery("SELECT firstName, lastName FROM users")
         ),
-        WriteLine (
-          HashRead ( CurrentItem, "firstName" )
+        WriteLine(
+          HashRead(CurrentItem(), "firstName")
         )
       )
     )
-
 
 ## Conclusion
 
