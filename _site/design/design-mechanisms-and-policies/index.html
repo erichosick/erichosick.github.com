@@ -337,11 +337,11 @@ M.propSet({
 
 <p>in <a href="/design/design-composition-based-language">SipCoffee</a>:</p>
 
-<pre><code>propSet("value"
-  getElemById("result")
-  add(
-    propGet("value" getElemById("left"))
-    propGet("value" getElemById("right"))
+<pre><code>(propSet "value"
+  (getElemById "result")
+  (add
+    (propGet "value" (getElemById "left"))
+    (propGet "value" (getElemById "right"))
   )
 )
 </code></pre>
@@ -521,7 +521,7 @@ $ addD.goBool;
 $ addD.goArr;
 </code></pre>
 
-<p>If you find our work on mechanisms interesting, please follow us <a href="http://www.twitter.com/interfaceVision">@interfaceVision</a> and/or <a href="http://www.twitter.com/erichosick">@erichosick</a>.</p>
+<p>If you find mechanisms interesting, please follow <a href="http://www.twitter.com/erichosick">@erichosick</a>.</p>
 
 
       <hr>

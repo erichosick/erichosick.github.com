@@ -194,11 +194,11 @@ in Javascript (object-ish):
 
 in [SipCoffee]({% post_url 2013-12-19-design-composition-based-language %}):
 
-    propSet("value"
-      getElemById("result")
-      add(
-        propGet("value" getElemById("left"))
-        propGet("value" getElemById("right"))
+    (propSet "value"
+      (getElemById "result")
+      (add
+        (propGet "value" (getElemById "left"))
+        (propGet "value" (getElemById "right"))
       )
     )
 
@@ -360,5 +360,5 @@ Go into a console (For example: View -> Developer -> JavaScript Console in Chrom
     $ addD.goBool;
     $ addD.goArr;
 
-If you find our work on mechanisms interesting, please follow us [@interfaceVision](http://www.twitter.com/interfaceVision) and/or [@erichosick](http://www.twitter.com/erichosick).
+If you find mechanisms interesting, please follow [@erichosick](http://www.twitter.com/erichosick).
 
