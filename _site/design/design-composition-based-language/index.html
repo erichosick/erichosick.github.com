@@ -3,7 +3,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>A Programming Language Based on Composition of Mechanisms</title>
+    <title>SipCoffee - A Programming Language Based on Mechanisms</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="A very simple mechanism-oriented programming language which uses composition of mechanisms exclusively.">
     <meta name="author" content="Eric Hosick">
@@ -108,7 +108,7 @@
   <div class="span9">
     <div class="hero-unit">
       <div class="page-header">
-        <h1>A Programming Language Based on Composition of Mechanisms</h1>
+        <h1>SipCoffee - A Programming Language Based on Mechanisms</h1>
         <div class="row-fluid">
           <div class="span2">
             <img src="/assets/img/eric_hosick.jpg" class="img-rounded">
@@ -151,13 +151,9 @@
 
 <h3 id="hello-world-explained">Hello World Explained</h3>
 
-<p><a href="#id-s1-1-top">Policy-1.1</a> contains two mechanisms named Application and WriteLine (mechanisms written in C#). </p>
+<p><a href="#id-s1-1-top">Policy-1.1</a> contains two mechanisms named Application and WriteLine (mechanisms written in C# and/or Javascript).</p>
 
-<p>Application has the property do. The do property contains an instance of WriteLine.</p>
-
-<p>WriteLine has a text property, which is the text to write, and has the value “Hello World”.</p>
-
-<p>We can also define our policy by assuming an order for properties. This does lead to readability problems so you may want to use it sparingly.</p>
+<p>For named properties, we say Application has a property <em>do</em>. The <em>do</em> property contains a WriteLine mechanism instance. WriteLine has a property <em>text</em> which contains the text to write: a (primitive) mechanism with the value “Hello World”.</p>
 
 <h3 id="hello-world-10-times">Hello World 10 Times</h3>
 
@@ -170,7 +166,6 @@
     (WriteLine "Hello World")
   )
 )
-
 
 // with named properties
 (Application
@@ -256,7 +251,7 @@
 
 <h3 id="foreach-using-sql-explained">ForEach Using Sql Explained</h3>
 
-<p>A ForEach mechanism contains an item property. The item property contains a SqlConnect mechanism configured with a database (named “someDatabase”) and a command (a SqlQuery mechanism with sql “SELECT firstName, lastName FROM users”).</p>
+<p>A ForEach mechanism contains an <em>item</em> property. The <em>item</em> property contains a SqlConnect mechanism configured with a <em>databaseName</em> (named “someDatabase”) and a <em>command</em> (a SqlQuery mechanism with <em>sql</em> “SELECT firstName, lastName FROM users”).</p>
 
 <p>The ForEach mechanism invokes the SqlConnect mechanism. The SqlConnect mechanism connects to the database and invokes the mechanism located in the command property. This causes SqlQuery to invoke which runs the sql and returns a list of records to SqlConnect. Each record is a hash table with a key/value pair for each field.</p>
 
@@ -285,7 +280,8 @@
 <div id="id-g1-1-top">&nbsp;</div>
 <pre><code>a} PROPERTY &lt;- MECHANISM
 b} PROPERTY &lt;- (MECHANISM PROPERTY+)
-d} PROPERTY &lt;- (MECHANISM [PROPERTY*])
+c} PROPERTY &lt;- (MECHANISM [PROPERTY*])
+d} MECHANISM &lt;- primitive
 </code></pre>
 
 <h6 id="id-g1-1">Grammar-1.1: Parsing expression grammar for SipCoffee.</h6>
@@ -333,7 +329,6 @@ d} PROPERTY &lt;- (MECHANISM [PROPERTY*])
       text CurrentItem
 
 // another example
-
 Application
   do ForEach
     item SqlConnect
@@ -342,8 +337,8 @@ Application
         sql "SELECT firstName, lastName FROM users"
     do WriteLine
       text HashRead
-        hash CurrentItem
         key "firstName"
+        hash CurrentItem
 </code></pre>
 
 <p>and with property ordering</p>
@@ -355,7 +350,6 @@ Application
       CurrentItem
 
 // another example
-
 Application
   ForEach
     SqlConnect
@@ -364,8 +358,8 @@ Application
         "SELECT firstName, lastName FROM users"
     WriteLine
       HashRead
-        CurrentItem
         "firstName"
+        CurrentItem
 </code></pre>
 
 <p>Though readability is getting tricky and knowledge of each mechanism’s property ordering is required.</p>
@@ -382,14 +376,13 @@ Application
 )
   
 // another example
-
 Application(
   ForEach(
     SqlConnect("someDatabase",
       SqlQuery("SELECT firstName, lastName FROM users")
     ),
     WriteLine(
-      HashRead(CurrentItem(), "firstName")
+      HashRead("firstName", CurrentItem())
     )
   )
 )

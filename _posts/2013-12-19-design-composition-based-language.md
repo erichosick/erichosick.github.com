@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "A Programming Language Based on Composition of Mechanisms"
+title: "SipCoffee - A Programming Language Based on Mechanisms"
 description: "A very simple mechanism-oriented programming language which uses composition of mechanisms exclusively."
 category: Design
 tags: [language, persistence, scripting, composition, mechanisms, policies, homoiconic, homoiconicity]
@@ -29,7 +29,7 @@ The Hello world policy in SipCoffee:
     (Application
       (WriteLine "Hello World")
     )
-
+    
     // with named properties
     (Application
       do (WriteLine text "Hello World")
@@ -39,13 +39,9 @@ The Hello world policy in SipCoffee:
 
 ### Hello World Explained
 
-[Policy-1.1](#id-s1-1-top) contains two mechanisms named Application and WriteLine (mechanisms written in C#). 
+[Policy-1.1](#id-s1-1-top) contains two mechanisms named Application and WriteLine (mechanisms written in C# and/or Javascript).
 
-Application has the property do. The do property contains an instance of WriteLine.
-
-WriteLine has a text property, which is the text to write, and has the value "Hello World".
-
-We can also define our policy by assuming an order for properties. This does lead to readability problems so you may want to use it sparingly.
+For named properties, we say Application has a property *do*. The *do* property contains a WriteLine mechanism instance. WriteLine has a property *text* which contains the text to write: a (primitive) mechanism with the value "Hello World".
 
 ### Hello World 10 Times
 
@@ -59,14 +55,12 @@ A policy to write Hello World 10 times on separate lines.
       )
     )
 
-
     // with named properties
     (Application
       do (For start 1 end 20 by 2 
         do (WriteLine text "Hello World")
       )
     )
-
 
 ###### Policy-1.2: Hello written 10 times in SipCoffee. {#id-s1-2}
 
@@ -141,7 +135,7 @@ A policy to write out the first name of users with data coming from a database: 
 
 ### ForEach Using Sql Explained
 
-A ForEach mechanism contains an item property. The item property contains a SqlConnect mechanism configured with a database (named "someDatabase") and a command (a SqlQuery mechanism with sql "SELECT firstName, lastName FROM users").
+A ForEach mechanism contains an *item* property. The *item* property contains a SqlConnect mechanism configured with a *databaseName* (named "someDatabase") and a *command* (a SqlQuery mechanism with *sql* "SELECT firstName, lastName FROM users").
 
 The ForEach mechanism invokes the SqlConnect mechanism. The SqlConnect mechanism connects to the database and invokes the mechanism located in the command property. This causes SqlQuery to invoke which runs the sql and returns a list of records to SqlConnect. Each record is a hash table with a key/value pair for each field.
 
@@ -170,7 +164,8 @@ A pseudo parsing expression grammar is as follows:
 <div id='id-g1-1-top'>&nbsp;</div>
     a} PROPERTY <- MECHANISM
     b} PROPERTY <- (MECHANISM PROPERTY+)
-    d} PROPERTY <- (MECHANISM [PROPERTY*])
+    c} PROPERTY <- (MECHANISM [PROPERTY*])
+    d} MECHANISM <- primitive
 
 ###### Grammar-1.1: Parsing expression grammar for SipCoffee. {#id-g1-1}
 
@@ -213,7 +208,6 @@ We could also use spacing to associate mechanisms with properties removing the n
           text CurrentItem
 
     // another example
-
     Application
       do ForEach
         item SqlConnect
@@ -222,8 +216,8 @@ We could also use spacing to associate mechanisms with properties removing the n
             sql "SELECT firstName, lastName FROM users"
         do WriteLine
           text HashRead
-            hash CurrentItem
             key "firstName"
+            hash CurrentItem
 
 
 and with property ordering
@@ -235,7 +229,6 @@ and with property ordering
           CurrentItem
 
     // another example
-
     Application
       ForEach
         SqlConnect
@@ -244,8 +237,9 @@ and with property ordering
             "SELECT firstName, lastName FROM users"
         WriteLine
           HashRead
-            CurrentItem
             "firstName"
+            CurrentItem
+
 
 Though readability is getting tricky and knowledge of each mechanism's property ordering is required.
 
@@ -261,14 +255,13 @@ Something that looks a lot like functional programming (it could even be functio
     )
   
     // another example
-
     Application(
       ForEach(
         SqlConnect("someDatabase",
           SqlQuery("SELECT firstName, lastName FROM users")
         ),
         WriteLine(
-          HashRead(CurrentItem(), "firstName")
+          HashRead("firstName", CurrentItem())
         )
       )
     )

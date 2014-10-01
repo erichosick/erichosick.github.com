@@ -4,7 +4,7 @@
  <title>Eric Hosick</title>
  <link href="http://erichosick.github.com/atom.xml" rel="self"/>
  <link href="http://erichosick.github.com"/>
- <updated>2014-09-30T18:52:49-07:00</updated>
+ <updated>2014-09-30T19:05:47-07:00</updated>
  <id>http://erichosick.github.com</id>
  <author>
    <name>Eric Hosick</name>
@@ -4137,7 +4137,7 @@ The [prior step] (/design/example-window-basic) was to get a program to display 
  </entry>
  
  <entry>
-   <title>A Programming Language Based on Composition of Mechanisms</title>
+   <title>SipCoffee - A Programming Language Based on Mechanisms</title>
    <link href="http://erichosick.github.com/design/design-composition-based-language"/>
    <updated>2013-12-19T00:00:00-08:00</updated>
    <id>http://erichosick.github.com/design/design-composition-based-language</id>
@@ -4173,13 +4173,9 @@ The [prior step] (/design/example-window-basic) was to get a program to display 
 
 &lt;h3 id=&quot;hello-world-explained&quot;&gt;Hello World Explained&lt;/h3&gt;
 
-&lt;p&gt;&lt;a href=&quot;#id-s1-1-top&quot;&gt;Policy-1.1&lt;/a&gt; contains two mechanisms named Application and WriteLine (mechanisms written in C#). &lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;#id-s1-1-top&quot;&gt;Policy-1.1&lt;/a&gt; contains two mechanisms named Application and WriteLine (mechanisms written in C# and/or Javascript).&lt;/p&gt;
 
-&lt;p&gt;Application has the property do. The do property contains an instance of WriteLine.&lt;/p&gt;
-
-&lt;p&gt;WriteLine has a text property, which is the text to write, and has the value “Hello World”.&lt;/p&gt;
-
-&lt;p&gt;We can also define our policy by assuming an order for properties. This does lead to readability problems so you may want to use it sparingly.&lt;/p&gt;
+&lt;p&gt;For named properties, we say Application has a property &lt;em&gt;do&lt;/em&gt;. The &lt;em&gt;do&lt;/em&gt; property contains a WriteLine mechanism instance. WriteLine has a property &lt;em&gt;text&lt;/em&gt; which contains the text to write: a (primitive) mechanism with the value “Hello World”.&lt;/p&gt;
 
 &lt;h3 id=&quot;hello-world-10-times&quot;&gt;Hello World 10 Times&lt;/h3&gt;
 
@@ -4192,7 +4188,6 @@ The [prior step] (/design/example-window-basic) was to get a program to display 
     (WriteLine &quot;Hello World&quot;)
   )
 )
-
 
 // with named properties
 (Application
@@ -4278,7 +4273,7 @@ The [prior step] (/design/example-window-basic) was to get a program to display 
 
 &lt;h3 id=&quot;foreach-using-sql-explained&quot;&gt;ForEach Using Sql Explained&lt;/h3&gt;
 
-&lt;p&gt;A ForEach mechanism contains an item property. The item property contains a SqlConnect mechanism configured with a database (named “someDatabase”) and a command (a SqlQuery mechanism with sql “SELECT firstName, lastName FROM users”).&lt;/p&gt;
+&lt;p&gt;A ForEach mechanism contains an &lt;em&gt;item&lt;/em&gt; property. The &lt;em&gt;item&lt;/em&gt; property contains a SqlConnect mechanism configured with a &lt;em&gt;databaseName&lt;/em&gt; (named “someDatabase”) and a &lt;em&gt;command&lt;/em&gt; (a SqlQuery mechanism with &lt;em&gt;sql&lt;/em&gt; “SELECT firstName, lastName FROM users”).&lt;/p&gt;
 
 &lt;p&gt;The ForEach mechanism invokes the SqlConnect mechanism. The SqlConnect mechanism connects to the database and invokes the mechanism located in the command property. This causes SqlQuery to invoke which runs the sql and returns a list of records to SqlConnect. Each record is a hash table with a key/value pair for each field.&lt;/p&gt;
 
@@ -4307,7 +4302,8 @@ The [prior step] (/design/example-window-basic) was to get a program to display 
 &lt;div id=&quot;id-g1-1-top&quot;&gt;&amp;nbsp;&lt;/div&gt;
 &lt;pre&gt;&lt;code&gt;a} PROPERTY &amp;lt;- MECHANISM
 b} PROPERTY &amp;lt;- (MECHANISM PROPERTY+)
-d} PROPERTY &amp;lt;- (MECHANISM [PROPERTY*])
+c} PROPERTY &amp;lt;- (MECHANISM [PROPERTY*])
+d} MECHANISM &amp;lt;- primitive
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;h6 id=&quot;id-g1-1&quot;&gt;Grammar-1.1: Parsing expression grammar for SipCoffee.&lt;/h6&gt;
@@ -4355,7 +4351,6 @@ d} PROPERTY &amp;lt;- (MECHANISM [PROPERTY*])
       text CurrentItem
 
 // another example
-
 Application
   do ForEach
     item SqlConnect
@@ -4364,8 +4359,8 @@ Application
         sql &quot;SELECT firstName, lastName FROM users&quot;
     do WriteLine
       text HashRead
-        hash CurrentItem
         key &quot;firstName&quot;
+        hash CurrentItem
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;and with property ordering&lt;/p&gt;
@@ -4377,7 +4372,6 @@ Application
       CurrentItem
 
 // another example
-
 Application
   ForEach
     SqlConnect
@@ -4386,8 +4380,8 @@ Application
         &quot;SELECT firstName, lastName FROM users&quot;
     WriteLine
       HashRead
-        CurrentItem
         &quot;firstName&quot;
+        CurrentItem
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;Though readability is getting tricky and knowledge of each mechanism’s property ordering is required.&lt;/p&gt;
@@ -4404,14 +4398,13 @@ Application
 )
   
 // another example
-
 Application(
   ForEach(
     SqlConnect(&quot;someDatabase&quot;,
       SqlQuery(&quot;SELECT firstName, lastName FROM users&quot;)
     ),
     WriteLine(
-      HashRead(CurrentItem(), &quot;firstName&quot;)
+      HashRead(&quot;firstName&quot;, CurrentItem())
     )
   )
 )
