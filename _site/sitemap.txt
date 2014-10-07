@@ -7,6 +7,7 @@ http://erichosick.github.com/pages.html
 http://erichosick.github.com/sitemap.txt
 http://erichosick.github.com/tags.html
 
+http://erichosick.github.com/design/browerify-libraries-with-gulp
 http://erichosick.github.com/design/design-mechanisms-and-policies
 http://erichosick.github.com/design/design-csharp-and-homoiconicity
 http://erichosick.github.com/design/design-javascript-and-homoiconicity

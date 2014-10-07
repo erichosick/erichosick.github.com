@@ -1,0 +1,309 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Browserifying Libraries With Gulp Using Require and Expose</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Mechanisms - Blurring the Distinction Between Languages, Operating Systems and Frameworks">
+    <meta name="author" content="Eric Hosick">
+
+    <meta property="og:title" content="Eric Hosick" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="http://www.erichosick.com/assets/img/eric_hosick.jpg"/> 
+    <meta property="og:description" content="Eric Hosick's personal blog page and stuff."/>
+    <meta property="fb:admins" content="erichosick" />
+
+    <link href='//netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap-combined.min.css' rel='stylesheet'>    
+    <link href="/assets/themes/twitter/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <link href="http://fonts.googleapis.com/css?family=Pontano+Sans" rel="stylesheet" type="text/css">
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
+
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="http://www.erichosick.com"><img src="/assets/img/logoRuby.png"></img></a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li><a href="/index.html">Home</a></li>
+              <li><a href="/categories.html">Categories</a></li>
+              <li><a href="/pages.html">Pages</a></li>
+              <li><a href="/tags.html">Tags</a></li>
+            </ul>
+            <p class="pull-right">
+              <a class="nav-a-social" href="https://plus.google.com/101227313031284036080/posts" target="_blank"><i class="icon-google-color icon-social"></i></a>
+              <a class="nav-a-social" href="http://www.twitter.com/erichosick" target="_blank"><i class="icon-twitter-color icon-social"></i></a>
+              <a class="nav-a-social" href="mailto:erichosick@gmail.com"><i class="icon-mail-color icon-social"></i></a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>    
+
+    <div class="container-fluid container-main">
+      
+<div class="row-fluid">
+  <div class="span3">
+    <div class="well sidebar-nav">
+  <ul class="nav nav-list">
+    <li class="nav-header">About</li>
+    <li><img src="/assets/img/eric_hosick.jpg" class="img-rounded"></li>
+    <li> <a href="http://www.erichosick.com">Eric Hosick</a><p class="nav-about">Creator of Interface Vision, NoMethods, Agile enthusiast, entrepreneur, founder, BDD advocate, lecturer, technologist, developer, scrum master and book writer.</p></li>
+    <li><p><a href="http://twitter.com/erichosick" target="_blank">erichosick@gmail.com</a></p></li>
+  </ul>
+</div>
+
+    
+    <div class="well sidebar-nav">
+      <ul class="nav nav-list">
+        <li class="nav-header">Tags</li>
+        
+        
+
+
+  
+     
+    	<li><a href="/tags.html#node-ref">node <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#npm-ref">npm <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#require-ref">require <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#expose-ref">expose <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#browserify-ref">browserify <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#gulp-ref">gulp <span>1</span></a></li>
+    
+  
+
+
+
+      </ul>
+    </div><!--/.well -->
+      
+    
+  </div>
+  <div class="span9">
+    <div class="hero-unit">
+      <div class="page-header">
+        <h1>Browserifying Libraries With Gulp Using Require and Expose</h1>
+        <div class="row-fluid">
+          <div class="span2">
+            <img src="/assets/img/eric_hosick.jpg" class="img-rounded">
+          </div>
+          <div class="span8">
+            <p>by <a href="http://twitter.com/erichosick" target="_blank">Eric Hosick</a> (erichosick@gmail.com)</p>
+            <h4>Published <small class="date">06 October 2014</small></h4>
+          </div>
+        </div>
+      </div>
+      <h1 id="creating-a-browserified-library-with-gulp">Creating A Browserified Library With Gulp</h1>
+
+<p>The github project is <a href="https://github.com/erichosick/nodeboxrequire">here</a>.</p>
+
+<p>If, in the browser, you get the error “Uncaught Error: Cannot find module” followed by the name of your module, then you’ve come to the right place.</p>
+
+<p>Hopefully, this will give you some hints about how Browserify allows you to require node modules on your site.</p>
+
+<h2 id="install-browserify-globally">Install Browserify Globally</h2>
+
+<p>If you haven’t done so already, install browserify globally:</p>
+
+<pre><code>$ npm install browserify -g
+</code></pre>
+
+<h1 id="what-we-will-do">What We Will Do</h1>
+
+<p>Let’s say you have a module with multiple functions you want to export as a library.</p>
+
+<p>For example:</p>
+
+<pre><code>// see robot.js
+
+var robotParents = require('./robotparent.js');
+
+module.exports.say = function(say) {
+  return "Robots say " + say;
+};
+module.exports.yell = function(say) {
+  return "Robots parents are like '" + robotParents.beep(say) + "'!";
+};
+</code></pre>
+
+<p>And we want to use that as a require(‘robot’) in an html file like so:</p>
+
+<pre><code>// see index.html
+
+&lt;html&gt;
+  &lt;body&gt;
+    &lt;script src="robot.browser.js"&gt;&lt;/script&gt;
+    &lt;script&gt;
+      var robots = require('robot');
+      var parents = require('./robotparent.js');
+      console.log(robots.yell("hello"));
+      console.log(robots.say("hi"));
+      console.log(parents.beep("argh"));
+    &lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>We are exporting our entire library so it can be used in the browser.</p>
+
+<h2 id="using-the-command-line">Using the Command Line</h2>
+
+<p>We can run the following in the command line:</p>
+
+<pre><code>$ browserify -r ./robotparent.js -r ./robot.js:robot &gt; robot.browser.js
+</code></pre>
+
+<p>What is really important is that:</p>
+
+<ul>
+  <li>Use -r or –require to allow you to require your library in the browser.</li>
+  <li>Use “./robot.js” and NOT “robot.js”
+    <ul>
+      <li>We are able to get access to both the robotparent and robot libraries.</li>
+      <li>Notice the parent library is required as follows ‘./robotparent.js’.</li>
+    </ul>
+  </li>
+  <li>The library name is whatever you put after the : (in this case robot)</li>
+</ul>
+
+<h2 id="using-gulp">Using Gulp</h2>
+
+<h3 id="setup-gulp-and-npms">Setup Gulp and npm’s</h3>
+
+<pre><code>$ npm install
+
+$ npm install browserify --save-dev
+$ npm install vinyl-transform --save-dev
+$ npm install gulp-rename --save-dev
+</code></pre>
+
+<h3 id="the-gulp-file">The Gulp File</h3>
+
+<pre><code>var gulp = require('gulp');
+var browserify = require('browserify');
+var rename = require('gulp-rename');
+var transform = require('vinyl-transform');
+
+gulp.task('default', ['browserify']);
+
+gulp.task('browserify', function() {
+  var browserified = transform(function(filename) {
+    return browserify()
+      .require('./robot.js', {expose: 'robot'})
+      .require('./robotparent.js', {expose: './robotparent.js'})
+      .bundle();
+  });
+
+  return gulp.src('robot.js')
+    .pipe(browserified)
+    .pipe(rename('robot.browser.js'))
+    .pipe(gulp.dest('.'));
+});
+</code></pre>
+
+<p>The important bits are the require and bundle bits.</p>
+
+<p>For every library we want to expose, we have to use ‘.require’. In this case, we want to expose robot.js and robotparent.js.</p>
+
+<p>There are ways to automate the exposing of files (<a href="http://9elements.com/io/index.php/external-bundles-with-browserify-and-gulp/">External Bundles with Browserify</a>) but we are keeping things simple.</p>
+
+<h3 id="running-the-gulp-command">Running The Gulp Command</h3>
+
+<pre><code>$ gulp
+</code></pre>
+
+<p>This causes the ‘default’ task to run which calls the ‘browserify’ task.</p>
+
+
+      <hr>
+      <div class="pagination pagination-centered">
+        <ul>
+        
+          <li class="prev"><a href="/design/design-mechanisms-and-policies" title="Mechanisms">&larr; Previous</a></li>
+        
+          <li><a href="/archive.html">Archive</a></li>
+        
+          <li class="next disabled"><a>Next &rarr;</a>
+        
+        </ul>
+      </div>    
+      <hr>
+      <div>
+        
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_developer = 1;
+    var disqus_shortname = 'erichosickblog'; // required: replace example with your forum shortname
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+      </div>
+
+    </div>    
+  </div>
+</div>
+
+
+
+      <hr>
+      <footer>
+         <p>&copy; <a href="http://www.twitter.com/erichosick" target="_blank">Eric Hosick</a> 2012</p>
+       </footer>
+    </div>    
+    <!--
+
+    <script src="/assets/js/jquery.js"></script>
+    <script src="/assets/js/bootstrap-transition.js"></script>
+    <script src="/assets/js/bootstrap-alert.js"></script>
+    <script src="/assets/js/bootstrap-modal.js"></script>
+    <script src="/assets/js/bootstrap-dropdown.js"></script>
+    <script src="/assets/js/bootstrap-scrollspy.js"></script>
+    <script src="/assets/js/bootstrap-tab.js"></script>
+    <script src="/assets/js/bootstrap-tooltip.js"></script>
+    <script src="/assets/js/bootstrap-popover.js"></script>
+    <script src="/assets/js/bootstrap-button.js"></script>
+    <script src="/assets/js/bootstrap-collapse.js"></script>
+    <script src="/assets/js/bootstrap-carousel.js"></script>
+    <script src="/assets/js/bootstrap-typeahead.js"></script>
+    
+    -->
+
+    
+  </body>
+</html>
+

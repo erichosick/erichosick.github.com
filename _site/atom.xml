@@ -4,13 +4,142 @@
  <title>Eric Hosick</title>
  <link href="http://erichosick.github.com/atom.xml" rel="self"/>
  <link href="http://erichosick.github.com"/>
- <updated>2014-10-01T11:56:57-07:00</updated>
+ <updated>2014-10-06T23:08:30-07:00</updated>
  <id>http://erichosick.github.com</id>
  <author>
    <name>Eric Hosick</name>
    <email>erichosick@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Browserifying Libraries With Gulp Using Require and Expose</title>
+   <link href="http://erichosick.github.com/design/browerify-libraries-with-gulp"/>
+   <updated>2014-10-06T00:00:00-07:00</updated>
+   <id>http://erichosick.github.com/design/browerify-libraries-with-gulp</id>
+   <content type="html">&lt;h1 id=&quot;creating-a-browserified-library-with-gulp&quot;&gt;Creating A Browserified Library With Gulp&lt;/h1&gt;
+
+&lt;p&gt;The github project is &lt;a href=&quot;https://github.com/erichosick/nodeboxrequire&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;If, in the browser, you get the error “Uncaught Error: Cannot find module” followed by the name of your module, then you’ve come to the right place.&lt;/p&gt;
+
+&lt;p&gt;Hopefully, this will give you some hints about how Browserify allows you to require node modules on your site.&lt;/p&gt;
+
+&lt;h2 id=&quot;install-browserify-globally&quot;&gt;Install Browserify Globally&lt;/h2&gt;
+
+&lt;p&gt;If you haven’t done so already, install browserify globally:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ npm install browserify -g
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&quot;what-we-will-do&quot;&gt;What We Will Do&lt;/h1&gt;
+
+&lt;p&gt;Let’s say you have a module with multiple functions you want to export as a library.&lt;/p&gt;
+
+&lt;p&gt;For example:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// see robot.js
+
+var robotParents = require(&#39;./robotparent.js&#39;);
+
+module.exports.say = function(say) {
+  return &quot;Robots say &quot; + say;
+};
+module.exports.yell = function(say) {
+  return &quot;Robots parents are like &#39;&quot; + robotParents.beep(say) + &quot;&#39;!&quot;;
+};
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And we want to use that as a require(‘robot’) in an html file like so:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// see index.html
+
+&amp;lt;html&amp;gt;
+  &amp;lt;body&amp;gt;
+    &amp;lt;script src=&quot;robot.browser.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
+    &amp;lt;script&amp;gt;
+      var robots = require(&#39;robot&#39;);
+      var parents = require(&#39;./robotparent.js&#39;);
+      console.log(robots.yell(&quot;hello&quot;));
+      console.log(robots.say(&quot;hi&quot;));
+      console.log(parents.beep(&quot;argh&quot;));
+    &amp;lt;/script&amp;gt;
+  &amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;We are exporting our entire library so it can be used in the browser.&lt;/p&gt;
+
+&lt;h2 id=&quot;using-the-command-line&quot;&gt;Using the Command Line&lt;/h2&gt;
+
+&lt;p&gt;We can run the following in the command line:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ browserify -r ./robotparent.js -r ./robot.js:robot &amp;gt; robot.browser.js
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;What is really important is that:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Use -r or –require to allow you to require your library in the browser.&lt;/li&gt;
+  &lt;li&gt;Use “./robot.js” and NOT “robot.js”
+    &lt;ul&gt;
+      &lt;li&gt;We are able to get access to both the robotparent and robot libraries.&lt;/li&gt;
+      &lt;li&gt;Notice the parent library is required as follows ‘./robotparent.js’.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;The library name is whatever you put after the : (in this case robot)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;using-gulp&quot;&gt;Using Gulp&lt;/h2&gt;
+
+&lt;h3 id=&quot;setup-gulp-and-npms&quot;&gt;Setup Gulp and npm’s&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;$ npm install
+
+$ npm install browserify --save-dev
+$ npm install vinyl-transform --save-dev
+$ npm install gulp-rename --save-dev
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&quot;the-gulp-file&quot;&gt;The Gulp File&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;var gulp = require(&#39;gulp&#39;);
+var browserify = require(&#39;browserify&#39;);
+var rename = require(&#39;gulp-rename&#39;);
+var transform = require(&#39;vinyl-transform&#39;);
+
+gulp.task(&#39;default&#39;, [&#39;browserify&#39;]);
+
+gulp.task(&#39;browserify&#39;, function() {
+  var browserified = transform(function(filename) {
+    return browserify()
+      .require(&#39;./robot.js&#39;, {expose: &#39;robot&#39;})
+      .require(&#39;./robotparent.js&#39;, {expose: &#39;./robotparent.js&#39;})
+      .bundle();
+  });
+
+  return gulp.src(&#39;robot.js&#39;)
+    .pipe(browserified)
+    .pipe(rename(&#39;robot.browser.js&#39;))
+    .pipe(gulp.dest(&#39;.&#39;));
+});
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The important bits are the require and bundle bits.&lt;/p&gt;
+
+&lt;p&gt;For every library we want to expose, we have to use ‘.require’. In this case, we want to expose robot.js and robotparent.js.&lt;/p&gt;
+
+&lt;p&gt;There are ways to automate the exposing of files (&lt;a href=&quot;http://9elements.com/io/index.php/external-bundles-with-browserify-and-gulp/&quot;&gt;External Bundles with Browserify&lt;/a&gt;) but we are keeping things simple.&lt;/p&gt;
+
+&lt;h3 id=&quot;running-the-gulp-command&quot;&gt;Running The Gulp Command&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;$ gulp
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This causes the ‘default’ task to run which calls the ‘browserify’ task.&lt;/p&gt;
+
+</content>
+ </entry>
  
  <entry>
    <title>Mechanisms</title>
