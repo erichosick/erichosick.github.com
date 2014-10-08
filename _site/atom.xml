@@ -4,7 +4,7 @@
  <title>Eric Hosick</title>
  <link href="http://erichosick.github.com/atom.xml" rel="self"/>
  <link href="http://erichosick.github.com"/>
- <updated>2014-10-06T23:08:30-07:00</updated>
+ <updated>2014-10-07T23:37:35-07:00</updated>
  <id>http://erichosick.github.com</id>
  <author>
    <name>Eric Hosick</name>
@@ -152,7 +152,7 @@ gulp.task(&#39;browserify&#39;, function() {
 
 &lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
 
-&lt;p&gt;Please visit the &lt;a href=&quot;https://github.com/erichosick/jsVision&quot;&gt;jsVision&lt;/a&gt; gitub repository to checkout and play with mechanisms.&lt;/p&gt;
+&lt;p&gt;Please visit the &lt;a href=&quot;https://github.com/mechanismsjs/mech-core&quot;&gt;Mech-core&lt;/a&gt; and &lt;a href=&quot;https://github.com/mechanismsjs/mech-web&quot;&gt;Mech-web&lt;/a&gt; gitub repository (also &lt;a href=&quot;https://www.npmjs.org/package/mech-core&quot;&gt;Mech-core NPM&lt;/a&gt; and &lt;a href=&quot;https://www.npmjs.org/package/mech-web&quot;&gt;Mech-web NPM&lt;/a&gt; ) to checkout and play with javascript based mechanisms.&lt;/p&gt;
 
 &lt;p&gt;A working example (may require latest browser):&lt;/p&gt;
 

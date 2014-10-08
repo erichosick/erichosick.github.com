@@ -13,7 +13,7 @@ author_twitter: erichosick
 
 ## Introduction
 
-Please visit the [jsVision](https://github.com/erichosick/jsVision) gitub repository to checkout and play with mechanisms.
+Please visit the [Mech-core](https://github.com/mechanismsjs/mech-core) and [Mech-web](https://github.com/mechanismsjs/mech-web) gitub repository (also [Mech-core NPM](https://www.npmjs.org/package/mech-core) and [Mech-web NPM](https://www.npmjs.org/package/mech-web) ) to checkout and play with javascript based mechanisms.
 
 A working example (may require latest browser):
 
