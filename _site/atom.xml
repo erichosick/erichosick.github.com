@@ -4,7 +4,7 @@
  <title>Eric Hosick</title>
  <link href="http://erichosick.github.com/atom.xml" rel="self"/>
  <link href="http://erichosick.github.com"/>
- <updated>2014-10-07T23:37:35-07:00</updated>
+ <updated>2014-10-16T00:23:38-07:00</updated>
  <id>http://erichosick.github.com</id>
  <author>
    <name>Eric Hosick</name>
@@ -13,130 +13,185 @@
 
  
  <entry>
-   <title>Browserifying Libraries With Gulp Using Require and Expose</title>
-   <link href="http://erichosick.github.com/design/browerify-libraries-with-gulp"/>
-   <updated>2014-10-06T00:00:00-07:00</updated>
-   <id>http://erichosick.github.com/design/browerify-libraries-with-gulp</id>
-   <content type="html">&lt;h1 id=&quot;creating-a-browserified-library-with-gulp&quot;&gt;Creating A Browserified Library With Gulp&lt;/h1&gt;
+   <title>Mechanisms and Maps</title>
+   <link href="http://erichosick.github.com/design/design-mechanisms-and-maps"/>
+   <updated>2014-10-15T00:00:00-07:00</updated>
+   <id>http://erichosick.github.com/design/design-mechanisms-and-maps</id>
+   <content type="html">&lt;script src=&quot;/assets/js/mCore.js&quot;&gt;&lt;/script&gt;
 
-&lt;p&gt;The github project is &lt;a href=&quot;https://github.com/erichosick/nodeboxrequire&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;script src=&quot;/assets/js/mWeb.js&quot;&gt;&lt;/script&gt;
 
-&lt;p&gt;If, in the browser, you get the error “Uncaught Error: Cannot find module” followed by the name of your module, then you’ve come to the right place.&lt;/p&gt;
+&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
 
-&lt;p&gt;Hopefully, this will give you some hints about how Browserify allows you to require node modules on your site.&lt;/p&gt;
+&lt;p&gt;This is a continuation of the &lt;a href=&quot;/design/design-mechanisms-and-policies&quot; title=&quot;mechanisms and policies&quot;&gt;mechanisms and policies&lt;/a&gt; post.&lt;/p&gt;
 
-&lt;h2 id=&quot;install-browserify-globally&quot;&gt;Install Browserify Globally&lt;/h2&gt;
+&lt;p&gt;People asked for a less-trivial example on what mechanisms are. In this post, we will show how we can implement &lt;a href=&quot;https://github.com/mechanismsjs/mech-math#map-mechanism&quot; title=&quot;The map mechanism&quot;&gt;mapping&lt;/a&gt; using &lt;a href=&quot;/design/design-mechanisms-and-policies&quot; title=&quot;mechanisms and policies&quot;&gt;mechanisms&lt;/a&gt; and &lt;a href=&quot;https://github.com/mechanismsjs/mech-emit&quot; title=&quot;Mechanisms for emitting data&quot;&gt;emitters&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;If you haven’t done so already, install browserify globally:&lt;/p&gt;
+&lt;h2 id=&quot;map-examples&quot;&gt;Map Examples&lt;/h2&gt;
 
-&lt;pre&gt;&lt;code&gt;$ npm install browserify -g
+&lt;p&gt;Mapping “calls a defined callback function (policy) on each element of an array, and returns an array that contains the results”.”&lt;/p&gt;
+
+&lt;p&gt;Traditionally, this is done in Javascript as follows:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// traditional approach
+var x = [1, 2, 3, 4, 5].map(
+   function(n) {
+     return n + 2;
+   }
+);
+
+// x contains [3, 4, 5, 6, 7]
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h1 id=&quot;what-we-will-do&quot;&gt;What We Will Do&lt;/h1&gt;
+&lt;p&gt;Let’s build a policy that does the same thing using a &lt;strong&gt;map&lt;/strong&gt; and an &lt;strong&gt;emitter&lt;/strong&gt; described in detail below.&lt;/p&gt;
 
-&lt;p&gt;Let’s say you have a module with multiple functions you want to export as a library.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;// our policy defined with mechanism
+var x = m.map(
+  m.add(
+    2,
+    m.emitArr([1,2,3,4,5])
+  )
+).go;
 
-&lt;p&gt;For example:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;// see robot.js
-
-var robotParents = require(&#39;./robotparent.js&#39;);
-
-module.exports.say = function(say) {
-  return &quot;Robots say &quot; + say;
-};
-module.exports.yell = function(say) {
-  return &quot;Robots parents are like &#39;&quot; + robotParents.beep(say) + &quot;&#39;!&quot;;
-};
+// x also contains [3, 4, 5, 6, 7]
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;And we want to use that as a require(‘robot’) in an html file like so:&lt;/p&gt;
+&lt;h2 id=&quot;pushing-into--vs--pulling-into&quot;&gt;Pushing Into -vs- Pulling Into&lt;/h2&gt;
 
-&lt;pre&gt;&lt;code&gt;// see index.html
+&lt;h3 id=&quot;push-then-pull-approach&quot;&gt;Push-Then-Pull Approach&lt;/h3&gt;
 
-&amp;lt;html&amp;gt;
-  &amp;lt;body&amp;gt;
-    &amp;lt;script src=&quot;robot.browser.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
-    &amp;lt;script&amp;gt;
-      var robots = require(&#39;robot&#39;);
-      var parents = require(&#39;./robotparent.js&#39;);
-      console.log(robots.yell(&quot;hello&quot;));
-      console.log(robots.say(&quot;hi&quot;));
-      console.log(parents.beep(&quot;argh&quot;));
-    &amp;lt;/script&amp;gt;
-  &amp;lt;/body&amp;gt;
-&amp;lt;/html&amp;gt;
+&lt;p&gt;Traditionally, we use a &lt;strong&gt;push-then-pull&lt;/strong&gt; approach to programming algorithms. We &lt;strong&gt;push&lt;/strong&gt; data into the algorithm and &lt;strong&gt;pull&lt;/strong&gt; a result.&lt;/p&gt;
+
+&lt;p&gt;In the traditional example, we &lt;strong&gt;pushed&lt;/strong&gt; a callback-function to the map algorithm. The map algorithm itself &lt;strong&gt;pushes&lt;/strong&gt; into the our callback-function the value of the current element. It then &lt;strong&gt;pulls&lt;/strong&gt; the result of the call-back function and adds that value to an array that is eventually &lt;strong&gt;pulled&lt;/strong&gt; from the map function and placed in the variable &lt;em&gt;x&lt;/em&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;pull-approach&quot;&gt;Pull Approach&lt;/h3&gt;
+
+&lt;p&gt;A pull centric approach has the algorithm &lt;strong&gt;pulling&lt;/strong&gt; into itself the information it needs.&lt;/p&gt;
+
+&lt;p&gt;Our policy is made up of a &lt;em&gt;map&lt;/em&gt;, &lt;em&gt;add&lt;/em&gt; and &lt;em&gt;emitArr&lt;/em&gt; mechanism. We can plug any policy into our map mechanism. Maybe we just want to &lt;strong&gt;pull&lt;/strong&gt; directly from the emitter:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// map simply returns an array
+var x = m.map(
+  m.emitArr([1, 2, 3, 4, 5])
+).go;
+
+// x contains [1, 2, 3, 4, 5]
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;We are exporting our entire library so it can be used in the browser.&lt;/p&gt;
+&lt;p&gt;or something silly like writing to the console each element we are adding to the map:&lt;/p&gt;
 
-&lt;h2 id=&quot;using-the-command-line&quot;&gt;Using the Command Line&lt;/h2&gt;
+&lt;pre&gt;&lt;code&gt;// our policy defined with mechanism
+var x = m.map(
+  m.writeLn(
+    m.mul(
+      3,
+      m.emitRange(1, 3, .5)
+    )
+  )
+).go;
 
-&lt;p&gt;We can run the following in the command line:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$ browserify -r ./robotparent.js -r ./robot.js:robot &amp;gt; robot.browser.js
+// x contains [3, 4.5, 6, 7.5, 9]
+// and we will see 3, 4.5, 6, 7.5 and 9: each written on it&#39;s own line
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;What is really important is that:&lt;/p&gt;
+&lt;p&gt;The point is, we aren’t limited to one kind of thing: a call-back function. It can by any mechanism or any policy.&lt;/p&gt;
 
-&lt;ul&gt;
-  &lt;li&gt;Use -r or –require to allow you to require your library in the browser.&lt;/li&gt;
-  &lt;li&gt;Use “./robot.js” and NOT “robot.js”
-    &lt;ul&gt;
-      &lt;li&gt;We are able to get access to both the robotparent and robot libraries.&lt;/li&gt;
-      &lt;li&gt;Notice the parent library is required as follows ‘./robotparent.js’.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;The library name is whatever you put after the : (in this case robot)&lt;/li&gt;
-&lt;/ul&gt;
+&lt;p&gt;The map mechanism itself becomes crazy simple and the implementation (&lt;a href=&quot;https://github.com/mechanismsjs/mech-math/blob/master/src/map.js&quot;&gt;here&lt;/a&gt;) is partially provided:&lt;/p&gt;
 
-&lt;h2 id=&quot;using-gulp&quot;&gt;Using Gulp&lt;/h2&gt;
-
-&lt;h3 id=&quot;setup-gulp-and-npms&quot;&gt;Setup Gulp and npm’s&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code&gt;$ npm install
-
-$ npm install browserify --save-dev
-$ npm install vinyl-transform --save-dev
-$ npm install gulp-rename --save-dev
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&quot;the-gulp-file&quot;&gt;The Gulp File&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code&gt;var gulp = require(&#39;gulp&#39;);
-var browserify = require(&#39;browserify&#39;);
-var rename = require(&#39;gulp-rename&#39;);
-var transform = require(&#39;vinyl-transform&#39;);
-
-gulp.task(&#39;default&#39;, [&#39;browserify&#39;]);
-
-gulp.task(&#39;browserify&#39;, function() {
-  var browserified = transform(function(filename) {
-    return browserify()
-      .require(&#39;./robot.js&#39;, {expose: &#39;robot&#39;})
-      .require(&#39;./robotparent.js&#39;, {expose: &#39;./robotparent.js&#39;})
-      .bundle();
-  });
-
-  return gulp.src(&#39;robot.js&#39;)
-    .pipe(browserified)
-    .pipe(rename(&#39;robot.browser.js&#39;))
-    .pipe(gulp.dest(&#39;.&#39;));
+&lt;pre&gt;&lt;code&gt;MapF.prototype = Object.create(Object.prototype, {
+   go: { get: function() {
+      if ( null === this._cache) {
+         this._cache = [];
+         var cur = this._a.go;
+         var i = 0;
+         while ((undefined !== cur) &amp;amp;&amp;amp; ( i &amp;lt; this._fixed)) {
+            this._cache[i++] = cur;
+            cur = this._a.go;
+         }
+      }
+      return this._cache;
+   }}
 });
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;The important bits are the require and bundle bits.&lt;/p&gt;
+&lt;p&gt;We simply &lt;strong&gt;pull&lt;/strong&gt; a result from the policy located in &lt;em&gt;this._a&lt;/em&gt;, invoking the policy by accessing go, and add it to an array.&lt;/p&gt;
 
-&lt;p&gt;For every library we want to expose, we have to use ‘.require’. In this case, we want to expose robot.js and robotparent.js.&lt;/p&gt;
+&lt;h2 id=&quot;more-examples-of-mapping-with-emitter-mechanisms&quot;&gt;More Examples of Mapping with Emitter Mechanisms&lt;/h2&gt;
 
-&lt;p&gt;There are ways to automate the exposing of files (&lt;a href=&quot;http://9elements.com/io/index.php/external-bundles-with-browserify-and-gulp/&quot;&gt;External Bundles with Browserify&lt;/a&gt;) but we are keeping things simple.&lt;/p&gt;
+&lt;p&gt;An &lt;a href=&quot;https://github.com/mechanismsjs/mech-emit&quot; title=&quot;Mechanisms for emitting data&quot;&gt;emitter&lt;/a&gt; provides the next value. We have created two emitters so far:&lt;/p&gt;
 
-&lt;h3 id=&quot;running-the-gulp-command&quot;&gt;Running The Gulp Command&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;emitArr&lt;/strong&gt; - An emitter that pulls items from an array (ya - a bad name. emitArrSource maybe?)&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;emitRange&lt;/strong&gt; - An emitter that pulls items from a dynamically generated range of numbers (ya - a bad name. emitRangeSource maybe?)&lt;/li&gt;
+&lt;/ul&gt;
 
-&lt;pre&gt;&lt;code&gt;$ gulp
+&lt;p&gt;We can do some cool things with these.&lt;/p&gt;
+
+&lt;p&gt;How about:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;m.emitRange(0, Infinity, 23); // an unlimited range
+m.emitRange(-20, 20, .5); // a simple range
+m.emitRange(1, Infinity, 2); // emit odd numbers
+m.emitRange(0, Infinity, 2); // emit even numbers
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;This causes the ‘default’ task to run which calls the ‘browserify’ task.&lt;/p&gt;
+&lt;p&gt;How about a range that repeats:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;m.emitRange(1,3,1,true); // an unlimited range [1,2,3,1,2,3...]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Let’s add two emitters:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;m.add (
+  m.emitRange(0, Infinity, 2),
+  m.emitRange(1, Infinity, 2)
+);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Let’s map that addition limited to 30 elements:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var x = m.map(
+  m.add (
+    m.emitRange(0, Infinity, 2),
+    m.emitRange(1, Infinity, 2)
+  ),
+  30
+).go;
+
+// [ 1,  5,  9, 13, 17,  21,  25,  29,  33,  37,
+//  41, 45, 49, 53, 57,  61,  65,  69,  73,  77,
+//  81, 85, 89, 93, 97, 101, 105, 109, 113, 117]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;why-limit-the-size-of-your-maps&quot;&gt;WHY LIMIT THE SIZE OF YOUR MAPS?&lt;/h2&gt;
+
+&lt;p&gt;Remember that traditionally, somewhere in the program we take the result of our map and stuff it into something else. That something else then does something to that map.&lt;/p&gt;
+
+&lt;p&gt;But do we really need such maps anymore? Remember, we can plug our example addition of emitters policy into anything. This means, we can effectively have infinite sized maps.&lt;/p&gt;
+
+&lt;p&gt;And by plug into anything, we mean &lt;strong&gt;ANYTHING&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;Even the &lt;em&gt;increment-by&lt;/em&gt; argument of an emitter can be an emitter!?!?!&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;m.emitRange(0, Infinity, m.emitArr([1,-8,3,12]), true));
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This is some strange emitter where we increment by 1, then -8, then 12, then 2 and then repeat (1, -8, 3, 12).&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;1, -7, -4, 8, 9, 1, 13, 14, 6, 9, 21, ... // infinite
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;These example may be silly, but we really want to help people grok just how effective mechanisms are as a programming construct and abstraction.&lt;/p&gt;
+
+&lt;h2 id=&quot;what-problems-are-we-solving&quot;&gt;What Problems Are We Solving&lt;/h2&gt;
+
+&lt;p&gt;// TODO&lt;/p&gt;
+
+&lt;h2 id=&quot;why-mechanisms-feel-right&quot;&gt;Why Mechanisms Feel Right&lt;/h2&gt;
+
+&lt;p&gt;// TODO&lt;/p&gt;
+
+&lt;p&gt;If you find mechanisms interesting, please follow &lt;a href=&quot;http://www.twitter.com/erichosick&quot;&gt;@erichosick&lt;/a&gt;.&lt;/p&gt;
 
 </content>
  </entry>
