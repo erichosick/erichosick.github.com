@@ -35,9 +35,9 @@ author_twitter: erichosick
 
 ## Introduction
 
-Mechanisms give programmers more flexible ways to use mapping algorithms in their programs (see our prior post: [mechanisms and policies][mechanisms-policy-link]).
+Mechanisms give programmers more flexible ways to use mapping algorithms in their programs (see our prior post on what [mechanisms and policies][mechanisms-policy-link] are).
 
-> Hay! Emitters are not coupled to any framework. You can use them in your Javascript programs with just this small npm: [mech-emit](https://www.npmjs.org/package/mech-emit).
+> Hay! Mechanisms like emitters and maps are not coupled to any framework. You can use them in your Javascript programs by 'npm installing' small npms like [emitters](https://www.npmjs.org/package/mech-emit) and [maps][mech-math-npm-link].
 
 In this post, we will show how we can implement [mapping][mech-math-map-link] using [mechanisms][mechanisms-policy-link] and [emitters][mech-emit-link].
 
@@ -83,11 +83,11 @@ Try it out:
   />
 </form>
 
-Go to the console (in chrome: View->Developer->Javascript Console) and checkout m (just type m return). 
+Go to the console (in chrome: View->Developer->Javascript Console) and checkout the mechanisms library m: just type m return to see what is available).
 
 ## Map Examples
 
-Mapping "calls a defined callback function (policy) on each element of an array, and returns an array that contains the results"."
+Mapping "calls a defined callback function on each element of an array, and returns an array that contains the results".
 
 Traditionally, this is done in Javascript as follows:
 
@@ -100,7 +100,7 @@ Traditionally, this is done in Javascript as follows:
 
     // x contains [3, 4, 5, 6, 7, 14, 17]
 
-Map is **pushing** data into the call-back function's *number* parameter and **pulling** a result from the call-back function.
+Map is **pushing** data into the call-back function's *number* parameter and **pulling** a result from the call-back function all the while aggregating the results into an array.
 
 Let's build a program that does the same thing using a **map** and an **emitter** described in detail below.
 
@@ -127,7 +127,7 @@ Try it out:
   />
 </form>
 
-Instead of **pushing** values into a call-back function, we **pull** the result of the *add* algorithm. The difference is subtle but gives programmers more flexibility with their programs.
+Instead of **pushing** values into a call-back function, we **pull** the result of the *add* algorithm. The difference is subtle but gives programmers more flexibility with their programs while providing a consistent looking programming syntax.
 
 ## Basic Example Of Maps and Emitters
 
@@ -224,10 +224,10 @@ We simply **pull** a result from the algorithm located in *this._a*, invoking th
 
 ## More Examples of Mapping with Emitter Mechanisms
 
-An [emitter][mech-emit-link] provides the next value. We have created two emitter mechanisms so far:
+An [emitter][mech-emit-link] provides the next item from... something. We have created two emitter mechanisms so far:
 
-* **emitFromArr** - An emitter that pulls items from an array
-* **emitFromRange** - An emitter that pulls items from a dynamically generated range of numbers
+* **emitFromArr** - An emitter that pulls items from an array.
+* **emitFromRange** - An emitter that pulls items from a dynamically generated range of numbers.
 
 We can do some cool things with these.
 
@@ -249,16 +249,20 @@ Let's add two emitters (the above example):
       m.emitFromRange(1, Infinity, 2)
     );
 
-or subtract subtract from that addition:
+or subtract two emitters:
 
-    m.sub(
+    var x = m.sub(
       m.emitFromRange(0, Infinity, 2),
       m.emitFromRange(1, Infinity, 2)
     );
+    
+    x.go;
+    
+    // kinda boring: try it in the console.
 
 ## Maps of Unlimited Length?
 
-Emitters are mechanism that does mapping without placing the results in an array. This added flexibility means we can place emitters anywhere within our program without first mapping them. The effectively allows us to have maps of unlimited length.
+Emitters are mechanisms that do mapping without placing the results in an array. This added flexibility means we can place emitters anywhere within our program without first mapping them. This effectively allows us to have maps of unlimited length.
 
 ## How Flexible Are Mechanisms?
 
@@ -303,13 +307,15 @@ Each time you press the button, the next value is pulled from the 'by' property.
 
 We are effectively able to 'observe' what is going on by 'injecting' that small program between the emitFromRange emitter and the emitFromArr emitter.
 
+Mechanisms are really flexible and we think programmers are really going to value this flexibility.
+
 ## Conclusion
 
 We've shown a few interesting characteristics of mechanisms. One characteristic is that mechansism give programmers **a lot** of flexibility in what they can do at **any point** in their program. In our examples, we see that we are able to use only mechanisms to provide a highly flexible way to describe mapping. 
 
 Another characteristic is that we are able to provide a consistent programming syntax for describing how to do something. In our examples, we are able to see that the syntax is consistent because we don't need to describe call-back functions, variables and scope (the {} around the function) within our syntax.
 
-And as always, a characteristics of mechanisms is that they are **framework agnostic**. You can use any of these mechanism libraries independently of each other: [emitters][mech-emit-npm-link], [guids][mech-guid-npm-link], [web][mech-web-npm-link], [math][mech-math-npm-link] and [core][mech-core-npm-link].
+And as always, a characteristics of mechanisms is that they are **framework agnostic**. You can use any of these mechanism libraries independently of each other in any other framework: [emitters][mech-emit-npm-link], [guids][mech-guid-npm-link], [web][mech-web-npm-link], [math][mech-math-npm-link] and [core][mech-core-npm-link].
 
 If you find mechanisms interesting, please follow [@erichosick](http://www.twitter.com/erichosick).
 

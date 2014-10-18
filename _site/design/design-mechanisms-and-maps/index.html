@@ -135,10 +135,10 @@
 
 <h2 id="introduction">Introduction</h2>
 
-<p>Mechanisms give programmers more flexible ways to use mapping algorithms in their programs (see our prior post: <a href="/design/design-mechanisms-and-policies" title="mechanisms and policies">mechanisms and policies</a>).</p>
+<p>Mechanisms give programmers more flexible ways to use mapping algorithms in their programs (see our prior post on what <a href="/design/design-mechanisms-and-policies" title="mechanisms and policies">mechanisms and policies</a> are).</p>
 
 <blockquote>
-  <p>Hay! Emitters are not coupled to any framework. You can use them in your Javascript programs with just this small npm: <a href="https://www.npmjs.org/package/mech-emit">mech-emit</a>.</p>
+  <p>Hay! Mechanisms like emitters and maps are not coupled to any framework. You can use them in your Javascript programs by ‘npm installing’ small npms like <a href="https://www.npmjs.org/package/mech-emit">emitters</a> and <a href="https://www.npmjs.org/package/mech-math" title="NPM of math mechanism">maps</a>.</p>
 </blockquote>
 
 <p>In this post, we will show how we can implement <a href="https://github.com/mechanismsjs/mech-math#map-mechanism" title="The map mechanism">mapping</a> using <a href="/design/design-mechanisms-and-policies" title="mechanisms and policies">mechanisms</a> and <a href="https://github.com/mechanismsjs/mech-emit" title="Mechanisms for emitting data">emitters</a>.</p>
@@ -184,11 +184,11 @@
     " />
 </form>
 
-<p>Go to the console (in chrome: View-&gt;Developer-&gt;Javascript Console) and checkout m (just type m return). </p>
+<p>Go to the console (in chrome: View-&gt;Developer-&gt;Javascript Console) and checkout the mechanisms library m: just type m return to see what is available).</p>
 
 <h2 id="map-examples">Map Examples</h2>
 
-<p>Mapping “calls a defined callback function (policy) on each element of an array, and returns an array that contains the results”.”</p>
+<p>Mapping “calls a defined callback function on each element of an array, and returns an array that contains the results”.</p>
 
 <p>Traditionally, this is done in Javascript as follows:</p>
 
@@ -202,7 +202,7 @@ var x = [1, 2, 3, 4, 5, 12, 15].map(
 // x contains [3, 4, 5, 6, 7, 14, 17]
 </code></pre>
 
-<p>Map is <strong>pushing</strong> data into the call-back function’s <em>number</em> parameter and <strong>pulling</strong> a result from the call-back function.</p>
+<p>Map is <strong>pushing</strong> data into the call-back function’s <em>number</em> parameter and <strong>pulling</strong> a result from the call-back function all the while aggregating the results into an array.</p>
 
 <p>Let’s build a program that does the same thing using a <strong>map</strong> and an <strong>emitter</strong> described in detail below.</p>
 
@@ -228,7 +228,7 @@ x.go; // run the program
     " />
 </form>
 
-<p>Instead of <strong>pushing</strong> values into a call-back function, we <strong>pull</strong> the result of the <em>add</em> algorithm. The difference is subtle but gives programmers more flexibility with their programs.</p>
+<p>Instead of <strong>pushing</strong> values into a call-back function, we <strong>pull</strong> the result of the <em>add</em> algorithm. The difference is subtle but gives programmers more flexibility with their programs while providing a consistent looking programming syntax.</p>
 
 <h2 id="basic-example-of-maps-and-emitters">Basic Example Of Maps and Emitters</h2>
 
@@ -323,11 +323,11 @@ x.go; // run the program
 
 <h2 id="more-examples-of-mapping-with-emitter-mechanisms">More Examples of Mapping with Emitter Mechanisms</h2>
 
-<p>An <a href="https://github.com/mechanismsjs/mech-emit" title="Mechanisms for emitting data">emitter</a> provides the next value. We have created two emitter mechanisms so far:</p>
+<p>An <a href="https://github.com/mechanismsjs/mech-emit" title="Mechanisms for emitting data">emitter</a> provides the next item from… something. We have created two emitter mechanisms so far:</p>
 
 <ul>
-  <li><strong>emitFromArr</strong> - An emitter that pulls items from an array</li>
-  <li><strong>emitFromRange</strong> - An emitter that pulls items from a dynamically generated range of numbers</li>
+  <li><strong>emitFromArr</strong> - An emitter that pulls items from an array.</li>
+  <li><strong>emitFromRange</strong> - An emitter that pulls items from a dynamically generated range of numbers.</li>
 </ul>
 
 <p>We can do some cool things with these.</p>
@@ -353,17 +353,21 @@ m.emitFromRange(0, Infinity, 2); // emit even numbers
 );
 </code></pre>
 
-<p>or subtract subtract from that addition:</p>
+<p>or subtract two emitters:</p>
 
-<pre><code>m.sub(
+<pre><code>var x = m.sub(
   m.emitFromRange(0, Infinity, 2),
   m.emitFromRange(1, Infinity, 2)
 );
+
+x.go;
+
+// kinda boring: try it in the console.
 </code></pre>
 
 <h2 id="maps-of-unlimited-length">Maps of Unlimited Length?</h2>
 
-<p>Emitters are mechanism that does mapping without placing the results in an array. This added flexibility means we can place emitters anywhere within our program without first mapping them. The effectively allows us to have maps of unlimited length.</p>
+<p>Emitters are mechanisms that do mapping without placing the results in an array. This added flexibility means we can place emitters anywhere within our program without first mapping them. This effectively allows us to have maps of unlimited length.</p>
 
 <h2 id="how-flexible-are-mechanisms">How Flexible Are Mechanisms?</h2>
 
@@ -407,13 +411,15 @@ var weirdEmitter =
 
 <p>We are effectively able to ‘observe’ what is going on by ‘injecting’ that small program between the emitFromRange emitter and the emitFromArr emitter.</p>
 
+<p>Mechanisms are really flexible and we think programmers are really going to value this flexibility.</p>
+
 <h2 id="conclusion">Conclusion</h2>
 
 <p>We’ve shown a few interesting characteristics of mechanisms. One characteristic is that mechansism give programmers <strong>a lot</strong> of flexibility in what they can do at <strong>any point</strong> in their program. In our examples, we see that we are able to use only mechanisms to provide a highly flexible way to describe mapping. </p>
 
 <p>Another characteristic is that we are able to provide a consistent programming syntax for describing how to do something. In our examples, we are able to see that the syntax is consistent because we don’t need to describe call-back functions, variables and scope (the {} around the function) within our syntax.</p>
 
-<p>And as always, a characteristics of mechanisms is that they are <strong>framework agnostic</strong>. You can use any of these mechanism libraries independently of each other: <a href="https://www.npmjs.org/package/mech-emit" title="NPM of mechanisms for emitting data">emitters</a>, <a href="https://www.npmjs.org/package/mech-guid" title="NPM of mechanisms for guids">guids</a>, <a href="https://www.npmjs.org/package/mech-web" title="NPM of web centric DOM mechanisms">web</a>, <a href="https://www.npmjs.org/package/mech-math" title="NPM of math mechanism">math</a> and <a href="https://www.npmjs.org/package/mech-core" title="NPM of core mechanisms">core</a>.</p>
+<p>And as always, a characteristics of mechanisms is that they are <strong>framework agnostic</strong>. You can use any of these mechanism libraries independently of each other in any other framework: <a href="https://www.npmjs.org/package/mech-emit" title="NPM of mechanisms for emitting data">emitters</a>, <a href="https://www.npmjs.org/package/mech-guid" title="NPM of mechanisms for guids">guids</a>, <a href="https://www.npmjs.org/package/mech-web" title="NPM of web centric DOM mechanisms">web</a>, <a href="https://www.npmjs.org/package/mech-math" title="NPM of math mechanism">math</a> and <a href="https://www.npmjs.org/package/mech-core" title="NPM of core mechanisms">core</a>.</p>
 
 <p>If you find mechanisms interesting, please follow <a href="http://www.twitter.com/erichosick">@erichosick</a>.</p>
 
