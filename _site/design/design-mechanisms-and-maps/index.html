@@ -3,7 +3,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Mechanisms and Maps</title>
+    <title>Mechanisms and Maps With Javascript</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Maps are implement using emitters.">
     <meta name="author" content="Eric Hosick">
@@ -110,7 +110,7 @@
   <div class="span9">
     <div class="hero-unit">
       <div class="page-header">
-        <h1>Mechanisms and Maps</h1>
+        <h1>Mechanisms and Maps With Javascript</h1>
         <div class="row-fluid">
           <div class="span2">
             <img src="/assets/img/eric_hosick.jpg" class="img-rounded">
@@ -121,15 +121,70 @@
           </div>
         </div>
       </div>
-      <script src="/assets/js/mCore.js"></script>
+      <script src="/assets/js/mech/mech-core.js"></script>
 
-<script src="/assets/js/mWeb.js"></script>
+<script src="/assets/js/mech/mech-math.js"></script>
+
+<script src="/assets/js/mech/mech-emit.js"></script>
+
+<script src="/assets/js/mech/mech-guid.js"></script>
+
+<script src="/assets/js/mech/mech-math.js"></script>
+
+<script src="/assets/js/mech/mech-web.js"></script>
 
 <h2 id="introduction">Introduction</h2>
 
-<p>This is a continuation of the <a href="/design/design-mechanisms-and-policies" title="mechanisms and policies">mechanisms and policies</a> post.</p>
+<p>Mechanisms give programmers more flexible ways to use mapping algorithms in their programs (see our prior post: <a href="/design/design-mechanisms-and-policies" title="mechanisms and policies">mechanisms and policies</a>).</p>
 
-<p>People asked for a less-trivial example on what mechanisms are. In this post, we will show how we can implement <a href="https://github.com/mechanismsjs/mech-math#map-mechanism" title="The map mechanism">mapping</a> using <a href="/design/design-mechanisms-and-policies" title="mechanisms and policies">mechanisms</a> and <a href="https://github.com/mechanismsjs/mech-emit" title="Mechanisms for emitting data">emitters</a>.</p>
+<blockquote>
+  <p>Hay! Emitters are not coupled to any framework. You can use them in your Javascript programs with just this small npm: <a href="https://www.npmjs.org/package/mech-emit">mech-emit</a>.</p>
+</blockquote>
+
+<p>In this post, we will show how we can implement <a href="https://github.com/mechanismsjs/mech-math#map-mechanism" title="The map mechanism">mapping</a> using <a href="/design/design-mechanisms-and-policies" title="mechanisms and policies">mechanisms</a> and <a href="https://github.com/mechanismsjs/mech-emit" title="Mechanisms for emitting data">emitters</a>.</p>
+
+<p>Let’s map the addition of two emitters limited to the number of elements <strong>you</strong> enter (as long as it is less than 100,001):</p>
+
+<pre><code>m.map(
+  m.add (
+    m.emitFromRange(0, Infinity, 2), // positive integers
+    m.emitFromRange(1, Infinity, 2)  // negative integers
+  ),
+  m.min(
+    m.propGet("value", m.elemById("inp05")),
+    100000
+  )
+);
+
+// Quick Documentation:
+// m.map(algorithm, max) - Invokes the algorithm up to max number of times.
+// m.add(left, right) - add left to right.
+// m.min(arg1, arg2 ... argN) - find min of arg1, arg2 ... argN.
+// m.emitFromRange(min,max,by) - On each invocation, emit an element starting at min upto max intcremented-by by.
+// m.propGet(prop,item) - return the value located in item.prop.
+// m.elemById(id) - return the dom element with id.
+</code></pre>
+
+<p>Try it out:</p>
+
+<form id="ex05">
+  <textarea id="lst05" rows="4"></textarea><br />
+  <input id="inp05" value="30" />&nbsp;enter maximum number of elements to map<br />
+  <input id="btn05" type="button" value="Press Me" onclick="
+    m.propSet(&quot;value&quot;,
+      m.elemById(&quot;lst05&quot;),
+      m.map(
+        m.add (
+          m.emitFromRange(0, Infinity, 2),
+          m.emitFromRange(1, Infinity, 2)
+        ),
+        m.min(m.propGet(&quot;value&quot;, m.elemById(&quot;inp05&quot;)),100000)
+      )
+    ).go
+    " />
+</form>
+
+<p>Go to the console (in chrome: View-&gt;Developer-&gt;Javascript Console) and checkout m (just type m return). </p>
 
 <h2 id="map-examples">Map Examples</h2>
 
@@ -137,163 +192,228 @@
 
 <p>Traditionally, this is done in Javascript as follows:</p>
 
-<pre><code>// traditional approach
-var x = [1, 2, 3, 4, 5].map(
-   function(n) {
-     return n + 2;
+<pre><code>// traditional javascript
+var x = [1, 2, 3, 4, 5, 12, 15].map(
+   function(number) {
+     return number + 2;
    }
 );
 
-// x contains [3, 4, 5, 6, 7]
+// x contains [3, 4, 5, 6, 7, 14, 17]
 </code></pre>
 
-<p>Let’s build a policy that does the same thing using a <strong>map</strong> and an <strong>emitter</strong> described in detail below.</p>
+<p>Map is <strong>pushing</strong> data into the call-back function’s <em>number</em> parameter and <strong>pulling</strong> a result from the call-back function.</p>
 
-<pre><code>// our policy defined with mechanism
+<p>Let’s build a program that does the same thing using a <strong>map</strong> and an <strong>emitter</strong> described in detail below.</p>
+
+<pre><code>// mapping defined with mechanisms
 var x = m.map(
-  m.add(
-    2,
-    m.emitArr([1,2,3,4,5])
-  )
-).go;
+  m.add(2, m.emitFromArr([1, 2, 3, 4, 5, 12, 15]) )
+);
 
-// x also contains [3, 4, 5, 6, 7]
+x.go; // run the program
 </code></pre>
 
-<h2 id="pushing-into--vs--pulling-into">Pushing Into -vs- Pulling Into</h2>
+<p>Try it out:</p>
 
-<h3 id="push-then-pull-approach">Push-Then-Pull Approach</h3>
+<form id="ex01">
+  <textarea id="lst01" rows="4"></textarea><br />
+  <input id="btn01" type="button" value="Press Me" onclick="
+    m.propSet(&quot;value&quot;,
+      m.elemById(&quot;lst01&quot;),
+      m.map(
+        m.add(2, m.emitFromArr([1, 2, 3, 4, 5, 12, 15]) )
+      )
+    ).go
+    " />
+</form>
 
-<p>Traditionally, we use a <strong>push-then-pull</strong> approach to programming algorithms. We <strong>push</strong> data into the algorithm and <strong>pull</strong> a result.</p>
+<p>Instead of <strong>pushing</strong> values into a call-back function, we <strong>pull</strong> the result of the <em>add</em> algorithm. The difference is subtle but gives programmers more flexibility with their programs.</p>
 
-<p>In the traditional example, we <strong>pushed</strong> a callback-function to the map algorithm. The map algorithm itself <strong>pushes</strong> into the our callback-function the value of the current element. It then <strong>pulls</strong> the result of the call-back function and adds that value to an array that is eventually <strong>pulled</strong> from the map function and placed in the variable <em>x</em>.</p>
+<h2 id="basic-example-of-maps-and-emitters">Basic Example Of Maps and Emitters</h2>
 
-<h3 id="pull-approach">Pull Approach</h3>
+<p>Maybe we just want to <strong>pull</strong> directly from the emitter:</p>
 
-<p>A pull centric approach has the algorithm <strong>pulling</strong> into itself the information it needs.</p>
-
-<p>Our policy is made up of a <em>map</em>, <em>add</em> and <em>emitArr</em> mechanism. We can plug any policy into our map mechanism. Maybe we just want to <strong>pull</strong> directly from the emitter:</p>
-
-<pre><code>// map simply returns an array
-var x = m.map(
-  m.emitArr([1, 2, 3, 4, 5])
-).go;
-
-// x contains [1, 2, 3, 4, 5]
+<pre><code>m.map(
+  m.emitFromArr([1, 2, 3, 4, 5])
+);
 </code></pre>
 
-<p>or something silly like writing to the console each element we are adding to the map:</p>
+<p>Try it out:</p>
 
-<pre><code>// our policy defined with mechanism
-var x = m.map(
+<form id="ex02">
+  <textarea id="lst02" rows="4"></textarea><br />
+  <input id="btn02" type="button" value="Press Me" onclick="
+    m.propSet(&quot;value&quot;,
+      m.elemById(&quot;lst02&quot;),
+      m.map(
+        m.emitFromArr([1, 2, 3, 4, 5])
+      )
+    ).go
+    " />
+</form>
+
+<p>Write each element as an equation (we are invoking multiply as a string) to the console as they are being mapped (open the console to see the results):</p>
+
+<pre><code>m.map(
   m.writeLn(
-    m.mul(
-      3,
-      m.emitRange(1, 3, .5)
-    )
-  )
-).go;
-
-// x contains [3, 4.5, 6, 7.5, 9]
-// and we will see 3, 4.5, 6, 7.5 and 9: each written on it's own line
+    m.mul(3, m.emitFromRange(1, 3, 1))
+  ), 5
+);
 </code></pre>
 
-<p>The point is, we aren’t limited to one kind of thing: a call-back function. It can by any mechanism or any policy.</p>
+<p>Try it out:</p>
 
-<p>The map mechanism itself becomes crazy simple and the implementation (<a href="https://github.com/mechanismsjs/mech-math/blob/master/src/map.js">here</a>) is partially provided:</p>
+<form id="ex03">
+  <textarea id="lst03" rows="4"></textarea><br />
+  <input id="btn03" type="button" value="Press Me" onclick="
+    m.propSet(&quot;value&quot;,
+      m.elemById(&quot;lst03&quot;),
+      m.map(
+        m.writeLn(
+          m.mul(3, m.emitFromRange(1, 3, .5))
+        ), 5
+      )
+    ).go
+    " />
+</form>
+
+<p>We can even map a literal:</p>
+
+<pre><code>m.map(4,25);
+</code></pre>
+
+<p>Try it out:</p>
+
+<form id="ex04">
+  <textarea id="lst04" rows="4"></textarea><br />
+  <input id="btn04" type="button" value="Press Me" onclick="
+    m.propSet(&quot;value&quot;,
+      m.elemById(&quot;lst04&quot;),
+      m.map(4,25)
+    ).go
+    " />
+</form>
+
+<p>There is added flexibility for the programmer because we can map more than just a call-back function.</p>
+
+<h3 id="implementation">Implementation</h3>
+
+<p>The map mechanism itself is simple and the <a href="https://github.com/mechanismsjs/mech-math/blob/master/src/map.js">implementation</a> is partially provided here:</p>
 
 <pre><code>MapF.prototype = Object.create(Object.prototype, {
-   go: { get: function() {
-      if ( null === this._cache) {
-         this._cache = [];
-         var cur = this._a.go;
-         var i = 0;
-         while ((undefined !== cur) &amp;&amp; ( i &lt; this._fixed)) {
-            this._cache[i++] = cur;
-            cur = this._a.go;
-         }
-      }
-      return this._cache;
-   }}
+  go: { get: function() {
+    if ( null === this._cache) {
+       var algo = this._a;
+       var isMechanism = algo.isMech;
+       this._cache = [];
+       var cur = isMechanism ? algo.go : algo;
+       var i = 0;
+       while ((undefined !== cur) &amp;&amp; ( i &lt; this._fixed)) {
+          this._cache[i++] = cur;
+          cur = isMechanism ? algo.go : algo;
+       }
+    }
+    return this._cache;
+  }}
 });
 </code></pre>
 
-<p>We simply <strong>pull</strong> a result from the policy located in <em>this._a</em>, invoking the policy by accessing go, and add it to an array.</p>
+<p>We simply <strong>pull</strong> a result from the algorithm located in <em>this._a</em>, invoking the program by accessing go, and insert it into an array.</p>
 
 <h2 id="more-examples-of-mapping-with-emitter-mechanisms">More Examples of Mapping with Emitter Mechanisms</h2>
 
-<p>An <a href="https://github.com/mechanismsjs/mech-emit" title="Mechanisms for emitting data">emitter</a> provides the next value. We have created two emitters so far:</p>
+<p>An <a href="https://github.com/mechanismsjs/mech-emit" title="Mechanisms for emitting data">emitter</a> provides the next value. We have created two emitter mechanisms so far:</p>
 
 <ul>
-  <li><strong>emitArr</strong> - An emitter that pulls items from an array (ya - a bad name. emitArrSource maybe?)</li>
-  <li><strong>emitRange</strong> - An emitter that pulls items from a dynamically generated range of numbers (ya - a bad name. emitRangeSource maybe?)</li>
+  <li><strong>emitFromArr</strong> - An emitter that pulls items from an array</li>
+  <li><strong>emitFromRange</strong> - An emitter that pulls items from a dynamically generated range of numbers</li>
 </ul>
 
 <p>We can do some cool things with these.</p>
 
 <p>How about:</p>
 
-<pre><code>m.emitRange(0, Infinity, 23); // an unlimited range
-m.emitRange(-20, 20, .5); // a simple range
-m.emitRange(1, Infinity, 2); // emit odd numbers
-m.emitRange(0, Infinity, 2); // emit even numbers
+<pre><code>m.emitFromRange(0, Infinity, 23); // an unlimited range
+m.emitFromRange(-20, 20, .5); // a simple range
+m.emitFromRange(1, Infinity, 2); // emit odd numbers
+m.emitFromRange(0, Infinity, 2); // emit even numbers
 </code></pre>
 
 <p>How about a range that repeats:</p>
 
-<pre><code>m.emitRange(1,3,1,true); // an unlimited range [1,2,3,1,2,3...]
+<pre><code>m.emitFromRange(1,3,1,true); // an unlimited range [1,2,3,1,2,3...]
 </code></pre>
 
-<p>Let’s add two emitters:</p>
+<p>Let’s add two emitters (the above example):</p>
 
-<pre><code>m.add (
-  m.emitRange(0, Infinity, 2),
-  m.emitRange(1, Infinity, 2)
+<pre><code>m.add(
+  m.emitFromRange(0, Infinity, 2),
+  m.emitFromRange(1, Infinity, 2)
 );
 </code></pre>
 
-<p>Let’s map that addition limited to 30 elements:</p>
+<p>or subtract subtract from that addition:</p>
 
-<pre><code>var x = m.map(
-  m.add (
-    m.emitRange(0, Infinity, 2),
-    m.emitRange(1, Infinity, 2)
-  ),
-  30
-).go;
-
-// [ 1,  5,  9, 13, 17,  21,  25,  29,  33,  37,
-//  41, 45, 49, 53, 57,  61,  65,  69,  73,  77,
-//  81, 85, 89, 93, 97, 101, 105, 109, 113, 117]
+<pre><code>m.sub(
+  m.emitFromRange(0, Infinity, 2),
+  m.emitFromRange(1, Infinity, 2)
+);
 </code></pre>
 
-<h2 id="why-limit-the-size-of-your-maps">WHY LIMIT THE SIZE OF YOUR MAPS?</h2>
+<h2 id="maps-of-unlimited-length">Maps of Unlimited Length?</h2>
 
-<p>Remember that traditionally, somewhere in the program we take the result of our map and stuff it into something else. That something else then does something to that map.</p>
+<p>Emitters are mechanism that does mapping without placing the results in an array. This added flexibility means we can place emitters anywhere within our program without first mapping them. The effectively allows us to have maps of unlimited length.</p>
 
-<p>But do we really need such maps anymore? Remember, we can plug our example addition of emitters policy into anything. This means, we can effectively have infinite sized maps.</p>
+<h2 id="how-flexible-are-mechanisms">How Flexible Are Mechanisms?</h2>
 
-<p>And by plug into anything, we mean <strong>ANYTHING</strong>.</p>
+<p>The programs we build out of mechanisms can be used in any property of another mechanism.</p>
 
-<p>Even the <em>increment-by</em> argument of an emitter can be an emitter!?!?!</p>
+<p>Check this out:</p>
 
-<pre><code>m.emitRange(0, Infinity, m.emitArr([1,-8,3,12]), true));
+<pre><code>m.propSet("value",
+  m.elemById("lst06B"),
+  m.emitFromRange( 1, Infinity,
+    m.propSet("value",
+      m.elemById("lst06A"),
+      m.emitFromArr([1,-8,3,12], true)
+    )
+  )
+);
 </code></pre>
 
-<p>This is some strange emitter where we increment by 1, then -8, then 12, then 2 and then repeat (1, -8, 3, 12).</p>
+<p>Try it out:</p>
 
-<pre><code>1, -7, -4, 8, 9, 1, 13, 14, 6, 9, 21, ... // infinite
-</code></pre>
+<script>
+var weirdEmitter =
+  m.propSet("value",
+    m.elemById("lst06B"),
+    m.emitFromRange( 1, Infinity,
+      m.propSet("value",
+        m.elemById("lst06A"),
+        m.emitFromArr([1,-8,3,12], true)
+      )
+    )
+  );
+</script>
 
-<p>These example may be silly, but we really want to help people grok just how effective mechanisms are as a programming construct and abstraction.</p>
+<form id="ex06">
+  <input id="lst06A" />&nbsp;value of 'by'<br />
+  <input id="lst06B" />&nbsp;value of emitter<br />
+  <input id="btn06" type="button" value="Press Me A Lot Of Times" onclick="weirdEmitter.go;" />
+</form>
 
-<h2 id="what-problems-are-we-solving">What Problems Are We Solving</h2>
+<p>Each time you press the button, the next value is pulled from the ‘by’ property. The <em>increment-by</em> for the emitFromRange emitter changes on each emission because <em>increment-by</em> is itself an emitter encapsulated in small program to write that emitted value to an input field.</p>
 
-<p>// TODO</p>
+<p>We are effectively able to ‘observe’ what is going on by ‘injecting’ that small program between the emitFromRange emitter and the emitFromArr emitter.</p>
 
-<h2 id="why-mechanisms-feel-right">Why Mechanisms Feel Right</h2>
+<h2 id="conclusion">Conclusion</h2>
 
-<p>// TODO</p>
+<p>We’ve shown a few interesting characteristics of mechanisms. One characteristic is that mechansism give programmers <strong>a lot</strong> of flexibility in what they can do at <strong>any point</strong> in their program. In our examples, we see that we are able to use only mechanisms to provide a highly flexible way to describe mapping. </p>
+
+<p>Another characteristic is that we are able to provide a consistent programming syntax for describing how to do something. In our examples, we are able to see that the syntax is consistent because we don’t need to describe call-back functions, variables and scope (the {} around the function) within our syntax.</p>
+
+<p>And as always, a characteristics of mechanisms is that they are <strong>framework agnostic</strong>. You can use any of these mechanism libraries independently of each other: <a href="https://www.npmjs.org/package/mech-emit" title="NPM of mechanisms for emitting data">emitters</a>, <a href="https://www.npmjs.org/package/mech-guid" title="NPM of mechanisms for guids">guids</a>, <a href="https://www.npmjs.org/package/mech-web" title="NPM of web centric DOM mechanisms">web</a>, <a href="https://www.npmjs.org/package/mech-math" title="NPM of math mechanism">math</a> and <a href="https://www.npmjs.org/package/mech-core" title="NPM of core mechanisms">core</a>.</p>
 
 <p>If you find mechanisms interesting, please follow <a href="http://www.twitter.com/erichosick">@erichosick</a>.</p>
 
