@@ -4,7 +4,7 @@
  <title>Eric Hosick</title>
  <link href="http://erichosick.github.com/atom.xml" rel="self"/>
  <link href="http://erichosick.github.com"/>
- <updated>2014-10-18T19:17:13-07:00</updated>
+ <updated>2014-10-18T22:08:49-07:00</updated>
  <id>http://erichosick.github.com</id>
  <author>
    <name>Eric Hosick</name>
@@ -67,7 +67,7 @@
   &lt;input id=&quot;btn05&quot; type=&quot;button&quot; value=&quot;Press Me&quot; onclick=&quot;
     m.propSet(&amp;quot;value&amp;quot;,
       m.elemById(&amp;quot;lst05&amp;quot;),
-      m.map(
+      m.loop(
         m.add (
           m.emitFromRange(0, Infinity, 2),
           m.emitFromRange(1, Infinity, 2)
@@ -132,7 +132,7 @@
 
 &lt;form id=&quot;ex12&quot;&gt;
   &lt;textarea id=&quot;lst12&quot; rows=&quot;8&quot;&gt;&lt;/textarea&gt;&lt;br /&gt;
-  &lt;input id=&quot;btn12&quot; type=&quot;button&quot; value=&quot;Press Me One Time&quot; onclick=&quot;m.propSet(&amp;quot;value&amp;quot;, m.elemById(&amp;quot;lst12&amp;quot;), m.map(m.emitFromRange(10, Infinity, 10),100)).go;&quot; /&gt;
+  &lt;input id=&quot;btn12&quot; type=&quot;button&quot; value=&quot;Press Me One Time&quot; onclick=&quot;m.propSet(&amp;quot;value&amp;quot;, m.elemById(&amp;quot;lst12&amp;quot;), m.loop(m.emitFromRange(10, Infinity, 10),100)).go;&quot; /&gt;
 &lt;/form&gt;
 
 &lt;p&gt;Since this is an infinite range, we tell our loop to only call the emitter 100 times.&lt;/p&gt;
@@ -146,7 +146,7 @@
 
 &lt;form id=&quot;ex13&quot;&gt;
   &lt;textarea id=&quot;lst13&quot; rows=&quot;4&quot;&gt;&lt;/textarea&gt;&lt;br /&gt;
-  &lt;input id=&quot;btn13&quot; type=&quot;button&quot; value=&quot;Press Me One Time&quot; onclick=&quot;m.propSet(&amp;quot;value&amp;quot;, m.elemById(&amp;quot;lst13&amp;quot;), m.map(m.emitFromRange(60, 2, -2))).go;&quot; /&gt;
+  &lt;input id=&quot;btn13&quot; type=&quot;button&quot; value=&quot;Press Me One Time&quot; onclick=&quot;m.propSet(&amp;quot;value&amp;quot;, m.elemById(&amp;quot;lst13&amp;quot;), m.loop(m.emitFromRange(60, 2, -2))).go;&quot; /&gt;
 &lt;/form&gt;
 
 &lt;h4 id=&quot;creating-sequences-with-algorithms&quot;&gt;Creating Sequences With Algorithms&lt;/h4&gt;
@@ -165,7 +165,7 @@
   &lt;input id=&quot;btn01&quot; type=&quot;button&quot; value=&quot;Press Me One Time&quot; onclick=&quot;
     m.propSet(&amp;quot;value&amp;quot;,
       m.elemById(&amp;quot;lst01&amp;quot;),
-      m.map(
+      m.loop(
         m.add(2, m.emitFromArr([1, 2, 3, 4, 5, 12, 15]) )
       )
     ).go
@@ -192,7 +192,7 @@
   &lt;input id=&quot;btn03&quot; type=&quot;button&quot; value=&quot;Press Me&quot; onclick=&quot;
     m.propSet(&amp;quot;value&amp;quot;,
       m.elemById(&amp;quot;lst03&amp;quot;),
-      m.map(
+      m.loop(
         m.writeLn(
           m.mul(3, m.emitFromRange(1, 3, .5))
         ), 5
@@ -235,7 +235,7 @@ m.emitFromRange(0, Infinity, 2); // emit even numbers
   &lt;input id=&quot;btn14&quot; type=&quot;button&quot; value=&quot;Press Me One Time&quot; onclick=&quot;
     m.propSet(&amp;quot;value&amp;quot;,
       m.elemById(&amp;quot;lst14&amp;quot;),
-      m.map(
+      m.loop(
         m.emitFromRange(1,3,1,true),
         30
       )
@@ -262,7 +262,7 @@ m.emitFromRange(0, Infinity, 2); // emit even numbers
   &lt;input id=&quot;btn15&quot; type=&quot;button&quot; value=&quot;Press Me One Time&quot; onclick=&quot;
     m.propSet(&amp;quot;value&amp;quot;,
       m.elemById(&amp;quot;lst15&amp;quot;),
-      m.map(
+      m.loop(
         m.add(
           m.emitFromRange(0, Infinity, 2),
           m.emitFromRange(1, Infinity, 2)
@@ -289,7 +289,7 @@ m.emitFromRange(0, Infinity, 2); // emit even numbers
   &lt;input id=&quot;btn16&quot; type=&quot;button&quot; value=&quot;Press Me One Time&quot; onclick=&quot;
     m.propSet(&amp;quot;value&amp;quot;,
       m.elemById(&amp;quot;lst16&amp;quot;),
-      m.map(
+      m.loop(
         m.sub(
           m.emitFromRange(0, Infinity, 2),
           m.emitFromRange(1, Infinity, 2)
@@ -316,7 +316,7 @@ m.emitFromRange(0, Infinity, 2); // emit even numbers
   &lt;input id=&quot;btn17&quot; type=&quot;button&quot; value=&quot;Press Me One Time&quot; onclick=&quot;
     m.propSet(&amp;quot;value&amp;quot;,
       m.elemById(&amp;quot;lst17&amp;quot;),
-      m.map(
+      m.loop(
         m.emitFromRange(1, Infinity, 
           m.emitFromArr([1,-8,3,12], true)
         )

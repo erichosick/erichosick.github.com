@@ -1,5 +1,5 @@
 // mech-math.js
-// version: 0.1.7
+// version: 0.1.8
 // author: Eric Hosick <erichosick@gmail.com> (http://www.erichosick.com/)
 // license: MIT
 (function() {
@@ -8,7 +8,7 @@
 var root = this; // window (browser) or exports (server)
 var m = root.m || {}; // merge with previous or new module
 m._ = m._ || {}; // merge with pervious or new sub-module
-m._["version-math"] = '0.1.7'; // version set through gulp build
+m._["version-math"] = '0.1.8'; // version set through gulp build
 
 // export module for node or the browser
 if(typeof module !== 'undefined' && module.exports) {
@@ -27,6 +27,7 @@ function dualArg(left,right) {
 DualArgF.prototype = Object.create(Object.prototype, {
    isMech: { get: function() { return true; }},
    l: { get: function() { return this._l; }},
+   lv: { get: function() { return undefined === this._l ? undefined : this._l.isMech ? this._l.go : this._l; }},
    ls: { get: function() {
       if (undefined === this._l) {
          return 'undefined';
@@ -42,6 +43,7 @@ DualArgF.prototype = Object.create(Object.prototype, {
          return this._r.isMech ? this._r.goStr : this._r.toString();
       }
    }},
+   rv: { get: function() { return undefined === this._r ? undefined : this._r.isMech ? this._r.go : this._r; }},
    go: { enumerable: false, get: function() { return this.goNum; } },
    goArr: { enumerable: false, get: function() { return [this.goNum]; } },
    goBool: { enumerable: false, get: function() { return (this.goNum > 0); } }
@@ -206,6 +208,7 @@ MapF.prototype = Object.create(Object.prototype, {
    goArr: { get: function() { return this.go; }}
 });
 m.map = map;
+m.loop = map;
 m._.MapF = MapF;
 function JoinF(){};
 function join(array,token) {
@@ -286,5 +289,23 @@ MaxF.prototype = Object.create(Object.prototype, {
 });
 m.max = max;
 m._.MaxF = MaxF;
+function PowF(){};
+function pow(base, exp) {
+   var f = Object.create(PowF.prototype);
+   f._l = ((null === base) || (undefined === base)) ? undefined : base;
+   f._r = ((null === exp) || (undefined === exp)) ? undefined : exp;
+   return f;
+};
+PowF.prototype = Object.create(DualArgF.prototype, {
+   isMech: { get: function() { return true; }},   
+   goNum: { enumerable: false, get: function() {
+      var lres = this.lv;
+      var rres = this.rv;
+      return (lres === undefined) || (rres === undefined) ? undefined : Math.pow(lres,rres);
+   }},
+   goStr: { enumerable: false, get: function() { return "(" + this.ls + " ^ " + this.rs + ")"; }}
+});
+m.pow = pow;
+m._.PowF = PowF;
 
 }.call(this));

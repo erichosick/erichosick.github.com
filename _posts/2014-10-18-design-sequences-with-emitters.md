@@ -69,7 +69,7 @@ Try it out:
     onClick='
     m.propSet("value",
       m.elemById("lst05"),
-      m.map(
+      m.loop(
         m.add (
           m.emitFromRange(0, Infinity, 2),
           m.emitFromRange(1, Infinity, 2)
@@ -132,7 +132,7 @@ Instead of pressing the button a lot of times, let's use a loop to call our emit
 
 <form id="ex12">
   <textarea id="lst12" rows="8"></textarea><br>
-  <input id="btn12" type="button" value="Press Me One Time" onClick='m.propSet("value", m.elemById("lst12"), m.map(m.emitFromRange(10, Infinity, 10),100)).go;' />
+  <input id="btn12" type="button" value="Press Me One Time" onClick='m.propSet("value", m.elemById("lst12"), m.loop(m.emitFromRange(10, Infinity, 10),100)).go;' />
 </form>
 
 Since this is an infinite range, we tell our loop to only call the emitter 100 times.
@@ -145,7 +145,7 @@ If we are creating a sequence from a finite range, we can ignore the maximum num
 
 <form id="ex13">
   <textarea id="lst13" rows="4"></textarea><br>
-  <input id="btn13" type="button" value="Press Me One Time" onClick='m.propSet("value", m.elemById("lst13"), m.map(m.emitFromRange(60, 2, -2))).go;' />
+  <input id="btn13" type="button" value="Press Me One Time" onClick='m.propSet("value", m.elemById("lst13"), m.loop(m.emitFromRange(60, 2, -2))).go;' />
 </form>
 
 #### Creating Sequences With Algorithms
@@ -164,7 +164,7 @@ Try it out:
     onClick='
     m.propSet("value",
       m.elemById("lst01"),
-      m.map(
+      m.loop(
         m.add(2, m.emitFromArr([1, 2, 3, 4, 5, 12, 15]) )
       )
     ).go
@@ -192,7 +192,7 @@ Try it out:
     onClick='
     m.propSet("value",
       m.elemById("lst03"),
-      m.map(
+      m.loop(
         m.writeLn(
           m.mul(3, m.emitFromRange(1, 3, .5))
         ), 5
@@ -233,7 +233,7 @@ Try it out:
     onClick='
     m.propSet("value",
       m.elemById("lst14"),
-      m.map(
+      m.loop(
         m.emitFromRange(1,3,1,true),
         30
       )
@@ -262,7 +262,7 @@ Let's add two emitters (the above example):
     onClick='
     m.propSet("value",
       m.elemById("lst15"),
-      m.map(
+      m.loop(
         m.add(
           m.emitFromRange(0, Infinity, 2),
           m.emitFromRange(1, Infinity, 2)
@@ -290,7 +290,7 @@ We could also subtract two sequences being emitted:
     onClick='
     m.propSet("value",
       m.elemById("lst16"),
-      m.map(
+      m.loop(
         m.sub(
           m.emitFromRange(0, Infinity, 2),
           m.emitFromRange(1, Infinity, 2)
@@ -318,7 +318,7 @@ Emitters are so flexible that we can use an emitter as increment-by value for ou
     onClick='
     m.propSet("value",
       m.elemById("lst17"),
-      m.map(
+      m.loop(
         m.emitFromRange(1, Infinity, 
           m.emitFromArr([1,-8,3,12], true)
         )

@@ -161,7 +161,7 @@
   <input id="btn05" type="button" value="Press Me" onclick="
     m.propSet(&quot;value&quot;,
       m.elemById(&quot;lst05&quot;),
-      m.map(
+      m.loop(
         m.add (
           m.emitFromRange(0, Infinity, 2),
           m.emitFromRange(1, Infinity, 2)
@@ -226,7 +226,7 @@
 
 <form id="ex12">
   <textarea id="lst12" rows="8"></textarea><br />
-  <input id="btn12" type="button" value="Press Me One Time" onclick="m.propSet(&quot;value&quot;, m.elemById(&quot;lst12&quot;), m.map(m.emitFromRange(10, Infinity, 10),100)).go;" />
+  <input id="btn12" type="button" value="Press Me One Time" onclick="m.propSet(&quot;value&quot;, m.elemById(&quot;lst12&quot;), m.loop(m.emitFromRange(10, Infinity, 10),100)).go;" />
 </form>
 
 <p>Since this is an infinite range, we tell our loop to only call the emitter 100 times.</p>
@@ -240,7 +240,7 @@
 
 <form id="ex13">
   <textarea id="lst13" rows="4"></textarea><br />
-  <input id="btn13" type="button" value="Press Me One Time" onclick="m.propSet(&quot;value&quot;, m.elemById(&quot;lst13&quot;), m.map(m.emitFromRange(60, 2, -2))).go;" />
+  <input id="btn13" type="button" value="Press Me One Time" onclick="m.propSet(&quot;value&quot;, m.elemById(&quot;lst13&quot;), m.loop(m.emitFromRange(60, 2, -2))).go;" />
 </form>
 
 <h4 id="creating-sequences-with-algorithms">Creating Sequences With Algorithms</h4>
@@ -259,7 +259,7 @@
   <input id="btn01" type="button" value="Press Me One Time" onclick="
     m.propSet(&quot;value&quot;,
       m.elemById(&quot;lst01&quot;),
-      m.map(
+      m.loop(
         m.add(2, m.emitFromArr([1, 2, 3, 4, 5, 12, 15]) )
       )
     ).go
@@ -286,7 +286,7 @@
   <input id="btn03" type="button" value="Press Me" onclick="
     m.propSet(&quot;value&quot;,
       m.elemById(&quot;lst03&quot;),
-      m.map(
+      m.loop(
         m.writeLn(
           m.mul(3, m.emitFromRange(1, 3, .5))
         ), 5
@@ -329,7 +329,7 @@ m.emitFromRange(0, Infinity, 2); // emit even numbers
   <input id="btn14" type="button" value="Press Me One Time" onclick="
     m.propSet(&quot;value&quot;,
       m.elemById(&quot;lst14&quot;),
-      m.map(
+      m.loop(
         m.emitFromRange(1,3,1,true),
         30
       )
@@ -356,7 +356,7 @@ m.emitFromRange(0, Infinity, 2); // emit even numbers
   <input id="btn15" type="button" value="Press Me One Time" onclick="
     m.propSet(&quot;value&quot;,
       m.elemById(&quot;lst15&quot;),
-      m.map(
+      m.loop(
         m.add(
           m.emitFromRange(0, Infinity, 2),
           m.emitFromRange(1, Infinity, 2)
@@ -383,7 +383,7 @@ m.emitFromRange(0, Infinity, 2); // emit even numbers
   <input id="btn16" type="button" value="Press Me One Time" onclick="
     m.propSet(&quot;value&quot;,
       m.elemById(&quot;lst16&quot;),
-      m.map(
+      m.loop(
         m.sub(
           m.emitFromRange(0, Infinity, 2),
           m.emitFromRange(1, Infinity, 2)
@@ -410,7 +410,7 @@ m.emitFromRange(0, Infinity, 2); // emit even numbers
   <input id="btn17" type="button" value="Press Me One Time" onclick="
     m.propSet(&quot;value&quot;,
       m.elemById(&quot;lst17&quot;),
-      m.map(
+      m.loop(
         m.emitFromRange(1, Infinity, 
           m.emitFromArr([1,-8,3,12], true)
         )
