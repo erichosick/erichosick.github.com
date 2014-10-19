@@ -43,7 +43,7 @@ Let's define a sequence that is the addition of two emitters limited to the numb
 
     m.loop(
       m.add (
-        m.emitFromRange(0, Infinity, 2), // positive integers
+        m.emitFromRange(2, Infinity, 2), // positive integers
         m.emitFromRange(1, Infinity, 2)  // negative integers
       ),
       m.min(
@@ -71,7 +71,7 @@ Try it out:
       m.elemById("lst05"),
       m.loop(
         m.add (
-          m.emitFromRange(0, Infinity, 2),
+          m.emitFromRange(2, Infinity, 2),
           m.emitFromRange(1, Infinity, 2)
         ),
         m.min(m.propGet("value", m.elemById("inp05")),100000)

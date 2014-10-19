@@ -135,7 +135,7 @@
 
 <pre><code>m.loop(
   m.add (
-    m.emitFromRange(0, Infinity, 2), // positive integers
+    m.emitFromRange(2, Infinity, 2), // positive integers
     m.emitFromRange(1, Infinity, 2)  // negative integers
   ),
   m.min(
@@ -163,7 +163,7 @@
       m.elemById(&quot;lst05&quot;),
       m.loop(
         m.add (
-          m.emitFromRange(0, Infinity, 2),
+          m.emitFromRange(2, Infinity, 2),
           m.emitFromRange(1, Infinity, 2)
         ),
         m.min(m.propGet(&quot;value&quot;, m.elemById(&quot;inp05&quot;)),100000)
