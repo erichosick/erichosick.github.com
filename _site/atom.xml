@@ -4,7 +4,7 @@
  <title>Eric Hosick</title>
  <link href="http://erichosick.github.com/atom.xml" rel="self"/>
  <link href="http://erichosick.github.com"/>
- <updated>2014-10-18T01:06:18-07:00</updated>
+ <updated>2014-10-18T19:17:13-07:00</updated>
  <id>http://erichosick.github.com</id>
  <author>
    <name>Eric Hosick</name>
@@ -13,10 +13,10 @@
 
  
  <entry>
-   <title>Mechanisms and Maps With Javascript</title>
-   <link href="http://erichosick.github.com/design/design-mechanisms-and-maps"/>
-   <updated>2014-10-15T00:00:00-07:00</updated>
-   <id>http://erichosick.github.com/design/design-mechanisms-and-maps</id>
+   <title>Generating Sequences Using Emitters</title>
+   <link href="http://erichosick.github.com/design/design-sequences-with-emitters"/>
+   <updated>2014-10-18T00:00:00-07:00</updated>
+   <id>http://erichosick.github.com/design/design-sequences-with-emitters</id>
    <content type="html">&lt;script src=&quot;/assets/js/mech/mech-core.js&quot;&gt;&lt;/script&gt;
 
 &lt;script src=&quot;/assets/js/mech/mech-math.js&quot;&gt;&lt;/script&gt;
@@ -31,17 +31,15 @@
 
 &lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
 
-&lt;p&gt;Mechanisms give programmers more flexible ways to use mapping algorithms in their programs (see our prior post on what &lt;a href=&quot;/design/design-mechanisms-and-policies&quot; title=&quot;mechanisms and policies&quot;&gt;mechanisms and policies&lt;/a&gt; are).&lt;/p&gt;
+&lt;p&gt;In this post, we will show how we can generate different &lt;a href=&quot;https://en.wikipedia.org/wiki/Sequence&quot;&gt;sequences&lt;/a&gt; by using &lt;a href=&quot;https://github.com/mechanismsjs/mech-emit&quot; title=&quot;Mechanisms for emitting data&quot;&gt;emitters&lt;/a&gt;.&lt;/p&gt;
 
 &lt;blockquote&gt;
-  &lt;p&gt;Hay! Mechanisms like emitters and maps are not coupled to any framework. You can use them in your Javascript programs by ‘npm installing’ small npms like &lt;a href=&quot;https://www.npmjs.org/package/mech-emit&quot;&gt;emitters&lt;/a&gt; and &lt;a href=&quot;https://www.npmjs.org/package/mech-math&quot; title=&quot;NPM of math mechanism&quot;&gt;maps&lt;/a&gt;.&lt;/p&gt;
+  &lt;p&gt;Hay! Emitters are framework agnostic. You can use them in your Javascript programs by ‘npm installing’ &lt;a href=&quot;https://www.npmjs.org/package/mech-emit&quot;&gt;emitters&lt;/a&gt;.&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;p&gt;In this post, we will show how we can implement &lt;a href=&quot;https://github.com/mechanismsjs/mech-math#map-mechanism&quot; title=&quot;The map mechanism&quot;&gt;mapping&lt;/a&gt; using &lt;a href=&quot;/design/design-mechanisms-and-policies&quot; title=&quot;mechanisms and policies&quot;&gt;mechanisms&lt;/a&gt; and &lt;a href=&quot;https://github.com/mechanismsjs/mech-emit&quot; title=&quot;Mechanisms for emitting data&quot;&gt;emitters&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Let’s define a sequence that is the addition of two emitters limited to the number of elements &lt;strong&gt;you&lt;/strong&gt; enter (as long as it is less than 100,001):&lt;/p&gt;
 
-&lt;p&gt;Let’s map the addition of two emitters limited to the number of elements &lt;strong&gt;you&lt;/strong&gt; enter (as long as it is less than 100,001):&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;m.map(
+&lt;pre&gt;&lt;code&gt;m.loop(
   m.add (
     m.emitFromRange(0, Infinity, 2), // positive integers
     m.emitFromRange(1, Infinity, 2)  // negative integers
@@ -53,7 +51,7 @@
 );
 
 // Quick Documentation:
-// m.map(algorithm, max) - Invokes the algorithm up to max number of times.
+// m.loop(algorithm, max) - Invokes an algorithm up to max number of times.
 // m.add(left, right) - add left to right.
 // m.min(arg1, arg2 ... argN) - find min of arg1, arg2 ... argN.
 // m.emitFromRange(min,max,by) - On each invocation, emit an element starting at min upto max intcremented-by by.
@@ -65,7 +63,7 @@
 
 &lt;form id=&quot;ex05&quot;&gt;
   &lt;textarea id=&quot;lst05&quot; rows=&quot;4&quot;&gt;&lt;/textarea&gt;&lt;br /&gt;
-  &lt;input id=&quot;inp05&quot; value=&quot;30&quot; /&gt;&amp;nbsp;enter maximum number of elements to map&lt;br /&gt;
+  &lt;input id=&quot;inp05&quot; value=&quot;30&quot; /&gt;&amp;nbsp;enter maximum elements in the sequence&lt;br /&gt;
   &lt;input id=&quot;btn05&quot; type=&quot;button&quot; value=&quot;Press Me&quot; onclick=&quot;
     m.propSet(&amp;quot;value&amp;quot;,
       m.elemById(&amp;quot;lst05&amp;quot;),
@@ -80,41 +78,91 @@
     &quot; /&gt;
 &lt;/form&gt;
 
-&lt;p&gt;Go to the console (in chrome: View-&amp;gt;Developer-&amp;gt;Javascript Console) and checkout the mechanisms library m: just type m return to see what is available).&lt;/p&gt;
+&lt;p&gt;Go to the console (in chrome: View-&amp;gt;Developer-&amp;gt;Javascript Console) and checkout the library ‘m’: just type m return to see what is available).&lt;/p&gt;
 
-&lt;h2 id=&quot;map-examples&quot;&gt;Map Examples&lt;/h2&gt;
+&lt;h2 id=&quot;programming-emitters&quot;&gt;Programming Emitters&lt;/h2&gt;
 
-&lt;p&gt;Mapping “calls a defined callback function on each element of an array, and returns an array that contains the results”.&lt;/p&gt;
+&lt;p&gt;Let’s start with simple emitters and build up to more complex ones.&lt;/p&gt;
 
-&lt;p&gt;Traditionally, this is done in Javascript as follows:&lt;/p&gt;
+&lt;h4 id=&quot;basic-emitter&quot;&gt;Basic Emitter&lt;/h4&gt;
 
-&lt;pre&gt;&lt;code&gt;// traditional javascript
-var x = [1, 2, 3, 4, 5, 12, 15].map(
-   function(number) {
-     return number + 2;
-   }
-);
+&lt;p&gt;Let’s build a basic emitter:&lt;/p&gt;
 
-// x contains [3, 4, 5, 6, 7, 14, 17]
+&lt;pre&gt;&lt;code&gt;var emiter = m.emitFromRange(2, Infinity, 2); // even positive numbers
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;Map is &lt;strong&gt;pushing&lt;/strong&gt; data into the call-back function’s &lt;em&gt;number&lt;/em&gt; parameter and &lt;strong&gt;pulling&lt;/strong&gt; a result from the call-back function all the while aggregating the results into an array.&lt;/p&gt;
+&lt;p&gt;Try it out:&lt;/p&gt;
 
-&lt;p&gt;Let’s build a program that does the same thing using a &lt;strong&gt;map&lt;/strong&gt; and an &lt;strong&gt;emitter&lt;/strong&gt; described in detail below.&lt;/p&gt;
+&lt;script&gt;
+  var emiter01 = m.emitFromRange(2, Infinity, 2);
+&lt;/script&gt;
 
-&lt;pre&gt;&lt;code&gt;// mapping defined with mechanisms
-var x = m.map(
+&lt;form id=&quot;ex10&quot;&gt;
+  &lt;input id=&quot;lst10&quot; /&gt;&amp;nbsp;
+  &lt;input id=&quot;btn10&quot; type=&quot;button&quot; value=&quot;Press Me Alot&quot; onclick=&quot;m.propSet(&amp;quot;value&amp;quot;, m.elemById(&amp;quot;lst10&amp;quot;), emiter01).go&quot; /&gt;
+&lt;/form&gt;
+
+&lt;p&gt;Every time you press the button, we call &lt;em&gt;emiter.go&lt;/em&gt; like so:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;emiter.go;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&quot;basic-emitter-2&quot;&gt;Basic Emitter 2&lt;/h4&gt;
+
+&lt;p&gt;What does this one do?&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var emiter = m.emitFromRange(1, Infinity, 2);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;script&gt;
+  var emiter02 = m.emitFromRange(1, Infinity, 2);
+&lt;/script&gt;
+
+&lt;form id=&quot;ex11&quot;&gt;
+  &lt;input id=&quot;lst11&quot; /&gt;&amp;nbsp;
+  &lt;input id=&quot;btn11&quot; type=&quot;button&quot; value=&quot;Press Me Alot&quot; onclick=&quot;m.propSet(&amp;quot;value&amp;quot;, m.elemById(&amp;quot;lst11&amp;quot;), emiter02).go&quot; /&gt;
+&lt;/form&gt;
+
+&lt;h4 id=&quot;looping-to-create-a-sequence&quot;&gt;Looping To Create a Sequence&lt;/h4&gt;
+
+&lt;p&gt;Instead of pressing the button a lot of times, let’s use a loop to call our emitter some number of times on our behalf.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;m.loop(m.emitFromRange(10, Infinity, 10),100).go;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;form id=&quot;ex12&quot;&gt;
+  &lt;textarea id=&quot;lst12&quot; rows=&quot;8&quot;&gt;&lt;/textarea&gt;&lt;br /&gt;
+  &lt;input id=&quot;btn12&quot; type=&quot;button&quot; value=&quot;Press Me One Time&quot; onclick=&quot;m.propSet(&amp;quot;value&amp;quot;, m.elemById(&amp;quot;lst12&amp;quot;), m.map(m.emitFromRange(10, Infinity, 10),100)).go;&quot; /&gt;
+&lt;/form&gt;
+
+&lt;p&gt;Since this is an infinite range, we tell our loop to only call the emitter 100 times.&lt;/p&gt;
+
+&lt;h4 id=&quot;looping-to-create-a-sequence-2&quot;&gt;Looping To Create a Sequence 2&lt;/h4&gt;
+
+&lt;p&gt;If we are creating a sequence from a finite range, we can ignore the maximum number of elements in our loop:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;m.loop(m.emitFromRange(60, 2, -2)).go;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;form id=&quot;ex13&quot;&gt;
+  &lt;textarea id=&quot;lst13&quot; rows=&quot;4&quot;&gt;&lt;/textarea&gt;&lt;br /&gt;
+  &lt;input id=&quot;btn13&quot; type=&quot;button&quot; value=&quot;Press Me One Time&quot; onclick=&quot;m.propSet(&amp;quot;value&amp;quot;, m.elemById(&amp;quot;lst13&amp;quot;), m.map(m.emitFromRange(60, 2, -2))).go;&quot; /&gt;
+&lt;/form&gt;
+
+&lt;h4 id=&quot;creating-sequences-with-algorithms&quot;&gt;Creating Sequences With Algorithms&lt;/h4&gt;
+
+&lt;p&gt;We can do more than just emit from a range of values. We can plug emitters into algorithms. Let’s shift a range by 2 using addition:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var emitAdd2 = m.loop(
   m.add(2, m.emitFromArr([1, 2, 3, 4, 5, 12, 15]) )
 );
-
-x.go; // run the program
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;Try it out:&lt;/p&gt;
 
 &lt;form id=&quot;ex01&quot;&gt;
   &lt;textarea id=&quot;lst01&quot; rows=&quot;4&quot;&gt;&lt;/textarea&gt;&lt;br /&gt;
-  &lt;input id=&quot;btn01&quot; type=&quot;button&quot; value=&quot;Press Me&quot; onclick=&quot;
+  &lt;input id=&quot;btn01&quot; type=&quot;button&quot; value=&quot;Press Me One Time&quot; onclick=&quot;
     m.propSet(&amp;quot;value&amp;quot;,
       m.elemById(&amp;quot;lst01&amp;quot;),
       m.map(
@@ -124,34 +172,13 @@ x.go; // run the program
     &quot; /&gt;
 &lt;/form&gt;
 
-&lt;p&gt;Instead of &lt;strong&gt;pushing&lt;/strong&gt; values into a call-back function, we &lt;strong&gt;pull&lt;/strong&gt; the result of the &lt;em&gt;add&lt;/em&gt; algorithm. The difference is subtle but gives programmers more flexibility with their programs while providing a consistent looking programming syntax.&lt;/p&gt;
+&lt;p&gt;We are also using an &lt;em&gt;emitFromArr&lt;/em&gt; emitter which pulls values from an array.&lt;/p&gt;
 
-&lt;h2 id=&quot;basic-example-of-maps-and-emitters&quot;&gt;Basic Example Of Maps and Emitters&lt;/h2&gt;
+&lt;h4 id=&quot;sequences-of-strings&quot;&gt;Sequences Of Strings&lt;/h4&gt;
 
-&lt;p&gt;Maybe we just want to &lt;strong&gt;pull&lt;/strong&gt; directly from the emitter:&lt;/p&gt;
+&lt;p&gt;Let’s write each element as an equation (we are invoking multiply as a string) to the console as they are being sequenced (open the console to see the results):&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;m.map(
-  m.emitFromArr([1, 2, 3, 4, 5])
-);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Try it out:&lt;/p&gt;
-
-&lt;form id=&quot;ex02&quot;&gt;
-  &lt;textarea id=&quot;lst02&quot; rows=&quot;4&quot;&gt;&lt;/textarea&gt;&lt;br /&gt;
-  &lt;input id=&quot;btn02&quot; type=&quot;button&quot; value=&quot;Press Me&quot; onclick=&quot;
-    m.propSet(&amp;quot;value&amp;quot;,
-      m.elemById(&amp;quot;lst02&amp;quot;),
-      m.map(
-        m.emitFromArr([1, 2, 3, 4, 5])
-      )
-    ).go
-    &quot; /&gt;
-&lt;/form&gt;
-
-&lt;p&gt;Write each element as an equation (we are invoking multiply as a string) to the console as they are being mapped (open the console to see the results):&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;m.map(
+&lt;pre&gt;&lt;code&gt;m.loop(
   m.writeLn(
     m.mul(3, m.emitFromRange(1, 3, 1))
   ), 5
@@ -174,52 +201,9 @@ x.go; // run the program
     &quot; /&gt;
 &lt;/form&gt;
 
-&lt;p&gt;We can even map a literal:&lt;/p&gt;
+&lt;h2 id=&quot;emitters-described&quot;&gt;Emitters Described&lt;/h2&gt;
 
-&lt;pre&gt;&lt;code&gt;m.map(4,25);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Try it out:&lt;/p&gt;
-
-&lt;form id=&quot;ex04&quot;&gt;
-  &lt;textarea id=&quot;lst04&quot; rows=&quot;4&quot;&gt;&lt;/textarea&gt;&lt;br /&gt;
-  &lt;input id=&quot;btn04&quot; type=&quot;button&quot; value=&quot;Press Me&quot; onclick=&quot;
-    m.propSet(&amp;quot;value&amp;quot;,
-      m.elemById(&amp;quot;lst04&amp;quot;),
-      m.map(4,25)
-    ).go
-    &quot; /&gt;
-&lt;/form&gt;
-
-&lt;p&gt;There is added flexibility for the programmer because we can map more than just a call-back function.&lt;/p&gt;
-
-&lt;h3 id=&quot;implementation&quot;&gt;Implementation&lt;/h3&gt;
-
-&lt;p&gt;The map mechanism itself is simple and the &lt;a href=&quot;https://github.com/mechanismsjs/mech-math/blob/master/src/map.js&quot;&gt;implementation&lt;/a&gt; is partially provided here:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;MapF.prototype = Object.create(Object.prototype, {
-  go: { get: function() {
-    if ( null === this._cache) {
-       var algo = this._a;
-       var isMechanism = algo.isMech;
-       this._cache = [];
-       var cur = isMechanism ? algo.go : algo;
-       var i = 0;
-       while ((undefined !== cur) &amp;amp;&amp;amp; ( i &amp;lt; this._fixed)) {
-          this._cache[i++] = cur;
-          cur = isMechanism ? algo.go : algo;
-       }
-    }
-    return this._cache;
-  }}
-});
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;We simply &lt;strong&gt;pull&lt;/strong&gt; a result from the algorithm located in &lt;em&gt;this._a&lt;/em&gt;, invoking the program by accessing go, and insert it into an array.&lt;/p&gt;
-
-&lt;h2 id=&quot;more-examples-of-mapping-with-emitter-mechanisms&quot;&gt;More Examples of Mapping with Emitter Mechanisms&lt;/h2&gt;
-
-&lt;p&gt;An &lt;a href=&quot;https://github.com/mechanismsjs/mech-emit&quot; title=&quot;Mechanisms for emitting data&quot;&gt;emitter&lt;/a&gt; provides the next item from… something. We have created two emitter mechanisms so far:&lt;/p&gt;
+&lt;p&gt;An &lt;a href=&quot;https://github.com/mechanismsjs/mech-emit&quot; title=&quot;Mechanisms for emitting data&quot;&gt;emitter&lt;/a&gt; provides the next item from… something. We have created two emitters so far:&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;&lt;strong&gt;emitFromArr&lt;/strong&gt; - An emitter that pulls items from an array.&lt;/li&gt;
@@ -238,36 +222,114 @@ m.emitFromRange(0, Infinity, 2); // emit even numbers
 
 &lt;p&gt;How about a range that repeats:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;m.emitFromRange(1,3,1,true); // an unlimited range [1,2,3,1,2,3...]
+&lt;pre&gt;&lt;code&gt;m.loop(
+  m.emitFromRange(1,3,1,true), // infinite sequence
+  30
+).go;
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Try it out:&lt;/p&gt;
+
+&lt;form id=&quot;ex14&quot;&gt;
+  &lt;textarea id=&quot;lst14&quot; rows=&quot;4&quot;&gt;&lt;/textarea&gt;&lt;br /&gt;
+  &lt;input id=&quot;btn14&quot; type=&quot;button&quot; value=&quot;Press Me One Time&quot; onclick=&quot;
+    m.propSet(&amp;quot;value&amp;quot;,
+      m.elemById(&amp;quot;lst14&amp;quot;),
+      m.map(
+        m.emitFromRange(1,3,1,true),
+        30
+      )
+    ).go
+    &quot; /&gt;
+&lt;/form&gt;
+
+&lt;h4 id=&quot;add-two-sequences&quot;&gt;Add Two Sequences&lt;/h4&gt;
+
+&lt;p&gt;Now things are going to get interesting. In our prior algorithm example, we add 2 to an emitter. However, we can actually add two emitters:&lt;/p&gt;
 
 &lt;p&gt;Let’s add two emitters (the above example):&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;m.add(
-  m.emitFromRange(0, Infinity, 2),
-  m.emitFromRange(1, Infinity, 2)
-);
+&lt;pre&gt;&lt;code&gt;m.loop(
+  m.add(
+    m.emitFromRange(0, Infinity, 2),
+    m.emitFromRange(1, Infinity, 2)
+  ),100
+).go;
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;or subtract two emitters:&lt;/p&gt;
+&lt;form id=&quot;ex15&quot;&gt;
+  &lt;textarea id=&quot;lst15&quot; rows=&quot;4&quot;&gt;&lt;/textarea&gt;&lt;br /&gt;
+  &lt;input id=&quot;btn15&quot; type=&quot;button&quot; value=&quot;Press Me One Time&quot; onclick=&quot;
+    m.propSet(&amp;quot;value&amp;quot;,
+      m.elemById(&amp;quot;lst15&amp;quot;),
+      m.map(
+        m.add(
+          m.emitFromRange(0, Infinity, 2),
+          m.emitFromRange(1, Infinity, 2)
+        ),100
+      )
+    ).go
+    &quot; /&gt;
+&lt;/form&gt;
 
-&lt;pre&gt;&lt;code&gt;var x = m.sub(
-  m.emitFromRange(0, Infinity, 2),
-  m.emitFromRange(1, Infinity, 2)
-);
+&lt;h4 id=&quot;subtract-two-sequences&quot;&gt;Subtract Two Sequences&lt;/h4&gt;
 
-x.go;
+&lt;p&gt;We could also subtract two sequences being emitted:&lt;/p&gt;
 
-// kinda boring: try it in the console.
+&lt;pre&gt;&lt;code&gt;var sequenceBoring = m.loop( 
+  m.sub(
+    m.emitFromRange(0, Infinity, 2),
+    m.emitFromRange(1, Infinity, 2)
+  ),120
+).go;
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h2 id=&quot;maps-of-unlimited-length&quot;&gt;Maps of Unlimited Length?&lt;/h2&gt;
+&lt;form id=&quot;ex16&quot;&gt;
+  &lt;textarea id=&quot;lst16&quot; rows=&quot;4&quot;&gt;&lt;/textarea&gt;&lt;br /&gt;
+  &lt;input id=&quot;btn16&quot; type=&quot;button&quot; value=&quot;Press Me One Time&quot; onclick=&quot;
+    m.propSet(&amp;quot;value&amp;quot;,
+      m.elemById(&amp;quot;lst16&amp;quot;),
+      m.map(
+        m.sub(
+          m.emitFromRange(0, Infinity, 2),
+          m.emitFromRange(1, Infinity, 2)
+        )
+      ),120
+    ).go
+    &quot; /&gt;
+&lt;/form&gt;
 
-&lt;p&gt;Emitters are mechanisms that do mapping without placing the results in an array. This added flexibility means we can place emitters anywhere within our program without first mapping them. This effectively allows us to have maps of unlimited length.&lt;/p&gt;
+&lt;h4 id=&quot;how-flexible-are-emitters&quot;&gt;How Flexible Are Emitters?&lt;/h4&gt;
 
-&lt;h2 id=&quot;how-flexible-are-mechanisms&quot;&gt;How Flexible Are Mechanisms?&lt;/h2&gt;
+&lt;p&gt;Emitters are so flexible that we can use an emitter as increment-by value for our &lt;em&gt;emitFromRange&lt;/em&gt; emitter.:&lt;/p&gt;
 
-&lt;p&gt;The programs we build out of mechanisms can be used in any property of another mechanism.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;var seuenceBoring = m.loop( 
+    m.emitFromRange(1, Infinity, 
+      m.emitFromArr([1,-8,3,12], true)
+    )
+  ),500
+).go;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;form id=&quot;ex17&quot;&gt;
+  &lt;textarea id=&quot;lst17&quot; rows=&quot;4&quot;&gt;&lt;/textarea&gt;&lt;br /&gt;
+  &lt;input id=&quot;btn17&quot; type=&quot;button&quot; value=&quot;Press Me One Time&quot; onclick=&quot;
+    m.propSet(&amp;quot;value&amp;quot;,
+      m.elemById(&amp;quot;lst17&amp;quot;),
+      m.map(
+        m.emitFromRange(1, Infinity, 
+          m.emitFromArr([1,-8,3,12], true)
+        )
+      ),500
+    ).go
+    &quot; /&gt;
+&lt;/form&gt;
+
+&lt;p&gt;That is one strange sequence we are emitting.&lt;/p&gt;
+
+&lt;h4 id=&quot;how-flexible-are-emitters-2&quot;&gt;How Flexible Are Emitters 2&lt;/h4&gt;
+
+&lt;p&gt;In this example, we can see how emitters can work with UI elements so we can see what is going on as each element is generated.&lt;/p&gt;
 
 &lt;p&gt;Check this out:&lt;/p&gt;
 
@@ -303,21 +365,47 @@ var weirdEmitter =
   &lt;input id=&quot;btn06&quot; type=&quot;button&quot; value=&quot;Press Me A Lot Of Times&quot; onclick=&quot;weirdEmitter.go;&quot; /&gt;
 &lt;/form&gt;
 
-&lt;p&gt;Each time you press the button, the next value is pulled from the ‘by’ property. The &lt;em&gt;increment-by&lt;/em&gt; for the emitFromRange emitter changes on each emission because &lt;em&gt;increment-by&lt;/em&gt; is itself an emitter encapsulated in small program to write that emitted value to an input field.&lt;/p&gt;
+&lt;h3 id=&quot;different-examples-you-can-try-in-the-console&quot;&gt;Different Examples (You can try in the console)&lt;/h3&gt;
 
-&lt;p&gt;We are effectively able to ‘observe’ what is going on by ‘injecting’ that small program between the emitFromRange emitter and the emitFromArr emitter.&lt;/p&gt;
+&lt;h4 id=&quot;alternate--&quot;&gt;Alternate +/-&lt;/h4&gt;
 
-&lt;p&gt;Mechanisms are really flexible and we think programmers are really going to value this flexibility.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;var alternate = m.mul(
+  m.emitFromRange(0, Infinity, 1),
+  m.emitFromArr([1, -1], true)
+);
+
+// [0, -1, 2, -3, 4, ...]
+// remember to call alternate.go; in the
+// javascript console to use alternate.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&quot;powers&quot;&gt;Powers&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;var power2 = m.pow(
+  2,
+  m.emitFromRange(1, Infinity, 1)
+);
+
+// [1, 2, 4, 8, 16, ...]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;BUT&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var power2 = m.pow(
+  m.emitFromRange(1, Infinity, 1),
+  2
+);
+
+// [1, 4, 9, 16, 25, ...]
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
 
-&lt;p&gt;We’ve shown a few interesting characteristics of mechanisms. One characteristic is that mechansism give programmers &lt;strong&gt;a lot&lt;/strong&gt; of flexibility in what they can do at &lt;strong&gt;any point&lt;/strong&gt; in their program. In our examples, we see that we are able to use only mechanisms to provide a highly flexible way to describe mapping. &lt;/p&gt;
+&lt;p&gt;We’ve shown a few interesting ways we can generate sequences using emitters. There is always a need for more emitters (a &lt;a href=&quot;https://en.wikipedia.org/wiki/Fibonacci_number&quot;&gt;Fibonacci sequence&lt;/a&gt; emitter would be awesome for someone to add).&lt;/p&gt;
 
-&lt;p&gt;Another characteristic is that we are able to provide a consistent programming syntax for describing how to do something. In our examples, we are able to see that the syntax is consistent because we don’t need to describe call-back functions, variables and scope (the {} around the function) within our syntax.&lt;/p&gt;
+&lt;p&gt;And remember, the &lt;a href=&quot;https://www.npmjs.org/package/mech-emit&quot; title=&quot;NPM of mechanisms for emitting data&quot;&gt;emitter&lt;/a&gt; is &lt;strong&gt;framework agnostic&lt;/strong&gt;.&lt;/p&gt;
 
-&lt;p&gt;And as always, a characteristics of mechanisms is that they are &lt;strong&gt;framework agnostic&lt;/strong&gt;. You can use any of these mechanism libraries independently of each other in any other framework: &lt;a href=&quot;https://www.npmjs.org/package/mech-emit&quot; title=&quot;NPM of mechanisms for emitting data&quot;&gt;emitters&lt;/a&gt;, &lt;a href=&quot;https://www.npmjs.org/package/mech-guid&quot; title=&quot;NPM of mechanisms for guids&quot;&gt;guids&lt;/a&gt;, &lt;a href=&quot;https://www.npmjs.org/package/mech-web&quot; title=&quot;NPM of web centric DOM mechanisms&quot;&gt;web&lt;/a&gt;, &lt;a href=&quot;https://www.npmjs.org/package/mech-math&quot; title=&quot;NPM of math mechanism&quot;&gt;math&lt;/a&gt; and &lt;a href=&quot;https://www.npmjs.org/package/mech-core&quot; title=&quot;NPM of core mechanisms&quot;&gt;core&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;If you find mechanisms interesting, please follow &lt;a href=&quot;http://www.twitter.com/erichosick&quot;&gt;@erichosick&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;If you find emitters interesting, please follow &lt;a href=&quot;http://www.twitter.com/erichosick&quot;&gt;@erichosick&lt;/a&gt;.&lt;/p&gt;
 
 </content>
  </entry>
