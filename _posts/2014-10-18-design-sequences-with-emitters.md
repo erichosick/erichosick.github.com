@@ -41,7 +41,7 @@ In this post, we will show how we can generate different [sequences](https://en.
 
 Let's define a sequence that is the addition of two emitters limited to the number of elements **you** enter (as long as it is less than 100,001):
 
-    m.loop(
+    m.map(
       m.add (
         m.emitFromRange(2, Infinity, 2), // positive integers
         m.emitFromRange(1, Infinity, 2)  // negative integers
@@ -53,7 +53,7 @@ Let's define a sequence that is the addition of two emitters limited to the numb
     );
     
     // Quick Documentation:
-    // m.loop(algorithm, max) - Invokes an algorithm up to max number of times.
+    // m.map(algorithm, max) - Invokes an algorithm up to max number of times aggregating the results.
     // m.add(left, right) - add left to right.
     // m.min(arg1, arg2 ... argN) - find min of arg1, arg2 ... argN.
     // m.emitFromRange(min,max,by) - On each invocation, emit an element starting at min upto max intcremented-by by.
@@ -69,7 +69,7 @@ Try it out:
     onClick='
     m.propSet("value",
       m.elemById("lst05"),
-      m.loop(
+      m.map(
         m.add (
           m.emitFromRange(2, Infinity, 2),
           m.emitFromRange(1, Infinity, 2)
@@ -126,33 +126,33 @@ What does this one do?
 
 #### Looping To Create a Sequence
 
-Instead of pressing the button a lot of times, let's use a loop to call our emitter some number of times on our behalf.
+Instead of pressing the button a lot of times, let's use a map to call our emitter some number of times on our behalf.
 
-    m.loop(m.emitFromRange(10, Infinity, 10),100).go;
+    m.map(m.emitFromRange(10, Infinity, 10),100).go;
 
 <form id="ex12">
   <textarea id="lst12" rows="8"></textarea><br>
-  <input id="btn12" type="button" value="Press Me One Time" onClick='m.propSet("value", m.elemById("lst12"), m.loop(m.emitFromRange(10, Infinity, 10),100)).go;' />
+  <input id="btn12" type="button" value="Press Me One Time" onClick='m.propSet("value", m.elemById("lst12"), m.map(m.emitFromRange(10, Infinity, 10),100)).go;' />
 </form>
 
-Since this is an infinite range, we tell our loop to only call the emitter 100 times.
+Since this is an infinite range, we tell our map to only call the emitter 100 times.
 
 #### Looping To Create a Sequence 2
 
-If we are creating a sequence from a finite range, we can ignore the maximum number of elements in our loop:
+If we are creating a sequence from a finite range, we can ignore the maximum number of elements in our map:
 
-    m.loop(m.emitFromRange(60, 2, -2)).go;
+    m.map(m.emitFromRange(60, 2, -2)).go;
 
 <form id="ex13">
   <textarea id="lst13" rows="4"></textarea><br>
-  <input id="btn13" type="button" value="Press Me One Time" onClick='m.propSet("value", m.elemById("lst13"), m.loop(m.emitFromRange(60, 2, -2))).go;' />
+  <input id="btn13" type="button" value="Press Me One Time" onClick='m.propSet("value", m.elemById("lst13"), m.map(m.emitFromRange(60, 2, -2))).go;' />
 </form>
 
 #### Creating Sequences With Algorithms
 
 We can do more than just emit from a range of values. We can plug emitters into algorithms. Let's shift a range by 2 using addition:
 
-    var emitAdd2 = m.loop(
+    var emitAdd2 = m.map(
       m.add(2, m.emitFromArr([1, 2, 3, 4, 5, 12, 15]) )
     );
 
@@ -164,7 +164,7 @@ Try it out:
     onClick='
     m.propSet("value",
       m.elemById("lst01"),
-      m.loop(
+      m.map(
         m.add(2, m.emitFromArr([1, 2, 3, 4, 5, 12, 15]) )
       )
     ).go
@@ -178,7 +178,7 @@ We are also using an *emitFromArr* emitter which pulls values from an array.
 
 Let's write each element as an equation (we are invoking multiply as a string) to the console as they are being sequenced (open the console to see the results):
 
-    m.loop(
+    m.map(
       m.writeLn(
         m.mul(3, m.emitFromRange(1, 3, 1))
       ), 5
@@ -192,7 +192,7 @@ Try it out:
     onClick='
     m.propSet("value",
       m.elemById("lst03"),
-      m.loop(
+      m.map(
         m.writeLn(
           m.mul(3, m.emitFromRange(1, 3, .5))
         ), 5
@@ -220,7 +220,7 @@ How about:
 
 How about a range that repeats:
 
-    m.loop(
+    m.map(
       m.emitFromRange(1,3,1,true), // infinite sequence
       30
     ).go;
@@ -233,7 +233,7 @@ Try it out:
     onClick='
     m.propSet("value",
       m.elemById("lst14"),
-      m.loop(
+      m.map(
         m.emitFromRange(1,3,1,true),
         30
       )
@@ -248,7 +248,7 @@ Now things are going to get interesting. In our prior algorithm example, we add 
 
 Let's add two emitters (the above example):
 
-    m.loop(
+    m.map(
       m.add(
         m.emitFromRange(0, Infinity, 2),
         m.emitFromRange(1, Infinity, 2)
@@ -262,7 +262,7 @@ Let's add two emitters (the above example):
     onClick='
     m.propSet("value",
       m.elemById("lst15"),
-      m.loop(
+      m.map(
         m.add(
           m.emitFromRange(0, Infinity, 2),
           m.emitFromRange(1, Infinity, 2)
@@ -277,7 +277,7 @@ Let's add two emitters (the above example):
 
 We could also subtract two sequences being emitted:
 
-    var sequenceBoring = m.loop( 
+    var sequenceBoring = m.map( 
       m.sub(
         m.emitFromRange(0, Infinity, 2),
         m.emitFromRange(1, Infinity, 2)
@@ -290,7 +290,7 @@ We could also subtract two sequences being emitted:
     onClick='
     m.propSet("value",
       m.elemById("lst16"),
-      m.loop(
+      m.map(
         m.sub(
           m.emitFromRange(0, Infinity, 2),
           m.emitFromRange(1, Infinity, 2)
@@ -303,9 +303,9 @@ We could also subtract two sequences being emitted:
 
 #### How Flexible Are Emitters?
 
-Emitters are so flexible that we can use an emitter as increment-by value for our *emitFromRange* emitter.:
+Emitters are so flexible that we can use an emitter as the increment-by value for our *emitFromRange* emitter.:
 
-    var seuenceBoring = m.loop( 
+    var seuenceBoring = m.map( 
         m.emitFromRange(1, Infinity, 
           m.emitFromArr([1,-8,3,12], true)
         )
@@ -318,7 +318,7 @@ Emitters are so flexible that we can use an emitter as increment-by value for ou
     onClick='
     m.propSet("value",
       m.elemById("lst17"),
-      m.loop(
+      m.map(
         m.emitFromRange(1, Infinity, 
           m.emitFromArr([1,-8,3,12], true)
         )
