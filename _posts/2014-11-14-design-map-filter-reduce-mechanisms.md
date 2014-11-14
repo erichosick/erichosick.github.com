@@ -34,7 +34,7 @@ author_twitter: erichosick
 
 ## Introduction
 
-Checkout the [jsfiddle](http://jsfiddle.net/erichosick/gmxcxcqk/).
+Checkout [jsfiddle](http://jsfiddle.net/erichosick/gmxcxcqk/), the [npm][mech-core-npm-link] and [github][mech-core-link].
 
 In this post, we will show how to use map, filter and reduce without using callbacks or lambda expressions.
 
