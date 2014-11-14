@@ -1,7 +1,7 @@
 ---
 layout: post
-title: "Javascript Map, Filter and Reduce Without Lambdas"
-description: "Map, filter and reduce mechanisms implemented without lambdas in javascript."
+title: "Javascript Map, Filter and Reduce Without Lambdas (Callbacks)"
+description: "Map, filter and reduce mechanisms implemented without lambdas/callbacks in javascript."
 category: Design
 tags: [Javascript, map, reduce, filter, lambda]
 author: Eric Hosick
