@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Javascript Map, Filter and Reduce Without Lambda's"
+title: "Javascript Map, Filter and Reduce Without Lambdas"
 description: "Map, filter and reduce mechanisms implemented without lambdas in javascript."
 category: Design
 tags: [Javascript, map, reduce, filter, lambda]
